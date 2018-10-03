@@ -11,4 +11,6 @@ public:
 	virtual string getMeshName();
 	virtual void render();
 	virtual void loadData();
+
+	void adjustTexCoord(float * uv);
 };

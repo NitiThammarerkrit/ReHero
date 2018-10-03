@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "SquareMeshVbo.h"
 #include "GameObject.h"
+#include "SpriteObject.h"
 
 using namespace std;
 
@@ -102,12 +103,27 @@ void Game::init(int width, int height)
 	//obj6->rotate(-45.0f);
 	objects.push_back(obj7);
 
+	SpriteObject * character = new SpriteObject("character1.png", 8, 12);
+	character->setSize(200, -200);
+	character->translate(glm::vec3(0.0f, 30.0f, 0.0f));
+	character->setAnimationLoop(1,1,15,2000);
+	objects.push_back(character);
+
+	
 }
 
 void Game::render()
 {
 	this->getRenderer()->render(this->objects);
 }
+
+void Game::update(float deltaTime)
+{
+	for (DrawableObject* obj : objects) {
+		obj->update(deltaTime);
+	}
+}
+
 
 Game::Game()
 {

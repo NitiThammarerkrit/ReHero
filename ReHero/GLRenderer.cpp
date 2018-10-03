@@ -69,9 +69,18 @@ bool GLRenderer::initialize(string vertexShaderFile, string fragmentShaderFile)
 
 	//Get vertex attribute location
 	gPos2DLocation = glGetAttribLocation(gProgramId, "pos2D");
+
 	if (gPos2DLocation == -1)
 	{
 		cout << "pos2D is not a valid glsl program variable" << endl;
+		return false;
+	}
+
+	gTexCoordLocation = glGetAttribLocation(gProgramId, "texCoord");
+
+	if (gTexCoordLocation == -1)
+	{
+		cout << "texCoord is not a valid glsl program variable" << endl;
 		return false;
 	}
 
@@ -81,6 +90,7 @@ bool GLRenderer::initialize(string vertexShaderFile, string fragmentShaderFile)
 
 
 	glEnableVertexAttribArray(gPos2DLocation);
+	glEnableVertexAttribArray(gTexCoordLocation);
 
 	//Initialize clear color
 	glClearColor(1.0f, 1.0f, 1.0f, 1.f);
@@ -115,7 +125,7 @@ void GLRenderer::render(vector <DrawableObject*> & objList)
 
 void GLRenderer::setMeshAttribId(MeshVbo * shape)
 {
-	shape->setAttribId(gPos2DLocation, -1);
+	shape->setAttribId(gPos2DLocation, gTexCoordLocation);
 }
 
 void GLRenderer::addMesh(string name, MeshVbo * shape)

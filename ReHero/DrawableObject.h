@@ -17,6 +17,7 @@ public:
 	DrawableObject();
 	~DrawableObject();
 	virtual void render(glm::mat4 globalModelTransform) = 0;
+	virtual void update(float deltaTime) = 0;
 	void setSize(float sizeX, float sizeY);
 	void setPosition(glm::vec3 newPosition);
 	void translate(glm::vec3 moveDistance);

@@ -15,6 +15,7 @@ public:
 	void setColor(float r, float g, float b);
 	void render(glm::mat4 globalModelTransform);
 	void setName(string n);
+	void update(float deltaTime);
 	string getName();
 	bool isClick(float x, float y);
 	float getCardAngle();

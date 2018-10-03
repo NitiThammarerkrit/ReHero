@@ -26,6 +26,7 @@ void Card::render(glm::mat4 globalModelTransform)
 
 	GLuint modelMatixId = Game::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint colorId = Game::getInstance()->getRenderer()->getColorUniformId();
+	GLuint modeId = Game::getInstance()->getRenderer()->getModeUniformId();
 
 
 	if (modelMatixId == -1) {
@@ -50,6 +51,7 @@ void Card::render(glm::mat4 globalModelTransform)
 		
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform3f(colorId, color.x, color.y, color.z);
+		glUniform1i(modeId, 0);
 		squareMesh->render();
 
 		/*currentMatrix = glm::translate(currentMatrix, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -104,5 +106,9 @@ float Card::getCardAngle()
 void Card::setCardAngle(float angle)
 {
 	this->cardAngle = angle;
+}
+void Card::update(float deltaTime)
+{
+
 }
 

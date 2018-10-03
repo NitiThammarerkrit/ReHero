@@ -9,5 +9,6 @@ public:
 	GLRendererColor(int w, int h);
 	~GLRendererColor();
 	GLuint getColorUniformId();
+	GLuint getModeUniformId();
 };
 

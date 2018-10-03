@@ -22,9 +22,11 @@ protected:
 	GLuint matrixId = -1;
 	GLuint pMatrixId = -1;
 	GLuint colorUniformId = -1;
+	GLuint modeUniformId = -1;
 
 	GLuint gProgramId;
 	int gPos2DLocation;
+	int gTexCoordLocation;
 	void printProgramLog(GLuint program);
 	virtual bool initialize(string vertexShaderFile, string fragmentShaderFile);
 	Shader *vertexShader;
@@ -49,5 +51,6 @@ public:
 	GLuint getModelMatrixAttrId();
 	GLuint getProjectionMatrixAttrId();
 	virtual GLuint getColorUniformId() = 0;
+	virtual GLuint getModeUniformId() = 0;
 
 };

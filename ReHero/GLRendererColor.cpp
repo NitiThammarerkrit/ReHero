@@ -23,6 +23,13 @@ bool GLRendererColor::initialize(string vertexShaderFile, string fragmentShaderF
 		return false;
 	}
 
+	modeUniformId = glGetUniformLocation(gProgramId, "mode");
+	if (modeUniformId == -1)
+	{
+		cout << "Mode is not a valid glsl uniform variable" << endl;
+		return false;
+	}
+
 	return true;
 }
 
@@ -34,4 +41,9 @@ GLRendererColor::~GLRendererColor()
 GLuint GLRendererColor::getColorUniformId()
 {
 	return this->colorUniformId;
+}
+
+GLuint GLRendererColor::getModeUniformId()
+{
+	return this->modeUniformId;
 }

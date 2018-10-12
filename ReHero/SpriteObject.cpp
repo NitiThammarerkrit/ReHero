@@ -15,6 +15,8 @@ SpriteObject::SpriteObject(string fileName, int row, int column)
 	}
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	int Mode = GL_RGB;
 	if (image->format->BytesPerPixel == 4)

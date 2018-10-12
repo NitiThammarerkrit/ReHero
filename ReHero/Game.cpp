@@ -86,28 +86,62 @@ void Game::init(int width, int height)
 		objects.push_back(obj);
 	}
 
+	SpriteObject * Hero1 = new SpriteObject("Hero1.png", 1, 1);
+	Hero1->setSize(640.0f, -360.0f);
+	Hero1->translate(glm::vec3(-350.0f, 90.0f, 0.0f));
+	Hero1->setAnimationLoop(1, 1, 15, 2000);
+	objects.push_back(Hero1);
 
-	Card * obj6 = new Card();
+	SpriteObject * Monster = new SpriteObject("monster1.png", 1, 1);
+	Monster->setSize(-640.0f, -360.0f);
+	Monster->translate(glm::vec3(350.0f, 90.0f, 0.0f));
+	Monster->setAnimationLoop(1, 1, 15, 2000);
+	objects.push_back(Monster);
+
+
+	Card * heroHealthbar = new Card();
+	heroHealthbar->setColor(1,0,0);
+	heroHealthbar->setSize(250.0f, 28.0f);
+	heroHealthbar->setName("Healthbar");
+	heroHealthbar->translate(glm::vec3(-360.0f, 250, 0));
+	//obj->setCardAngle(i * 20.0f);
+	//obj->translate(glm::vec3(-120, -300, 0));
+	//obj->rotate(45.0f);
+	objects.push_back(heroHealthbar);
+
+	Card * monsterHealthbar = new Card();
+	monsterHealthbar->setColor(1, 0, 0);
+	monsterHealthbar->setSize(250.0f, 28.0f);
+	monsterHealthbar->setName("Healthbar");
+	monsterHealthbar->translate(glm::vec3(360.0f, 250, 0));
+	//obj->setCardAngle(i * 20.0f);
+	//obj->translate(glm::vec3(-120, -300, 0));
+	//obj->rotate(45.0f);
+	objects.push_back(monsterHealthbar);
+
+	/*Card * obj6 = new Card();
 	obj6->setColor(0.0, 0.0, 0.0);
 	obj6->setSize(160.0f, 246.0f);
 	obj6->setName("Monster");
 	obj6->translate(glm::vec3(350, 75, 0));
 	//obj6->rotate(-45.0f);
-	objects.push_back(obj6);
+	objects.push_back(obj6);  
 
-	Card * obj7 = new Card();
+	/*Card * obj7 = new Card();
 	obj7->setColor(0.0, 0.0, 0.0);
 	obj7->setSize(160.0f, 246.0f);
 	obj7->setName("Hero");
 	obj7->translate(glm::vec3(-350, 75, 0));
 	//obj6->rotate(-45.0f);
-	objects.push_back(obj7);
+	objects.push_back(obj7); */
+	
+	
 
-	SpriteObject * character = new SpriteObject("character1.png", 8, 12);
+	/*SpriteObject * character = new SpriteObject("character.png", 3, 5);
 	character->setSize(200, -200);
 	character->translate(glm::vec3(0.0f, 30.0f, 0.0f));
 	character->setAnimationLoop(1,1,15,2000);
-	objects.push_back(character);
+	objects.push_back(character);	*/
 
 	
 }

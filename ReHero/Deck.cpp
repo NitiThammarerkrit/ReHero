@@ -4,7 +4,7 @@
 Deck::Deck() {
 	srand(time(NULL));
 
-	//code for system testing
+	//code for deck system testing
 	//			|
 	//			|
 	//			V
@@ -119,6 +119,21 @@ void Deck::drawToHand(int amount) {
 	}
 }
 
+Card * Deck::handAt(int index) {
+	if (hand.size() > index) return hand[index];
+	else return nullptr;
+}
+
+Card * Deck::playerDeckAt(int index) {
+	if (playerDeck.size() > index) return playerDeck[index];
+	else return nullptr;
+}
+
+Card * Deck::discardPileAt(int index) {
+	if (discardPile.size() > index) return discardPile[index];
+	else return nullptr;
+}
+
 Card * Deck::drawACard() {
 	if (playerDeck.size() > 0)
 	{
@@ -155,7 +170,7 @@ void Deck::shufflePlayerDeck() {
 	//clear player deck
 	playerDeck.clear();
 
-	//randomly put card from temp into player deck
+	//randomly put cards from temp into player deck
 	count = temp.size();
 	for (int i = 0; i < count; i++)
 	{
@@ -189,4 +204,39 @@ void Deck::discardHand() {
 
 	//clear hand
 	hand.clear();
+}
+
+void Deck::randomMana() {
+	int ran1 = rand() % 3; //0-2
+	int ran2 = rand() % 3; //0-2
+	int ran3 = rand() % 2 + 1; //1-2
+
+	this->mana = ran1 + ran2 + ran3; //1-6
+	
+	//Possibilities
+	//1 - (001)							-> 5.56%
+	//2 - (002)(011)(101)				-> 16.67%
+	//3 - (021)(012)(102)(111)(201)		-> 27.78%
+	//4 - (022)(112)(121)(202)(211)		-> 27.78%
+	//5 - (122)(212)(221)				-> 16.67%
+	//6 - (222)							-> 5.56%
+}
+
+int Deck::getMana() {
+	return this->mana;
+}
+
+bool Deck::loseMana(int cost) {
+	//check if cost more than mana
+	if (cost <= this->mana)
+	{
+		//spend mana equal to cost and return true
+		this->mana -= cost;
+		return true;
+	}
+	else
+	{
+		//cannot spend cost more than mana!! return false
+		return false;
+	}
 }

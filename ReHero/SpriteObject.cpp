@@ -2,7 +2,7 @@
 #include "SpriteObject.h"
 #include "Game.h"
 #include "SquareMeshVbo.h"
-#include<SDL_image.h>
+#include<SDL_image.h>				 
 
 SpriteObject::SpriteObject(string fileName, int row, int column)
 {
@@ -158,3 +158,9 @@ void SpriteObject::nextAnimation()
 	}
 	
 }
+
+unsigned int SpriteObject::getTexture()
+{
+	return texture;
+}
+

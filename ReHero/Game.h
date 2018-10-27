@@ -12,11 +12,15 @@ class Game
 	float gameWidth, gameHeight;
 	vector<DrawableObject*> objects;
 	GLRenderer *renderer;
+	bool isMouseDown;
+	class Card* clickObject;
 	Game();
 public:
 	static Game* getInstance();
 	GLRenderer * getRenderer();
-	void handleMouse(int x, int y);
+	void handleMouseUp(int x, int y);
+	void handleMouseDown(int x, int y);
+	void handleMouseMotion(int x, int y);
 	void handleKey(char ch);
 	void init(int width, int height);
 	void render();

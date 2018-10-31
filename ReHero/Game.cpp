@@ -55,8 +55,8 @@ void Game::handleMouseUp(int x, int y)
 			float hpTrTemp = hp[0]->getTranformX();
 			cout << hpTrTemp;
 			hp[0]->setPosition(glm::vec3(hpTrTemp-25, 250.0f, 0.0f));
-			if(clickObject->active==true)
-				clickObject->active = false;
+			/*if(clickObject->active==true)
+				clickObject->active = false;	*/
 
 
 		}
@@ -131,7 +131,7 @@ void Game::handleKey(char ch)
 	if (this->objects.size() > 0) {
 		DrawableObject *obj = this->objects.at(0);
 		switch (ch) {
-		case 'u': obj->translate(glm::vec3(0, 0.3, 0)); break;
+		case 'u': resetHandPos(); break;
 		case 'd': deck->drawToHand(1); resetHandPos(); break;
 		case 'l': obj->translate(glm::vec3(-0.3, 0, 0)); break;
 		case 'r': obj->translate(glm::vec3(0.3, 0, 0)); break;
@@ -237,7 +237,7 @@ void Game::init(int width, int height)
 	int allCard = 12;
 	int id = 1;
 	SpriteObject cardsprite("sprite.png", 2, 6);
-	deck = new Deck();
+	deck = Deck::getInstance();
 	for (int i = 0; i < 12; i++)
 	{
 		Card * card = new Card();
@@ -283,6 +283,7 @@ void Game::init(int width, int height)
 void Game::render()
 {
 	this->getRenderer()->render(this->objects);	
+	this->getRenderer()->render(*(deck->getHand()));
 }
 
 void Game::update(float deltaTime)
@@ -310,25 +311,30 @@ void Game::resetHandPos()
 		cardAngel = 20;
 	}
 	else
+	{
 		cardAngel = 100 / deck->cardsOnHand();
+	}
+		
 	for (int i = 0; i < deck->cardsOnHand(); i++)
 	{
 		Card *card = deck->handAt(i);
+		card->setIsInHand(true);
 		card->setSize(200.0f, 280.0f);
 		//obj->setColor(colorR[i + 2], colorG[i + 2], colorB[i + 2]);
 		//card->setName(name[i + 2]);
 		card->setPosition(glm::vec3(0, 0, 0));
 		card->translate(glm::vec3(0, -240, i));
 		
-		if(deck->cardsOnHand()%2!=0)
-		card->setCardAngle(k*cardAngel);
+		if (deck->cardsOnHand() % 2 != 0)
+		{
+			card->setCardAngle(k*cardAngel);
+		}
 		else
-		if (deck->cardsOnHand() % 2 == 0)
 		{
 			card->setCardAngle((k+0.5)* cardAngel);
 		}
 		k++;
-		objects.push_back(card);
+		//objects.push_back(card);
 	}
 	
 }

@@ -123,6 +123,28 @@ void GLRenderer::render(vector <DrawableObject*> & objList)
 	glUseProgram(NULL);
 }
 
+void GLRenderer::render(vector <Card*> & objList)
+{
+
+	// Update window with OpenGL rendering
+
+	glUseProgram(gProgramId);
+	//Set up matrix uniform
+
+	if (pMatrixId != -1) {
+		glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
+	}
+
+	glm::mat4 camera = glm::mat4(1.0);
+
+	for (Card *obj : objList) {
+		obj->render(camera);
+	}
+
+	//Unbind program
+	glUseProgram(NULL);
+}
+
 void GLRenderer::setMeshAttribId(MeshVbo * shape)
 {
 	shape->setAttribId(gPos2DLocation, gTexCoordLocation);

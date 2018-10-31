@@ -8,7 +8,7 @@
 #include <string>
 #include "MeshVbo.h"
 #include "glm\glm.hpp"
-#include "DrawableObject.h"
+#include "Card.h"
 
 using namespace std;
 
@@ -36,6 +36,7 @@ protected:
 
 public:
 	virtual void render(vector <DrawableObject*> & objList);
+	virtual void render(vector <Card*> & objList);
 	GLRenderer(int w, int h);
 	bool initGL(string vertexShaderFile, string fragmentShaderFile);
 

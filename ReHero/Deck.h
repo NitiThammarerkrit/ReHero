@@ -9,6 +9,8 @@
 
 class Deck
 {
+	static Deck* instance;
+
 	int mana;
 	vector<Card*> hand;
 	vector<Card*> playerDeck;
@@ -18,9 +20,15 @@ public:
 	Deck();
 	~Deck();
 
+	static Deck * getInstance();
+
 	Card * handAt(int index);
 	Card * playerDeckAt(int index);
 	Card * discardPileAt(int index);
+
+	int cardsOnHand();				//return number of cards in hand
+	int cardsOnPlayerDeck();		//return number of cards in player deck
+	int cardsOnDiscardPile();		//return number of cards in discard pile
 
 	void addCardToDeck(Card * c);	//add a new card to player deck
 	void drawToHand(int amount);	//draw 'amount' cards and add them to hand

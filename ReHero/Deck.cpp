@@ -1,6 +1,16 @@
 #include "stdafx.h"
 #include "Deck.h"
 
+Deck * Deck::instance = nullptr;
+
+Deck * Deck::getInstance() {
+	if (instance == nullptr)
+	{
+		instance = new Deck();
+	}
+	return instance;
+}
+
 Deck::Deck() {
 	srand(time(NULL));
 
@@ -132,6 +142,18 @@ Card * Deck::playerDeckAt(int index) {
 Card * Deck::discardPileAt(int index) {
 	if (discardPile.size() > index) return discardPile[index];
 	else return nullptr;
+}
+
+int Deck::cardsOnHand() {
+	return this->hand.size();
+}
+
+int Deck::cardsOnPlayerDeck() {
+	return this->playerDeck.size();
+}
+
+int Deck::cardsOnDiscardPile() {
+	return this->discardPile.size();
 }
 
 Card * Deck::drawACard() {

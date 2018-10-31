@@ -46,6 +46,7 @@ public:
 	void setId(int id);
 	int getId();
 
+	unsigned int getTexture();
 	void effect();
 
 	bool active;

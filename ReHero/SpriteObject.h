@@ -18,6 +18,7 @@ private:
 	int loopCount;
 	int animationTime;
 	int timeCount;
+	bool active;
 
 public:
 	SpriteObject(string fileName, int row, int column);
@@ -32,5 +33,7 @@ public:
 	void setAnimationLoop(int row, int column, int loop, int time); // 1000 = 1 second
 	void nextAnimation();
 	unsigned int getTexture();
+	void setTexture(unsigned int newTexture);
+	void setActive(bool active);
 };
 

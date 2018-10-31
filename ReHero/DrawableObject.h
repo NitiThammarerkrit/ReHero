@@ -23,6 +23,8 @@ public:
 	void translate(glm::vec3 moveDistance);
 	void rotate(float a);
 	glm::mat4 rotateAroundPoint(float x, float y,float a);
+	float getSizeX();
+	float getTranformX();
 
 
 	//Rotate, Scale ???

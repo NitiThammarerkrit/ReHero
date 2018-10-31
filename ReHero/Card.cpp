@@ -141,7 +141,7 @@ void Card::setIsInHand(bool x)
 }
 void Card::update(float deltaTime)
 {
-	
+	 
 }
 
 void Card::setRow(int r)
@@ -199,6 +199,11 @@ void Card::setId(int id)
 int Card::getId()
 {
 	return ID;
+}
+
+unsigned int Card::getTexture()
+{
+	return texture;
 }
 
 void Card::effect()

@@ -6,6 +6,7 @@
 
 SpriteObject::SpriteObject(string fileName, int row, int column)
 {
+	active = true;
 	glActiveTexture(GL_TEXTURE0);
 	SDL_Surface *image = IMG_Load(fileName.c_str());
 	if (image == NULL)
@@ -53,6 +54,10 @@ SpriteObject::~SpriteObject()
 
 void SpriteObject::render(glm::mat4 globalModelTransform)
 {
+	if (!active)
+	{
+		return;
+	}
 	SquareMeshVbo *squareMesh = dynamic_cast<SquareMeshVbo *> (Game::getInstance()->getRenderer()->getMesh(SquareMeshVbo::MESH_NAME));
 
 	GLuint modelMatixId = Game::getInstance()->getRenderer()->getModelMatrixAttrId();
@@ -162,5 +167,16 @@ void SpriteObject::nextAnimation()
 unsigned int SpriteObject::getTexture()
 {
 	return texture;
+}
+
+void SpriteObject::setTexture(unsigned int newTexture)
+{
+	this->texture = newTexture;
+	
+}
+
+void SpriteObject::setActive(bool active)
+{
+	this->active = active;
 }
 

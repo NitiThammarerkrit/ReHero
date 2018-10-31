@@ -56,5 +56,15 @@ glm::mat4 DrawableObject::rotateAroundPoint(float x, float y, float a)
 	return transform;
 }
 
+float DrawableObject::getSizeX()
+{
+	return size.x;
+}
+
+float DrawableObject::getTranformX()
+{
+	return pos.x;
+}
+
 
 

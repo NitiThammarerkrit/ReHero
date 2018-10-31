@@ -1,5 +1,8 @@
+#include <iostream>
 #include "stdafx.h"
 #include "Deck.h"
+
+using namespace std;
 
 Deck * Deck::instance = nullptr;
 
@@ -125,8 +128,25 @@ void Deck::drawToHand(int amount) {
 	//loop function drawACard = 'amount' times
 	for (int i = 0; i < amount; i++)
 	{
+		if (playerDeck.size() == 0 && discardPile.size() == 0)
+		{
+			//cout << "No card in both player deck and discard pile, cannot draw" << endl;
+			return;
+		}
 		hand.push_back(drawACard());
 	}
+}
+
+vector<Card*> * Deck::getHand() {
+	return &hand;
+}
+
+vector<Card*> * Deck::getPlayerDeck() {
+	return &playerDeck;
+}
+
+vector<Card*> * Deck::getDiscardPile() {
+	return &discardPile;
 }
 
 Card * Deck::handAt(int index) {
@@ -157,27 +177,19 @@ int Deck::cardsOnDiscardPile() {
 }
 
 Card * Deck::drawACard() {
-	if (playerDeck.size() > 0)
-	{
-		//if cards in player deck are more than 0
-		//draw normally
-		Card * temp = playerDeck[0];
-		playerDeck[0] = nullptr;
-		playerDeck.erase(playerDeck.begin() + 0);
-		return temp;
-	}
-	else
+	Card * temp;
+	if (playerDeck.size() <= 0)
 	{
 		//if card in player deck is 0
 		//swap player deck with discard pile first
 		reshuffleDeckAndPile();
-
-		//then draw
-		Card * temp = playerDeck[0];
-		playerDeck[0] = nullptr;
-		playerDeck.erase(playerDeck.begin() + 0);
-		return temp;
 	}
+
+	//then draw
+	temp = playerDeck[0];
+	playerDeck[0] = nullptr;
+	playerDeck.erase(playerDeck.begin() + 0);
+	return temp;
 }
 
 void Deck::shufflePlayerDeck() {

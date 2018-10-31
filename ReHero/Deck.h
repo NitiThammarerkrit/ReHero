@@ -22,6 +22,10 @@ public:
 
 	static Deck * getInstance();
 
+	vector<Card*> * getHand();
+	vector<Card*> * getPlayerDeck();
+	vector<Card*> * getDiscardPile();
+
 	Card * handAt(int index);
 	Card * playerDeckAt(int index);
 	Card * discardPileAt(int index);

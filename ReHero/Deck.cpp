@@ -228,6 +228,11 @@ void Deck::discardHand() {
 	hand.clear();
 }
 
+void Deck::handToDiscardPile(int index) {
+	discardPile.push_back(hand[index]);
+	hand.erase(hand.begin() + index);
+}
+
 void Deck::randomMana() {
 	int ran1 = rand() % 3; //0-2
 	int ran2 = rand() % 3; //0-2

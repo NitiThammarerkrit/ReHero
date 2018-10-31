@@ -36,6 +36,7 @@ public:
 	void shufflePlayerDeck();		//as the function name says
 	void reshuffleDeckAndPile();	//add all cards in discard pile into player deck
 	void discardHand();				//discard all cards in hand into discard pile
+	void handToDiscardPile(int index);	//add used card to discard pile and remove it from hand
 
 	void randomMana();			//random amount of mana
 	int getMana();				//return current mana

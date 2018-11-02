@@ -16,8 +16,16 @@ int Hero::getHP() {
 	return this->HP;
 }
 
+int Hero::getMaxHP() {
+	return this->maxHP;
+}
+
 void Hero::setHP(int amount) {
 	this->HP = amount;
+}
+
+void Hero::setMaxHP(int amount) {
+	this->maxHP = amount;
 }
 
 bool Hero::takeDamage(int damage) {
@@ -32,5 +40,16 @@ bool Hero::takeDamage(int damage) {
 		//die
 		this->HP = 0;
 		return false;
+	}
+}
+
+void Hero::heal(int amount) {
+	if (this->HP + amount > this->maxHP)
+	{
+		this->HP = this->maxHP;
+	}
+	else
+	{
+		this->HP += amount;
 	}
 }

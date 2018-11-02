@@ -18,12 +18,15 @@ private:
 	int loopCount;
 	int animationTime;
 	int timeCount;
+	
+
+protected:
 	bool active;
 
 public:
 	SpriteObject(string fileName, int row, int column);
 	~SpriteObject();
-	void render(glm::mat4 globalModelTransform);
+	virtual void render(glm::mat4 globalModelTransform);
 	void update(float deltaTime);
 	void setRow(int r);
 	void setColumn(int c);

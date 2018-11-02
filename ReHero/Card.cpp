@@ -190,10 +190,11 @@ void Card::setSpriteCard(SpriteObject sprite, int row, int col)
 void Card::setId(int id)
 {
 	ID = id;
-	if (id == 1)
+	for (int i = 0; i < 12; i++)
 	{
-		attack = 1;
+		damage = 20 + i;
 	}
+
 }
 
 int Card::getId()
@@ -206,9 +207,9 @@ unsigned int Card::getTexture()
 	return texture;
 }
 
-void Card::effect()
+float Card::effect()
 {
-	cout << "Attack 1";
+	return damage;
 }
 
 

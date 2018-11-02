@@ -4,6 +4,9 @@
 #include "DrawableObject.h"
 #include "GLRendererColor.h"
 #include "Deck.h"
+#include "Hero.h"
+#include "Monster.h"
+
 
 using namespace std;
 class Game
@@ -14,7 +17,10 @@ class Game
 	int winWidth, winHeight;
 	float gameWidth, gameHeight;
 	vector<DrawableObject*> objects;
-	vector<DrawableObject*> hp;
+	Hero * myHero;
+	vector<Monster*> enemies;
+	vector<DrawableObject*> monsterHp;
+	vector<DrawableObject*> heroHp;
 	GLRenderer *renderer;
 	bool isMouseDown;
 	class Card* clickObject;
@@ -32,5 +38,8 @@ public:
 	void render();
 	void update(float deltaTime);
 	void resetHandPos();
+	void endTurn();
+	void monsterTurn();
 
+	void restartGame();
 };

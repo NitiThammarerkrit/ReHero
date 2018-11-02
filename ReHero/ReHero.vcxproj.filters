@@ -43,6 +43,12 @@
     <ClCompile Include="Card.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -91,6 +97,12 @@
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="Card.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>

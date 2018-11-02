@@ -18,7 +18,7 @@ class Card :public DrawableObject
 	int column;
 	float uv[8];
 	int ID;
-
+	float damage;
 	int attack;
 	
 
@@ -47,7 +47,7 @@ public:
 	int getId();
 
 	unsigned int getTexture();
-	void effect();
+	float effect();
 
 	bool active;
 };

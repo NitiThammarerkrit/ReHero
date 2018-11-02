@@ -6,6 +6,8 @@ using namespace std;
 
 Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName, row, column) {
 	this->HP = HP;
+	this->maxHP = HP;
+
 }
 
 Hero::~Hero() {

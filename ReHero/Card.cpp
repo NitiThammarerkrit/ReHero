@@ -212,6 +212,16 @@ float Card::effect()
 	return damage;
 }
 
+void Card::setMana(int mana)
+{
+	this->mana = mana;
+}
+
+int Card::getMana()
+{
+	return mana;
+}
+
 
 
 

@@ -20,6 +20,7 @@ class Card :public DrawableObject
 	int ID;
 	float damage;
 	int attack;
+	int mana;
 	
 
 
@@ -48,7 +49,8 @@ public:
 
 	unsigned int getTexture();
 	float effect();
-
+	void setMana(int mana);			//random amount of mana
+	int getMana();
 	bool active;
 };
 

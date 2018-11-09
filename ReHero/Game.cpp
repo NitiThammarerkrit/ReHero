@@ -4,6 +4,8 @@
 #include "Card.h"
 #include "Deck.h"
 #include "SpriteObject.h"
+#include "ClickableObject.h"
+
 
 using namespace std;
 
@@ -37,14 +39,15 @@ void Game::handleMouseUp(int x, int y)
 			clickObject->setPosition(glm::vec3(0, -240, 0));
 			cout << "Reset";
 		}
-		
 	}
 	else
 	{
 		//do something
-		if (clickObject)
+		if (clickObject&&deck->getMana()>= clickObject->getMana())
 		{
 			//cout << cardIndex;
+			cout << "Use mana " << clickObject->getMana()<< endl;
+			deck->loseMana(clickObject->getMana());
 			deck->handToDiscardPile(cardIndex);
 			//deck->drawToHand(1); 
 			resetHandPos();
@@ -64,12 +67,22 @@ void Game::handleMouseUp(int x, int y)
 				
 			/*if(clickObject->active==true)
 				clickObject->active = false;	*/
-
-
 		}
-		
+		else
+			if (clickObject)
+			{
+				cout << "Not enough mana" << endl;
+				clickObject->setIsInHand(true);
+				clickObject->setPosition(glm::vec3(0, -240, 0));
+				cout << "Reset"<<endl;
+			}
+	}
+	if (clickableObject)
+	{
+		endTurn();
 	}
 	clickObject = NULL;
+	clickableObject = NULL;
 } 
 
 void Game::handleMouseDown(int x, int y)
@@ -86,9 +99,24 @@ void Game::handleMouseDown(int x, int y)
 			if (gameObject->isClick(realX, realY))
 			{
 				cardIndex = i;
-				cout <<endl<< "Click : " << gameObject->getName()<<" "<<cardIndex << endl;
+				//cout <<endl<< "Click : " << gameObject->getName()<<" "<<cardIndex << endl;
 				isMouseDown = true;
 				clickObject = gameObject;
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < clickable.size(); i++)
+	{
+		ClickableObject* object = dynamic_cast<ClickableObject*>(clickable[i]);
+		if (object)
+		{
+			if (object->isClick(realX, realY))
+			{
+				//cardIndex = i;
+				cout <<endl<< "Click JA " << endl;
+				isMouseDown = true;
+				clickableObject = object;
 				break;
 			}
 		}
@@ -103,9 +131,7 @@ void Game::handleMouseMotion(int x, int y)
 	realY = (gameHeight / -2.0f) + (winHeight - y) * (gameHeight / winHeight);
 	if(isMouseDown)
 	{
-		
 		//cout << realX << " " << realY << endl;
-
 		if (clickObject)
 		{
 			clickObject->setIsInHand(false);
@@ -235,11 +261,13 @@ void Game::init(int width, int height)
 	int allCard = 12;
 	int id = 1;
 	SpriteObject cardsprite("sprite.png", 2, 6);
+	SpriteObject clickableObject("endturn.png", 1, 1);
 	deck = Deck::getInstance();
 	for (int i = 0; i < 12; i++)
 	{
 		Card * card = new Card();
 		card->setId(id++);
+		card->setMana(2);
 		card->setSpriteCard(cardsprite, 2, 6);
 		deck->addCardToDeck(card);
 		if (spriteNum > 0)
@@ -257,6 +285,7 @@ void Game::init(int width, int height)
 	}
 	deck->shufflePlayerDeck();
 	deck->drawToHand(5);
+	deck->randomMana();
 	resetHandPos();
 	/*Card * obj6 = new Card();
 	obj6->setColor(0.0, 0.0, 0.0);
@@ -287,6 +316,26 @@ void Game::init(int width, int height)
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	heroHp.push_back(healthBarHero);
 	objects.push_back(healthBarHero);
+
+	ClickableObject * endTurn = new ClickableObject;
+	endTurn->setSpriteClickableObject(clickableObject, 1, 1);
+	if (spriteNum > 0)
+	{
+		endTurn->setColumn(spriteNum);
+		endTurn->setRow(2);
+	}
+	else
+	{
+		endTurn->setColumn(7 + spriteNum);
+		endTurn->setRow(1);
+	}
+	endTurn->genUV();
+	spriteNum--;
+	endTurn->setSize(170.0f, 130.0f);
+	endTurn->translate(glm::vec3(500.0f, -250.0f, 0.0f));
+	//Hero1->setAnimationLoop(1, 1, 1, 800);
+	clickable.push_back(endTurn);
+	objects.push_back(endTurn);
 	
 }
 
@@ -314,6 +363,7 @@ void Game::update(float deltaTime)
 void Game::resetHandPos()
 {
 	//if(deck->cardsOnHand()%2!=0)
+	cout<<"Mana "<<deck->getMana()<<endl;
 	float k = deck->cardsOnHand() / -2;
 	float cardAngel;
 	if (deck->cardsOnHand() <= 5)
@@ -353,6 +403,7 @@ void Game::endTurn()
 {
 	deck->discardHand();
 	monsterTurn();
+	deck->randomMana();
 	deck->drawToHand(5);
 	resetHandPos();
 }
@@ -365,7 +416,7 @@ void Game::monsterTurn()
 		cout <<endl<< "Hero take Damage:" << damage<<endl;
 		cout << endl <<"MaxHP: "<< myHero->getMaxHP()<<endl;
 		heroHp[0]->setSize((myHero->getHP() / (float)myHero->getMaxHP()) * 250.0f, 20);
-		cout << "Hero HP:" << myHero->getHP();
+		cout << "Hero HP:" << myHero->getHP()<<endl;
 		//int hpTrTemp = monsterHp[0]->getTranformX();
 		heroHp[0]->translate(glm::vec3((-damage / 2) / 100 * 250, 0.0f, 0.0f));
 	}

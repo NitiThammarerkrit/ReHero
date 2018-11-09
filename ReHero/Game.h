@@ -24,8 +24,11 @@ class Game
 	GLRenderer *renderer;
 	bool isMouseDown;
 	class Card* clickObject;
+	class ClickableObject* clickableObject;
 	Game();
 	SpriteObject * previewCard;
+	vector<DrawableObject*> clickable;
+
 	
 public:
 	static Game* getInstance();

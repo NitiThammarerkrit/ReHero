@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ClickableObject.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="DrawableObject.h" />
     <ClInclude Include="Game.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClickableObject.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
     <ClCompile Include="Game.cpp" />

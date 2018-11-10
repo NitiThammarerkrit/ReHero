@@ -5,6 +5,8 @@
 #include "Deck.h"
 #include "SpriteObject.h"
 #include "ClickableObject.h"
+#include <cmath>
+
 
 
 using namespace std;
@@ -54,6 +56,11 @@ void Game::handleMouseUp(int x, int y)
 			if (enemies[0]->takeDamage(clickObject->effect()))
 			{
 				cout <<"Monster take damage:" <<clickObject->effect();
+				for (int i = 0; i < 6; i++)
+				{
+					enemies[0]->translate(glm::vec3(pow(-1, i) * 10, 0.0f, 0.0f));
+					this->getRenderer()->render(this->objects);
+				}
 				monsterHp[0]->setSize(((float)enemies[0]->getHP() / (float)enemies[0]->getMaxHP()) * 250.0f, 20);
 				cout << "\nMonster HP:" << enemies[0]->getHP();
 				monsterHp[0]->translate(glm::vec3((-clickObject->effect()/2)/100*250, 0.0f, 0.0f));
@@ -151,6 +158,7 @@ void Game::handleMouseMotion(int x, int y)
 					previewCard->setRow(gameObject->getRow());
 					previewCard->setColumn(gameObject->getColumn());
 					previewCard->genUV();
+					previewCard->setAnimationLoop(gameObject->getRow(), gameObject->getColumn(), 1, 800);
 					break;
 				}
 			}
@@ -229,7 +237,6 @@ void Game::init(int width, int height)
 	previewCard = new SpriteObject("sprite.png", 2, 6);
 	previewCard->setSize(300.0f,420.0f);
 	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
-	previewCard->setAnimationLoop(1, 1, 1, 800);
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
 
@@ -345,6 +352,8 @@ void Game::render()
 	this->getRenderer()->render(*(deck->getHand()));
 }
 
+
+
 void Game::update(float deltaTime)
 {
 	if (isMouseDown)
@@ -368,6 +377,8 @@ void Game::resetHandPos()
 	float cardAngel;
 	if (deck->cardsOnHand() <= 5)
 	{
+
+
 		cardAngel = 20;
 	}
 	else
@@ -425,6 +436,16 @@ void Game::monsterTurn()
 		heroHp[0]->setSize(0, 20);
 		myHero->setActive(false);
 	}
+}
+
+void Game::getHit()
+{
+	for (int i = 0; i < 6; i++)
+	{
+		enemies[0]->translate(glm::vec3(pow(-1,i)*10, 0.0f, 0.0f));
+		enemies[0]->update(10);
+	}
+	
 }
 
 void Game::restartGame()

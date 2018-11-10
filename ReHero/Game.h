@@ -43,6 +43,7 @@ public:
 	void resetHandPos();
 	void endTurn();
 	void monsterTurn();
+	void getHit();
 
 	void restartGame();
 };

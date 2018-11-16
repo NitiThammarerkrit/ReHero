@@ -46,6 +46,9 @@ SpriteObject::SpriteObject(string fileName, int row, int column)
 	this->loopCount = 0;
 	this->animationTime = 0;
 	this->timeCount = 0;
+
+	hasAnim = true;
+	c = 0;
 }
 
 SpriteObject::~SpriteObject()
@@ -84,6 +87,11 @@ void SpriteObject::render(glm::mat4 globalModelTransform)
 
 void SpriteObject::update(float deltaTime)
 {
+
+	if (!hasAnim)
+	{
+		return;
+	}
 	timeCount += deltaTime;
 	if (timeCount > animationTime / loopMax)
 	{
@@ -91,7 +99,7 @@ void SpriteObject::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
-
+	
 	
 }
 
@@ -178,5 +186,15 @@ void SpriteObject::setTexture(unsigned int newTexture)
 void SpriteObject::setActive(bool active)
 {
 	this->active = active;
+}
+
+void SpriteObject::setPlayAnim(bool set)
+{
+	hasAnim = set;
+}
+
+void SpriteObject::setTag(string tag)
+{
+	this->tag = tag;
 }
 

@@ -27,7 +27,9 @@ class Game
 	class ClickableObject* clickableObject;
 	Game();
 	SpriteObject * previewCard;
+	SpriteObject * showMana;
 	vector<DrawableObject*> clickable;
+	
 
 	
 public:
@@ -44,6 +46,6 @@ public:
 	void endTurn();
 	void monsterTurn();
 	void getHit();
-
+	int state;
 	void restartGame();
 };

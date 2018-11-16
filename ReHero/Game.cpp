@@ -50,9 +50,12 @@ void Game::handleMouseUp(int x, int y)
 			//cout << cardIndex;
 			cout << "Use mana " << clickObject->getMana()<< endl;
 			deck->loseMana(clickObject->getMana());
+			showMana->setColumn(deck->getMana());
+			showMana->genUV();
 			deck->handToDiscardPile(cardIndex);
 			//deck->drawToHand(1); 
 			resetHandPos();
+			state = 1;
 			if (enemies[0]->takeDamage(clickObject->effect()))
 			{
 				cout <<"Monster take damage:" <<clickObject->effect();
@@ -70,7 +73,7 @@ void Game::handleMouseUp(int x, int y)
 				  monsterHp[0]->setSize(0, 20);
 				  enemies[0]->setActive(false);
 			}
-				
+			
 				
 			/*if(clickObject->active==true)
 				clickObject->active = false;	*/
@@ -187,6 +190,7 @@ void Game::init(int width, int height)
 	winHeight = height;
 	renderer = new GLRendererColor(width, height);
 	renderer->initGL("shaders/color/vertext.shd", "shaders/color/fragment.shd");
+	state = 0;
 
 	gameWidth = 1280;
 	gameHeight = 720;
@@ -204,12 +208,14 @@ void Game::init(int width, int height)
 	BG->setSize(1280.0f, 720.0f);
 	BG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	BG->setAnimationLoop(1, 1, 3, 800);
+	BG->setTag("BG");
 	objects.push_back(BG);
 
 	Hero * Hero1 = new Hero(100,"Hero2.png", 1, 6);
 	Hero1->setSize(250.0f, -250.0f);
 	Hero1->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
 	Hero1->setAnimationLoop(1, 1, 6, 800);
+	Hero1->setTag("Hero");
 	objects.push_back(Hero1);
 	myHero = Hero1;
 
@@ -217,6 +223,7 @@ void Game::init(int width, int height)
 	Monster1->setSize(-250.0f, -250.0f);
 	Monster1->translate(glm::vec3(350.0f, 60.0f, 0.0f));
 	Monster1->setAnimationLoop(1, 1, 2, 400);
+	Monster1->setTag("Monster");
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
 
@@ -226,17 +233,20 @@ void Game::init(int width, int height)
 	BGF->setSize(1280.0f, 720.0f);
 	BGF->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	BGF->setAnimationLoop(1, 1, 3, 800);
+	BGF->setTag("BGF");
 	objects.push_back(BGF);
 
 	SpriteObject * OH = new SpriteObject("OH.png", 1, 1);
 	OH->setSize(1280.0f, 720.0f);
 	OH->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	OH->setAnimationLoop(1, 1, 3, 800);
+	OH->setTag("OH");
 	objects.push_back(OH);
 
 	previewCard = new SpriteObject("sprite.png", 2, 6);
 	previewCard->setSize(300.0f,420.0f);
 	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
+	previewCard->setTag("previewCard");
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
 
@@ -313,6 +323,7 @@ void Game::init(int width, int height)
 	SpriteObject * healthBarMonster = new SpriteObject("hp.png", 1, 1);
 	healthBarMonster->setSize(250.0f, 20.0f);
 	healthBarMonster->translate(glm::vec3(350.0f, 200.0f, 0.0f));
+	healthBarMonster->setTag("healthBarMonster");
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	monsterHp.push_back(healthBarMonster);
 	objects.push_back(healthBarMonster);
@@ -321,27 +332,28 @@ void Game::init(int width, int height)
 	healthBarHero->setSize(250.0f, 20.0f);
 	healthBarHero->translate(glm::vec3(-350.0f, 200.0f, 0.0f));
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
+	healthBarHero->setTag("healthBarHero");
 	heroHp.push_back(healthBarHero);
 	objects.push_back(healthBarHero);
 
-	SpriteObject * Mana = new SpriteObject("m6.png", 1, 1);
-	Mana->setSize(90.0f, 100.0f);
-	Mana->translate(glm::vec3(-500.0f, -170.0f, 0.0f));
-	//Hero1->setAnimationLoop(1, 1, 1, 800);
-	objects.push_back(Mana);
+	showMana = new SpriteObject("manasprite.png", 1, 6);
+	//showMana = Mana;
+	//showMana->setAnimationLoop(1, 1, 1, 800);
+	showMana->setPlayAnim(false);
+	showMana->setRow(1);
+	showMana->setColumn(deck->getMana());
+	showMana->genUV();
+	showMana->setSize(90.0f, 100.0f);
+	showMana->translate(glm::vec3(-500.0f, -170.0f, 0.0f));
+	showMana->setTag("showMana");
+	objects.push_back(showMana);
+
+	
 
 	ClickableObject * endTurn = new ClickableObject;
 	endTurn->setSpriteClickableObject(clickableObject, 1, 1);
-	if (spriteNum > 0)
-	{
-		endTurn->setColumn(spriteNum);
-		endTurn->setRow(2);
-	}
-	else
-	{
-		endTurn->setColumn(7 + spriteNum);
-		endTurn->setRow(1);
-	}
+	endTurn->setColumn(1);
+	endTurn->setRow(1);
 	endTurn->genUV();
 	spriteNum--;
 	endTurn->setSize(170.0f, 130.0f);
@@ -418,30 +430,36 @@ void Game::resetHandPos()
 
 void Game::endTurn()
 {
+	state = 2;
 	deck->discardHand();
 	monsterTurn();
 	deck->randomMana();
+	showMana->setColumn(deck->getMana());
+	showMana->genUV();
 	deck->drawToHand(5);
 	resetHandPos();
 }
 
 void Game::monsterTurn()
 {
-	float damage = rand() % 21 + 10;
-	if (myHero->takeDamage(damage))
 	{
-		cout <<endl<< "Hero take Damage:" << damage<<endl;
-		cout << endl <<"MaxHP: "<< myHero->getMaxHP()<<endl;
-		heroHp[0]->setSize((myHero->getHP() / (float)myHero->getMaxHP()) * 250.0f, 20);
-		cout << "Hero HP:" << myHero->getHP()<<endl;
-		//int hpTrTemp = monsterHp[0]->getTranformX();
-		heroHp[0]->translate(glm::vec3((-damage / 2) / 100 * 250, 0.0f, 0.0f));
+		float damage = rand() % 21 + 10;
+		if (myHero->takeDamage(damage))
+		{
+			cout << endl << "Hero take Damage:" << damage << endl;
+			cout << endl << "MaxHP: " << myHero->getMaxHP() << endl;
+			heroHp[0]->setSize((myHero->getHP() / (float)myHero->getMaxHP()) * 250.0f, 20);
+			cout << "Hero HP:" << myHero->getHP() << endl;
+			//int hpTrTemp = monsterHp[0]->getTranformX();
+			heroHp[0]->translate(glm::vec3((-damage / 2) / 100 * 250, 0.0f, 0.0f));
+		}
+		else
+		{
+			heroHp[0]->setSize(0, 20);
+			myHero->setActive(false);
+		}
 	}
-	else
-	{
-		heroHp[0]->setSize(0, 20);
-		myHero->setActive(false);
-	}
+	
 }
 
 void Game::getHit()
@@ -466,6 +484,9 @@ void Game::restartGame()
 	enemies[0]->setHP(100);
 	monsterHp[0]->setSize(((float)enemies[0]->getHP() / (float)enemies[0]->getMaxHP()) * 250.0f, 20);
 	monsterHp[0]->setPosition(glm::vec3(350.0f ,200.0f,0.0f));
+	deck->randomMana();
+	showMana->setColumn(deck->getMana());
+	showMana->genUV();
 	myHero->setActive(true);
 	enemies[0]->setActive(true);	
 

@@ -14,14 +14,19 @@ private:
 	float uv[8];
 	int animRow;
 	int animColumn;
-	int loopMax;
-	int loopCount;
-	int animationTime;
-	int timeCount;
+	bool hasAnim;
+	string tag;
+
+
+	int c;
 	
 
 protected:
 	bool active;
+	int loopMax;
+	int loopCount;
+	int animationTime;
+	int timeCount;
 
 public:
 	SpriteObject(string fileName, int row, int column);
@@ -38,5 +43,7 @@ public:
 	unsigned int getTexture();
 	void setTexture(unsigned int newTexture);
 	void setActive(bool active);
+	void setPlayAnim(bool set);
+	void setTag(string tag);
 };
 

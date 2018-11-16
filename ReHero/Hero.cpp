@@ -1,16 +1,56 @@
 #include <iostream>
 #include "stdafx.h"
 #include "Hero.h"
+#include "Game.h"
 
 using namespace std;
 
 Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName, row, column) {
 	this->HP = HP;
 	this->maxHP = HP;
-
+	state = 0;
+	c = 0;
 }
 
 Hero::~Hero() {
+
+}
+
+void Hero::update(float deltaTime)
+{
+
+	timeCount += deltaTime;
+	if (timeCount > animationTime / loopMax)
+	{
+		this->nextAnimation();
+		this->genUV();
+		timeCount = 0;
+	}
+	if (Game::getInstance()->state == 1)
+	{
+		if (state == 0)
+		{
+			this->translate(glm::vec3(550, 0, 0));
+			state = 1;
+		}
+		else
+		if (state == 1)
+		{
+			c += deltaTime;
+			if (c > 500)
+			{
+				state = 2;
+				c = 0;
+			}
+		}
+		else
+		if (state = 2)
+		{
+			this->translate(glm::vec3(-550, 0, 0));
+			state = 0;
+			Game::getInstance()->state = 0;
+		}
+	}
 
 }
 

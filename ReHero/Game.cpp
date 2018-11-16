@@ -324,6 +324,12 @@ void Game::init(int width, int height)
 	heroHp.push_back(healthBarHero);
 	objects.push_back(healthBarHero);
 
+	SpriteObject * Mana = new SpriteObject("m6.png", 1, 1);
+	Mana->setSize(90.0f, 100.0f);
+	Mana->translate(glm::vec3(-500.0f, -170.0f, 0.0f));
+	//Hero1->setAnimationLoop(1, 1, 1, 800);
+	objects.push_back(Mana);
+
 	ClickableObject * endTurn = new ClickableObject;
 	endTurn->setSpriteClickableObject(clickableObject, 1, 1);
 	if (spriteNum > 0)

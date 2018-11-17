@@ -1,0 +1,48 @@
+﻿GameObject.obj : error LNK2001: unresolved external symbol __imp___glewUniform3f
+GameObject.obj : error LNK2001: unresolved external symbol __imp___glewUniformMatrix4fv
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewUniformMatrix4fv
+GLRenderer.obj : error LNK2019: unresolved external symbol __imp_glewInit referenced in function "public: bool __cdecl GLRenderer::initGL(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?initGL@GLRenderer@@QEAA_NV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+Main.obj : error LNK2001: unresolved external symbol __imp_glewInit
+GLRenderer.obj : error LNK2019: unresolved external symbol __imp_glewGetErrorString referenced in function "public: bool __cdecl GLRenderer::initGL(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?initGL@GLRenderer@@QEAA_NV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0@Z)
+Main.obj : error LNK2001: unresolved external symbol __imp_glewGetErrorString
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewAttachShader
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewCreateProgram
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewDisableVertexAttribArray
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewEnableVertexAttribArray
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewGetAttribLocation
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewGetProgramInfoLog
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewGetProgramiv
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewGetUniformLocation
+GLRendererColor.obj : error LNK2001: unresolved external symbol __imp___glewGetUniformLocation
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewIsProgram
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewLinkProgram
+GLRenderer.obj : error LNK2001: unresolved external symbol __imp___glewUseProgram
+Main.obj : error LNK2019: unresolved external symbol SDL_GetError referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_CreateWindow referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_DestroyWindow referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_GL_SetAttribute referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_GL_CreateContext referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_GL_SetSwapInterval referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_GL_SwapWindow referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_PollEvent referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_Init referenced in function SDL_main
+Main.obj : error LNK2019: unresolved external symbol SDL_Quit referenced in function SDL_main
+MojiMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewBindBuffer
+SquareMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewBindBuffer
+MojiMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewBufferData
+SquareMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewBufferData
+MojiMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewGenBuffers
+SquareMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewGenBuffers
+MojiMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewVertexAttribPointer
+SquareMeshVbo.obj : error LNK2001: unresolved external symbol __imp___glewVertexAttribPointer
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewCompileShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewCreateShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewGetShaderInfoLog
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewGetShaderiv
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewIsShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewShaderSource
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+..\lib\glew\lib\Release\Win32\glew32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+..\lib\SDL2\lib\x86\SDL2.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+..\lib\SDL2\lib\x86\SDL2main.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+D:\ReHero\ReHero\x64\Debug\ReHero.exe : fatal error LNK1120: 36 unresolved externals

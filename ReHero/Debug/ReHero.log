@@ -1,0 +1,10 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Try1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Game.cpp
+d:\rehero\rehero\game.cpp(59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\rehero\rehero\game.cpp(119): warning C4018: '<': signed/unsigned mismatch
+d:\rehero\rehero\game.cpp(394): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\rehero\rehero\game.cpp(404): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\rehero\rehero\game.cpp(423): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\rehero\rehero\game.cpp(446): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\rehero\rehero\game.cpp(447): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  ReHero.vcxproj -> D:\ReHero\ReHero\Debug\ReHero.exe

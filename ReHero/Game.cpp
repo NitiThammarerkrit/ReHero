@@ -33,7 +33,7 @@ void Game::handleMouseUp(int x, int y)
 	realX = (gameWidth / -2.0f) + x * (gameWidth / winWidth);
 	realY = (gameHeight / -2.0f) + (winHeight - y) * (gameHeight / winHeight);
 	isMouseDown = false;
-	if (realY < 0.0f)
+	if (realY < 0.0f||(realY > 0.0f&&state==2))
 	{
 		if (clickObject)
 		{
@@ -153,10 +153,12 @@ void Game::handleMouseMotion(int x, int y)
 	{
 		for (int i = 0; i < deck->cardsOnHand(); i++) {
 			Card* gameObject = dynamic_cast<Card*>(deck->handAt(i));
+			deck->handAt(i)->setState(0);
 			if (gameObject)
 			{
 				if (gameObject->isClick(realX, realY))
 				{
+					deck->handAt(i)->setState(10);
 					previewCard->setActive(true);
 					previewCard->setRow(gameObject->getRow());
 					previewCard->setColumn(gameObject->getColumn());
@@ -243,7 +245,7 @@ void Game::init(int width, int height)
 	OH->setTag("OH");
 	objects.push_back(OH);
 
-	previewCard = new SpriteObject("cardSprite.png", 2, 5);
+	previewCard = new SpriteObject("cardSprite2.png", 2, 3);
 	previewCard->setSize(300.0f,420.0f);
 	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
 	previewCard->setTag("previewCard");
@@ -274,18 +276,20 @@ void Game::init(int width, int height)
 	float colorG[5] = { 0.0f,1.0f,0.0f,1.0f,0.0f };
 	float colorB[5] = { 0.0f,0.0f,1.0f,0.0f,1.0f };
 	string name[5] = { "RED","GREEN","BLUE","YELLOW","PINK" };
-	int spriteNum = 5;
+	int spriteNum = 3;
 	int allCard = 12;
 	int id = 1;
-	SpriteObject cardsprite("cardSprite.png", 2, 5);
+	SpriteObject cardsprite1("cardSprite1.png", 2, 3);
+	SpriteObject cardsprite2("cardSprite2.png", 2, 3);
 	SpriteObject clickableObject("endturn.png", 1, 1);
 	deck = Deck::getInstance();
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		Card * card = new Card();
 		card->setId(id++);
 		card->setMana(2);
-		card->setSpriteCard(cardsprite, 2, 5);
+		card->setSpriteCard(cardsprite1, 2, 3);
+		card->setEffectCard(cardsprite2, 2, 3);
 		deck->addCardToDeck(card);
 		if (spriteNum > 0)
 		{
@@ -294,7 +298,7 @@ void Game::init(int width, int height)
 		}
 		else
 		{
-			card->setColumn(6 + spriteNum);
+			card->setColumn(3 + spriteNum);
 			card->setRow(1);
 		}
 		card->genUV();
@@ -337,7 +341,6 @@ void Game::init(int width, int height)
 	objects.push_back(healthBarHero);
 
 	showMana = new SpriteObject("manasprite.png", 1, 7);
-	//showMana = Mana;
 	//showMana->setAnimationLoop(1, 1, 1, 800);
 	showMana->setPlayAnim(false);
 	showMana->setRow(1);
@@ -348,7 +351,17 @@ void Game::init(int width, int height)
 	showMana->setTag("showMana");
 	objects.push_back(showMana);
 
-	
+	randomMana = new SpriteObject("manasprite.png", 1, 7);
+	randomMana->setAnimationLoop(1, 1, 7, 300);
+	randomMana->setRow(1);
+	randomMana->setColumn(deck->getMana() + 1);
+	randomMana->genUV();
+	randomMana->setSize(200.0f, 210.0f);
+	randomMana->translate(glm::vec3(0.0f,100.0f, 0.0f));
+	randomMana->setTag("randomMana");
+	objects.push_back(randomMana);
+	randomMana->setActive(false);
+
 
 	ClickableObject * endTurn = new ClickableObject;
 	endTurn->setSpriteClickableObject(clickableObject, 1, 1);
@@ -374,16 +387,12 @@ void Game::render()
 
 void Game::update(float deltaTime)
 {
-	if (isMouseDown)
-	{
-		
-	}
-	if (!isMouseDown)
-	{
-		
-	}
 	for (DrawableObject* obj : objects) {
 		obj->update(deltaTime);
+	}
+	for (Card* card : *(deck->getHand()))
+	{
+		card->update(deltaTime);
 	}
 }
 
@@ -434,7 +443,7 @@ void Game::endTurn()
 	deck->discardHand();
 	monsterTurn();
 	deck->randomMana();
-	showMana->setColumn(deck->getMana()+1);
+	showMana->setColumn(deck->getMana() + 1);
 	showMana->genUV();
 	deck->drawToHand(5);
 	resetHandPos();
@@ -464,12 +473,7 @@ void Game::monsterTurn()
 
 void Game::getHit()
 {
-	for (int i = 0; i < 6; i++)
-	{
-		enemies[0]->translate(glm::vec3(pow(-1,i)*10, 0.0f, 0.0f));
-		enemies[0]->update(10);
-	}
-	
+
 }
 
 void Game::restartGame()

@@ -12,6 +12,8 @@ class Card :public DrawableObject
 	glm::vec3 positionDrag;
 	bool isInHand;
 	unsigned int texture;
+	unsigned int effectTexture;
+	unsigned int tempTexture;
 	int rowMax;
 	int columnMax;
 	int row;
@@ -30,7 +32,7 @@ public:
 	void setColor(float r, float g, float b);
 	void render(glm::mat4 globalModelTransform);
 	void setName(string n);
-	void update(float deltaTime);
+	virtual void update(float deltaTime);
 	string getName();
 	bool isClick(float x, float y);
 	float getCardAngle();
@@ -52,5 +54,12 @@ public:
 	void setMana(int mana);			//random amount of mana
 	int getMana();
 	bool active;
+
+	void setEffectCard(SpriteObject, int row, int col);
+	void setState(int state);
+
+
+	int state;
+	int c;
 };
 

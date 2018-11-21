@@ -16,9 +16,6 @@ private:
 	int animColumn;
 	bool hasAnim;
 	string tag;
-
-
-	int c;
 	
 
 protected:
@@ -45,5 +42,7 @@ public:
 	void setActive(bool active);
 	void setPlayAnim(bool set);
 	void setTag(string tag);
+	int state;
+	int c;
 };
 

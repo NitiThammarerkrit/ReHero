@@ -36,7 +36,7 @@ void Hero::update(float deltaTime)
 		else
 		if (state == 1)
 		{
-			c += deltaTime;
+			c += 1*deltaTime;
 			if (c > 500)
 			{
 				state = 2;
@@ -44,7 +44,7 @@ void Hero::update(float deltaTime)
 			}
 		}
 		else
-		if (state = 2)
+		if (state == 2)
 		{
 			this->translate(glm::vec3(-550, 0, 0));
 			state = 0;

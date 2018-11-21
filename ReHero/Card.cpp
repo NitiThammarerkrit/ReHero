@@ -14,6 +14,8 @@ Card::Card()
 	isInHand = true;
 	active = true;
 	ID = 0;
+	state = 0;
+	c = 0;
 }
 
 
@@ -141,7 +143,18 @@ void Card::setIsInHand(bool x)
 }
 void Card::update(float deltaTime)
 {
-	 
+	if (state == 10)
+	{
+		//this-> translate(glm::vec3(0,50,0));
+		texture = effectTexture;
+		genUV();
+	}
+	else
+	{
+		texture = tempTexture;
+		genUV();
+	}
+
 }
 
 void Card::setRow(int r)
@@ -166,7 +179,6 @@ int Card::getColumn()
 
 void Card::genUV()
 {
-
 	uv[0] = (1.0f / columnMax) * (column - 1);
 	uv[1] = (1.0f / rowMax) * (row - 1);
 
@@ -183,6 +195,7 @@ void Card::genUV()
 void Card::setSpriteCard(SpriteObject sprite, int row, int col)
 {	   
 	texture = sprite.getTexture();
+	tempTexture = texture;
 	rowMax = row;
 	columnMax = col;
 }
@@ -220,6 +233,18 @@ void Card::setMana(int mana)
 int Card::getMana()
 {
 	return mana;
+}
+
+void Card::setEffectCard(SpriteObject sprite, int row, int col)
+{
+	effectTexture = sprite.getTexture();
+	rowMax = row;
+	columnMax = col;
+}
+
+void Card::setState(int state)
+{
+	this->state = state;
 }
 
 

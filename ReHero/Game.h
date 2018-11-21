@@ -27,7 +27,6 @@ class Game
 	class ClickableObject* clickableObject;
 	Game();
 	SpriteObject * previewCard;
-	SpriteObject * showMana;
 	vector<DrawableObject*> clickable;
 	
 
@@ -48,4 +47,6 @@ public:
 	void getHit();
 	int state;
 	void restartGame();
+	SpriteObject * showMana;
+	SpriteObject * randomMana;
 };

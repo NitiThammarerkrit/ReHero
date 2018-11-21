@@ -48,6 +48,7 @@ SpriteObject::SpriteObject(string fileName, int row, int column)
 	this->timeCount = 0;
 
 	hasAnim = true;
+	state = 0;
 	c = 0;
 }
 
@@ -87,8 +88,47 @@ void SpriteObject::render(glm::mat4 globalModelTransform)
 
 void SpriteObject::update(float deltaTime)
 {
+	
+	if (Game::getInstance()->state == 3 && tag == "randomMana")
+	{
+		cout << "0" << endl;
+		if (state == 0)
+		{
+			cout << "1" << endl;
+			Game::getInstance()->randomMana->setActive(true);
+			Game::getInstance()->randomMana->setPlayAnim(true);
+			c += deltaTime;
+			if (c > 500)
+			{
+				c = 0;
+				state = 1;
+			}
+		}
+		else
+			if (state == 1)
+			{
+				cout << "2" << endl;
+				Game::getInstance()->randomMana->setPlayAnim(false);
+				Game::getInstance()->randomMana->setColumn(Game::getInstance()->showMana->getColumn());
+				Game::getInstance()->randomMana->genUV();
+				c += deltaTime;
+				if (c > 500)
+				{
+					c = 0;
+					state = 2;
+				}
+			}
+			else
+				if (state == 2)
+				{
+					cout << "3" << endl;
+					state = 0;
+					Game::getInstance()->randomMana->setActive(false);
+					Game::getInstance()->state = 0;
+				}
+	}
 
-	if (!hasAnim)
+	if (hasAnim==false)
 	{
 		return;
 	}
@@ -99,7 +139,6 @@ void SpriteObject::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
-	
 	
 }
 

@@ -18,7 +18,6 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {
-
 	timeCount += deltaTime;
 	if (timeCount > animationTime / loopMax)
 	{

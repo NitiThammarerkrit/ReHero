@@ -28,7 +28,7 @@ class Game
 	Game();
 	SpriteObject * previewCard;
 	vector<DrawableObject*> clickable;
-	
+	vector<SpriteObject*>	effect;
 
 	
 public:

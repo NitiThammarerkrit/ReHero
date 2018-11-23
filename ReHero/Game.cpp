@@ -33,7 +33,7 @@ void Game::handleMouseUp(int x, int y)
 	realX = (gameWidth / -2.0f) + x * (gameWidth / winWidth);
 	realY = (gameHeight / -2.0f) + (winHeight - y) * (gameHeight / winHeight);
 	isMouseDown = false;
-	if (realY < 0.0f||(realY > 0.0f&&state==2))
+	if (realY < 0.0f||(realY > 0.0f&&state==2|| state == 3))
 	{
 		if (clickObject)
 		{
@@ -56,6 +56,8 @@ void Game::handleMouseUp(int x, int y)
 			//deck->drawToHand(1); 
 			resetHandPos();
 			state = 1;
+			effect[0]->setActive(true);
+			effect[0]->setPlayAnim(true);
 			if (enemies[0]->takeDamage(clickObject->effect()))
 			{
 				cout <<"Monster take damage:" <<clickObject->effect();
@@ -246,11 +248,21 @@ void Game::init(int width, int height)
 	objects.push_back(OH);
 
 	previewCard = new SpriteObject("cardSprite2.png", 2, 3);
-	previewCard->setSize(300.0f,420.0f);
+	previewCard->setSize(300.0f, 420.0f);
 	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
 	previewCard->setTag("previewCard");
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
+
+	SpriteObject * Slash = new SpriteObject("Slash.png", 1, 5);
+	Slash->setSize(-250.0f, -250.0f);
+	Slash->translate(glm::vec3(270.0f, 60.0f, 0.0f));
+	Slash->setAnimationLoop(1, 1, 5, 600);
+	Slash->setTag("Slash");
+	objects.push_back(Slash);
+	effect.push_back(Slash);
+	Slash->setActive(false);
+	Slash->setPlayAnim(false);
 
 	/*Card * heroHealthbar = new Card();
 	heroHealthbar->setColor(1,0,0);
@@ -323,6 +335,7 @@ void Game::init(int width, int height)
 	obj7->translate(glm::vec3(-350, 75, 0));
 	//obj6->rotate(-45.0f);
 	objects.push_back(obj7); */
+	
 
 	SpriteObject * healthBarMonster = new SpriteObject("hp.png", 1, 1);
 	healthBarMonster->setSize(250.0f, 20.0f);
@@ -339,6 +352,20 @@ void Game::init(int width, int height)
 	healthBarHero->setTag("healthBarHero");
 	heroHp.push_back(healthBarHero);
 	objects.push_back(healthBarHero);
+
+	SpriteObject * healthBarHeroBG = new SpriteObject("HPBar.png", 1, 1);
+	healthBarHeroBG->setSize(280.0f, 50.0f);
+	healthBarHeroBG->translate(glm::vec3(-360.0f, 200.0f, 0.0f));
+	//Hero1->setAnimationLoop(1, 1, 1, 800);
+	healthBarHeroBG->setTag("healthBarHeroBG");
+	objects.push_back(healthBarHeroBG);
+
+	SpriteObject * healthBarMonsterBG = new SpriteObject("HPBar.png", 1, 1);
+	healthBarMonsterBG->setSize(280.0f, 50.0f);
+	healthBarMonsterBG->translate(glm::vec3(340.0f, 200.0f, 0.0f));
+	//Hero1->setAnimationLoop(1, 1, 1, 800);
+	healthBarMonsterBG->setTag("healthBarMonsterBG");
+	objects.push_back(healthBarMonsterBG);
 
 	showMana = new SpriteObject("manasprite.png", 1, 7);
 	//showMana->setAnimationLoop(1, 1, 1, 800);
@@ -387,6 +414,11 @@ void Game::render()
 
 void Game::update(float deltaTime)
 {
+	if (state == 0)
+	{
+		effect[0]->setPlayAnim(false);
+		effect[0]->setActive(false);
+	}
 	for (DrawableObject* obj : objects) {
 		obj->update(deltaTime);
 	}

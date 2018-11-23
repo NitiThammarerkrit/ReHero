@@ -1,0 +1,5 @@
+4					
+Hack	damage	3	;		
+Bit	damage	2	heal	4	;
+Sting	damage	2	poison	2	;
+Wing Guard	defend	4	;		

@@ -3,6 +3,8 @@
 #include "Hero.h"
 #include "Game.h"
 
+#define POISON_DMG 2
+
 using namespace std;
 
 Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName, row, column) {
@@ -61,6 +63,10 @@ int Hero::getMaxHP() {
 	return this->maxHP;
 }
 
+int Hero::getArmor() {
+	return this->defArmor;
+}
+
 void Hero::setHP(int amount) {
 	this->HP = amount;
 }
@@ -84,7 +90,7 @@ bool Hero::takeDamage(int damage) {
 	}
 }
 
-void Hero::heal(int amount) {
+void Hero::getHeal(int amount) {
 	if (this->HP + amount > this->maxHP)
 	{
 		this->HP = this->maxHP;
@@ -92,5 +98,23 @@ void Hero::heal(int amount) {
 	else
 	{
 		this->HP += amount;
+	}
+}
+
+void Hero::gainArmor(int amount) {
+	defArmor += amount;
+	cout << "gain " << amount << " armor" << endl;
+}
+
+void Hero::takePoison() {
+	isPoisoned = true;
+}
+
+void Hero::startTurn() {
+	defArmor = 0;
+	if (isPoisoned)
+	{
+		cout << "Hero take " << POISON_DMG << " damage from Poison." << endl;
+		HP -= POISON_DMG;
 	}
 }

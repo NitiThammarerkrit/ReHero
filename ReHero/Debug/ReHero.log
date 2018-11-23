@@ -2,9 +2,10 @@
   Game.cpp
 c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(61): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(121): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(435): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(445): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(464): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(487): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(488): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(436): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(446): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(465): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(488): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(489): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
   ReHero.vcxproj -> C:\Users\LEVEL51pc\Desktop\Engine\ReHero\ReHero\Debug\ReHero.exe

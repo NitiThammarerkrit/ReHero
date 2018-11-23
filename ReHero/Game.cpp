@@ -152,22 +152,23 @@ void Game::handleMouseMotion(int x, int y)
 		}
 	}
 	else
+	if(state==0)
 	{
-		for (int i = 0; i < deck->cardsOnHand(); i++) {
-			Card* gameObject = dynamic_cast<Card*>(deck->handAt(i));
+		for (int i = deck->cardsOnHand() - 1; i >= 0; i--) {
 			deck->handAt(i)->setState(0);
-			if (gameObject)
+		}
+
+		for (int i = deck->cardsOnHand()-1; i >= 0 ; i--) {
+			Card* gameObject = deck->handAt(i);
+			if (gameObject->isClick(realX, realY))
 			{
-				if (gameObject->isClick(realX, realY))
-				{
-					deck->handAt(i)->setState(10);
-					previewCard->setActive(true);
-					previewCard->setRow(gameObject->getRow());
-					previewCard->setColumn(gameObject->getColumn());
-					previewCard->genUV();
-					previewCard->setAnimationLoop(gameObject->getRow(), gameObject->getColumn(), 1, 800);
-					break;
-				}
+				deck->handAt(i)->setState(10);
+				previewCard->setActive(true);
+				previewCard->setRow(gameObject->getRow());
+				previewCard->setColumn(gameObject->getColumn());
+				previewCard->genUV();
+				previewCard->setAnimationLoop(gameObject->getRow(), gameObject->getColumn(), 1, 800);
+				break;
 			}
 		}
 	}

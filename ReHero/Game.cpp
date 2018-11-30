@@ -56,8 +56,7 @@ void Game::handleMouseUp(int x, int y)
 			//deck->drawToHand(1); 
 			resetHandPos();
 			state = 1;
-			effect[0]->setActive(true);
-			effect[0]->setPlayAnim(true);
+			myHero->setTexture(effect[0]->getTexture());
 			if (enemies[0]->takeDamage(clickObject->effect()))
 			{
 				cout <<"Monster take damage:" <<clickObject->effect();
@@ -216,15 +215,23 @@ void Game::init(int width, int height)
 	BG->setTag("BG");
 	objects.push_back(BG);
 
-	Hero * Hero1 = new Hero(100,"Hero2.png", 1, 6);
+	Hero * Hero1 = new Hero(100,"Hero2.png", 1, 4);
 	Hero1->setSize(250.0f, -250.0f);
 	Hero1->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
-	Hero1->setAnimationLoop(1, 1, 6, 800);
+	Hero1->setAnimationLoop(1, 1, 4, 800);
 	Hero1->setTag("Hero");
 	objects.push_back(Hero1);
 	myHero = Hero1;
 
-	Monster * Monster1 = new Monster(100,"gob.png", 1, 2);
+	SpriteObject * Effect1 = new SpriteObject("Attack.png", 1, 4);
+	Effect1->setSize(-250.0f, -250.0f);
+	Effect1->translate(glm::vec3(270.0f, 60.0f, 0.0f));
+	Effect1->setAnimationLoop(1, 1, 4, 1000);
+	Effect1->setTag("Effect1");
+	//objects.push_back(Effect1);
+	effect.push_back(Effect1);
+
+	Monster * Monster1 = new Monster(100,"gob", 1, 2);
 	Monster1->setSize(-250.0f, -250.0f);
 	Monster1->translate(glm::vec3(350.0f, 60.0f, 0.0f));
 	Monster1->setAnimationLoop(1, 1, 2, 400);
@@ -232,7 +239,6 @@ void Game::init(int width, int height)
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
 
-	
 
 	SpriteObject * BGF = new SpriteObject("BGF.png", 1, 1);
 	BGF->setSize(1280.0f, 720.0f);
@@ -247,23 +253,6 @@ void Game::init(int width, int height)
 	OH->setAnimationLoop(1, 1, 3, 800);
 	OH->setTag("OH");
 	objects.push_back(OH);
-
-	previewCard = new SpriteObject("cardSprite2.png", 2, 3);
-	previewCard->setSize(300.0f, 420.0f);
-	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
-	previewCard->setTag("previewCard");
-	objects.push_back(previewCard);
-	previewCard->setActive(false);
-
-	SpriteObject * Slash = new SpriteObject("Slash.png", 1, 5);
-	Slash->setSize(-250.0f, -250.0f);
-	Slash->translate(glm::vec3(270.0f, 60.0f, 0.0f));
-	Slash->setAnimationLoop(1, 1, 5, 600);
-	Slash->setTag("Slash");
-	objects.push_back(Slash);
-	effect.push_back(Slash);
-	Slash->setActive(false);
-	Slash->setPlayAnim(false);
 
 	/*Card * heroHealthbar = new Card();
 	heroHealthbar->setColor(1,0,0);
@@ -403,6 +392,12 @@ void Game::init(int width, int height)
 	clickable.push_back(endTurn);
 	objects.push_back(endTurn);
 	
+	previewCard = new SpriteObject("cardSprite2.png", 2, 3);
+	previewCard->setSize(300.0f, 420.0f);
+	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
+	previewCard->setTag("previewCard");
+	objects.push_back(previewCard);
+	previewCard->setActive(false);
 }
 
 void Game::render()
@@ -415,11 +410,10 @@ void Game::render()
 
 void Game::update(float deltaTime)
 {
-	if (state == 0)
+	/*if (state == 0)
 	{
-		effect[0]->setPlayAnim(false);
-		effect[0]->setActive(false);
-	}
+
+	}	  */
 	for (DrawableObject* obj : objects) {
 		obj->update(deltaTime);
 	}
@@ -467,6 +461,7 @@ void Game::resetHandPos()
 		k++;
 		//objects.push_back(card);
 	}
+
 	
 }
 
@@ -484,7 +479,7 @@ void Game::endTurn()
 
 void Game::monsterTurn()
 {
-	{
+	
 		float damage = rand() % 21 + 10;
 		if (myHero->takeDamage(damage))
 		{
@@ -500,7 +495,18 @@ void Game::monsterTurn()
 			heroHp[0]->setSize(0, 20);
 			myHero->setActive(false);
 		}
-	}
+	 
+
+	/*for (int i = 0; i < enemies.size; i++)
+	{
+		enemies[i]->randomUseSkill(myHero, nullptr);
+		if (myHero->isAlive() == false)
+		{
+			heroHp[0]->setSize(0, 20);
+			myHero->setActive(false);
+			break;
+		}
+	}  */
 	
 }
 

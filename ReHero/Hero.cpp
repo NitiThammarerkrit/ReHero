@@ -48,6 +48,7 @@ void Hero::update(float deltaTime)
 		if (state == 2)
 		{
 			this->translate(glm::vec3(-550, 0, 0));
+			this->setTexture(temptexture);
 			state = 0;
 			Game::getInstance()->state = 0;
 		}
@@ -88,6 +89,11 @@ bool Hero::takeDamage(int damage) {
 		this->HP = 0;
 		return false;
 	}
+}
+
+bool Hero::isAlive() {
+	if (HP > 0) return true;
+	else return false;
 }
 
 void Hero::getHeal(int amount) {

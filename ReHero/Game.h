@@ -18,6 +18,7 @@ class Game
 	float gameWidth, gameHeight;
 	vector<DrawableObject*> objects;
 	Hero * myHero;
+	vector<SpriteObject*> effect;
 	vector<Monster*> enemies;
 	vector<DrawableObject*> monsterHp;
 	vector<DrawableObject*> heroHp;
@@ -28,7 +29,6 @@ class Game
 	Game();
 	SpriteObject * previewCard;
 	vector<DrawableObject*> clickable;
-	vector<SpriteObject*>	effect;
 
 	
 public:

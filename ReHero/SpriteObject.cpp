@@ -46,7 +46,7 @@ SpriteObject::SpriteObject(string fileName, int row, int column)
 	this->loopCount = 0;
 	this->animationTime = 0;
 	this->timeCount = 0;
-
+	temptexture = texture;
 	hasAnim = true;
 	state = 0;
 	c = 0;

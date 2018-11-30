@@ -7,6 +7,7 @@ class SpriteObject :public DrawableObject
 {
 private:
 	unsigned int texture;
+	
 	int rowMax;
 	int columnMax;
 	int row;
@@ -24,6 +25,7 @@ protected:
 	int loopCount;
 	int animationTime;
 	int timeCount;
+	unsigned int temptexture;
 
 public:
 	SpriteObject(string fileName, int row, int column);

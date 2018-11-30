@@ -10,6 +10,7 @@ class ClickableObject :public DrawableObject
 	string name;
 	unsigned int texture;
 	unsigned int temptexture;
+	unsigned int EffectTexture;
 	int rowMax;
 	int columnMax;
 	int row;
@@ -17,16 +18,14 @@ class ClickableObject :public DrawableObject
 	float uv[8];
 	int ID;
 
-
-
 public:
 	ClickableObject();
 	~ClickableObject();
 	void setColor(float r, float g, float b);
 	void render(glm::mat4 globalModelTransform);
-	void setName(string n);
+	void setTag(string n);
 	void update(float deltaTime);
-	string getName();
+	string getTag();
 	bool isClick(float x, float y);
 
 	void setRow(int r);
@@ -40,6 +39,8 @@ public:
 
 	unsigned int getTexture();
 	void setTexture(unsigned int Texture);
+	void setEffect(SpriteObject sprite, int row, int col);
+	void onClick(bool isClick);
 	bool active;
 };
 

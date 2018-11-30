@@ -34,6 +34,25 @@ void Game::handleMouseUp(int x, int y)
 	realX = (gameWidth / -2.0f) + x * (gameWidth / winWidth);
 	realY = (gameHeight / -2.0f) + (winHeight - y) * (gameHeight / winHeight);
 	isMouseDown = false;
+	if (clickableObject)
+	{
+		cout << clickableObject->getTag() << endl;
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Start")
+		{
+			state = 0;
+		}
+		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Quit")
+		{
+			state = 999999;
+		}
+		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "endTurn" && state == 0)
+		{
+			endTurn();
+		}
+		clickableObject->onClick(false);
+	}
 	if (realY < 0.0f||(realY > 0.0f&&state==2|| state == 3))
 	{
 		if (clickObject)
@@ -74,9 +93,8 @@ void Game::handleMouseUp(int x, int y)
 			{
 				  monsterHp[0]->setSize(0, 20);
 				  enemies[0]->setActive(false);
+				  HPBG[1]->setActive(false);
 			}
-			
-				
 			/*if(clickObject->active==true)
 				clickObject->active = false;	*/
 		}
@@ -91,22 +109,6 @@ void Game::handleMouseUp(int x, int y)
 	}
 	clickObject = NULL;
 	clickableObject = NULL;
-
-	for (int i = 0; i < clickable.size(); i++)
-	{
-		ClickableObject* object = dynamic_cast<ClickableObject*>(clickable[i]);
-		if (object)
-		{
-			if (object->isClick(realX, realY))
-			{
-				endTurn();
-			}
-			clickableObject = object;
-			SpriteObject endturneffect("endturn.png", 1, 1);
-			object->setTexture(endturneffect.getTexture());
-			break;
-		}
-	}
 } 
 
 void Game::handleMouseDown(int x, int y)
@@ -138,11 +140,10 @@ void Game::handleMouseDown(int x, int y)
 			if (object->isClick(realX, realY))
 			{
 				//cardIndex = i;
-				//cout <<endl<< "Click JA " << endl;
+				cout <<endl<< "Click JA " << endl;
 				isMouseDown = true;
 				clickableObject = object;
-				SpriteObject endturneffect("endturneffect.png", 1, 1);
-				object->setTexture(endturneffect.getTexture());
+				object->onClick(true);
 				break;
 			}
 		}
@@ -209,7 +210,7 @@ void Game::init(int width, int height)
 	winHeight = height;
 	renderer = new GLRendererColor(width, height);
 	renderer->initGL("shaders/color/vertext.shd", "shaders/color/fragment.shd");
-	state = 0;
+	state = 99;
 
 	gameWidth = 1280;
 	gameHeight = 720;
@@ -227,6 +228,76 @@ void Game::init(int width, int height)
 	audio.init();
 	Music music = audio.loadMusic("testsound.mp3");
 	music.play(-1);
+
+	SpriteObject * MenuBG = new SpriteObject("MenuBG.jpg", 1, 1);
+	MenuBG->setSize(1280.0f, 720.0f);
+	MenuBG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	MenuBG->setAnimationLoop(1, 1, 3, 800);
+	MenuBG->setTag("MenuBG");
+	Menu.push_back(MenuBG);
+
+	SpriteObject * gameName = new SpriteObject("gameName.png", 1, 1);
+	gameName->setSize(600.0f, 400.0f);
+	gameName->translate(glm::vec3(300.0f, 200.0f, 0.0f));
+	gameName->setTag("gameName");
+	Menu.push_back(gameName);
+
+	SpriteObject Play("Menu_Play.png", 1, 1);
+	SpriteObject Play_Glow("Menu_Play_Glow.png", 1, 1);
+	SpriteObject Libary("Menu_Libary.png", 1, 1);
+	SpriteObject Libary_Glow("Menu_Libary_Glow.png", 1, 1);
+	SpriteObject Setting("Menu_Setting.png", 1, 1);
+	SpriteObject Setting_Glow("Menu_Setting_Glow.png", 1, 1);
+	SpriteObject Quit("Menu_Quit.png", 1, 1);
+	SpriteObject Quit_Glow("Menu_Quit_Glow.png", 1, 1);
+
+	ClickableObject * PlayButton = new ClickableObject;
+	PlayButton->setSpriteClickableObject(Play, 1, 1);
+	PlayButton->setEffect(Play_Glow, 1, 1);
+	PlayButton->setColumn(1);
+	PlayButton->setRow(1);
+	PlayButton->genUV();
+	PlayButton->setTag("Start");
+	PlayButton->setSize(250.0f, 100.0f);
+	PlayButton->translate(glm::vec3(-300.0f, 150.0f, 0.0f));
+	clickable.push_back(PlayButton);
+	Menu.push_back(PlayButton);
+
+	ClickableObject * LibaryButton = new ClickableObject;
+	LibaryButton->setSpriteClickableObject(Libary, 1, 1);
+	LibaryButton->setEffect(Libary_Glow, 1, 1);
+	LibaryButton->setColumn(1);
+	LibaryButton->setRow(1);
+	LibaryButton->genUV();
+	LibaryButton->setTag("Libary");
+	LibaryButton->setSize(250.0f, 100.0f);
+	LibaryButton->translate(glm::vec3(-300.0f, 50.0f, 0.0f));
+	clickable.push_back(LibaryButton);
+	Menu.push_back(LibaryButton);
+
+	ClickableObject * SettingButton = new ClickableObject;
+	SettingButton->setSpriteClickableObject(Setting, 1, 1);
+	SettingButton->setEffect(Setting_Glow, 1, 1);
+	SettingButton->setColumn(1);
+	SettingButton->setRow(1);
+	SettingButton->genUV();
+	SettingButton->setTag("Setting");
+	SettingButton->setSize(250.0f, 100.0f);
+	SettingButton->translate(glm::vec3(-300.0f, -50.0f, 0.0f));
+	clickable.push_back(SettingButton);
+	Menu.push_back(SettingButton);
+
+	ClickableObject * QuitButton = new ClickableObject;
+	QuitButton->setSpriteClickableObject(Quit, 1, 1);
+	QuitButton->setEffect(Quit_Glow, 1, 1);
+	QuitButton->setColumn(1);
+	QuitButton->setRow(1);
+	QuitButton->genUV();
+	QuitButton->setTag("Quit");
+	QuitButton->setSize(250.0f, 100.0f);
+	QuitButton->translate(glm::vec3(-300.0f, -150.0f, 0.0f));
+	clickable.push_back(QuitButton);
+	Menu.push_back(QuitButton);
 
 	SpriteObject * BG = new SpriteObject("BG.png", 1, 1);
 	BG->setSize(1280.0f, 720.0f);
@@ -296,20 +367,21 @@ void Game::init(int width, int height)
 	float colorG[5] = { 0.0f,1.0f,0.0f,1.0f,0.0f };
 	float colorB[5] = { 0.0f,0.0f,1.0f,0.0f,1.0f };
 	string name[5] = { "RED","GREEN","BLUE","YELLOW","PINK" };
-	int spriteNum = 3;
-	int allCard = 12;
+	int spriteNum = 10;
+	int allCard = 20;
 	int id = 1;
-	SpriteObject cardsprite1("cardSprite1.png", 2, 3);
-	SpriteObject cardsprite2("cardSprite2.png", 2, 3);
+	SpriteObject cardsprite1("cardSprite1.png", 2, 10);
+	SpriteObject cardsprite2("cardSprite2.png", 2, 10);
 	SpriteObject endturn("endturn.png", 1, 1);
+	SpriteObject endturneffect("endturneffect.png", 1, 1);
 	deck = Deck::getInstance();
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		Card * card = new Card();
 		card->setId(id++);
 		card->setMana(2);
-		card->setSpriteCard(cardsprite1, 2, 3);
-		card->setEffectCard(cardsprite2, 2, 3);
+		card->setSpriteCard(cardsprite1, 2, 10);
+		card->setEffectCard(cardsprite2, 2, 10);
 		deck->addCardToDeck(card);
 		if (spriteNum > 0)
 		{
@@ -318,7 +390,7 @@ void Game::init(int width, int height)
 		}
 		else
 		{
-			card->setColumn(3 + spriteNum);
+			card->setColumn(10 + spriteNum);
 			card->setRow(1);
 		}
 		card->genUV();
@@ -367,6 +439,7 @@ void Game::init(int width, int height)
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	healthBarHeroBG->setTag("healthBarHeroBG");
 	objects.push_back(healthBarHeroBG);
+	HPBG.push_back(healthBarHeroBG);
 
 	SpriteObject * healthBarMonsterBG = new SpriteObject("HPBar.png", 1, 1);
 	healthBarMonsterBG->setSize(280.0f, 50.0f);
@@ -374,6 +447,7 @@ void Game::init(int width, int height)
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	healthBarMonsterBG->setTag("healthBarMonsterBG");
 	objects.push_back(healthBarMonsterBG);
+	HPBG.push_back(healthBarMonsterBG);
 
 	showMana = new SpriteObject("manasprite.png", 1, 7);
 	//showMana->setAnimationLoop(1, 1, 1, 800);
@@ -397,31 +471,48 @@ void Game::init(int width, int height)
 	objects.push_back(randomMana);
 	randomMana->setActive(false);
 
+	randomManaText = new SpriteObject("mText2.png", 1, 1);
+	randomManaText->setSize(500.0f, 150.0f);
+	randomManaText->translate(glm::vec3(0.0f, 270.0f, 0.0f));
+	randomManaText->setTag("randomManaText");
+	objects.push_back(randomManaText);
+	randomManaText->setActive(false);
 
 	ClickableObject * endTurn = new ClickableObject;
 	endTurn->setSpriteClickableObject(endturn, 1, 1);
+	endTurn->setEffect(endturneffect, 1, 1);
 	endTurn->setColumn(1);
 	endTurn->setRow(1);
 	endTurn->genUV();
-	spriteNum--;
+	endTurn->setTag("endTurn");
 	endTurn->setSize(130.0f, 100.0f);
 	endTurn->translate(glm::vec3(500.0f, -200.0f, 0.0f));
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	clickable.push_back(endTurn);
 	objects.push_back(endTurn);
 	
-	previewCard = new SpriteObject("cardSprite2.png", 2, 3);
+	previewCard = new SpriteObject("cardSprite2.png", 2, 10);
 	previewCard->setSize(300.0f, 420.0f);
 	previewCard->translate(glm::vec3(0.0f, 115.0f, 0.0f));
 	previewCard->setTag("previewCard");
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
+
 }
 
 void Game::render()
 {
-	this->getRenderer()->render(this->objects);	
-	this->getRenderer()->render(*(deck->getHand()));
+	if (state == 99)
+	{
+		this->getRenderer()->render(this->Menu);
+	}
+	else
+	{
+		this->getRenderer()->render(this->objects);
+		this->getRenderer()->render(*(deck->getHand()));
+	}
+	
+	
 }
 
 
@@ -438,6 +529,10 @@ void Game::update(float deltaTime)
 	for (Card* card : *(deck->getHand()))
 	{
 		card->update(deltaTime);
+	}
+	for (DrawableObject* menu : Menu)
+	{
+		menu->update(deltaTime);
 	}
 }
 
@@ -512,6 +607,7 @@ void Game::monsterTurn()
 		{
 			heroHp[0]->setSize(0, 20);
 			myHero->setActive(false);
+			HPBG[0]->setActive(false);
 		}
 	 
 
@@ -543,6 +639,8 @@ void Game::restartGame()
 	heroHp[0]->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
 	enemies[0]->setMaxHP(100);
 	enemies[0]->setHP(100);
+	HPBG[0]->setActive(true);
+	HPBG[1]->setActive(true);
 	monsterHp[0]->setSize(((float)enemies[0]->getHP() / (float)enemies[0]->getMaxHP()) * 250.0f, 20);
 	monsterHp[0]->setPosition(glm::vec3(350.0f ,200.0f,0.0f));
 	deck->randomMana();

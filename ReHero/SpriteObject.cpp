@@ -97,6 +97,7 @@ void SpriteObject::update(float deltaTime)
 			//cout << "1" << endl;
 			Game::getInstance()->randomMana->setActive(true);
 			Game::getInstance()->randomMana->setPlayAnim(true);
+			Game::getInstance()->randomManaText->setActive(true);
 			c += deltaTime;
 			if (c > 500)
 			{
@@ -112,7 +113,7 @@ void SpriteObject::update(float deltaTime)
 				Game::getInstance()->randomMana->setColumn(Game::getInstance()->showMana->getColumn());
 				Game::getInstance()->randomMana->genUV();
 				c += deltaTime;
-				if (c > 500)
+				if (c > 1000)
 				{
 					c = 0;
 					state = 2;
@@ -124,6 +125,7 @@ void SpriteObject::update(float deltaTime)
 					//cout << "3" << endl;
 					state = 0;
 					Game::getInstance()->randomMana->setActive(false);
+					Game::getInstance()->randomManaText->setActive(false);
 					Game::getInstance()->state = 0;
 				}
 	}

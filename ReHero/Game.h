@@ -18,9 +18,11 @@ class Game
 	int winWidth, winHeight;
 	float gameWidth, gameHeight;
 	vector<DrawableObject*> objects;
+	vector<DrawableObject*> Menu;
 	Hero * myHero;
 	vector<SpriteObject*> effect;
 	vector<Monster*> enemies;
+	vector<SpriteObject*> HPBG;
 	vector<DrawableObject*> monsterHp;
 	vector<DrawableObject*> heroHp;
 	GLRenderer *renderer;
@@ -29,7 +31,7 @@ class Game
 	class ClickableObject* clickableObject;
 	Game();
 	SpriteObject * previewCard;
-	vector<DrawableObject*> clickable;
+	vector<ClickableObject*> clickable;
 
 	
 public:
@@ -50,4 +52,5 @@ public:
 	void restartGame();
 	SpriteObject * showMana;
 	SpriteObject * randomMana;
+	SpriteObject * randomManaText;
 };

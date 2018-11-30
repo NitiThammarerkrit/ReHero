@@ -68,12 +68,12 @@ void ClickableObject::render(glm::mat4 globalModelTransform)
 	}
 }
 
-void ClickableObject::setName(string n)
+void ClickableObject::setTag(string n)
 {
 	name = n;
 }
 
-string ClickableObject::getName()
+string ClickableObject::getTag()
 {
 	return name;
 }
@@ -143,6 +143,7 @@ void ClickableObject::genUV()
 void ClickableObject::setSpriteClickableObject(SpriteObject sprite, int row, int col)
 {
 	texture = sprite.getTexture();
+	temptexture = texture;
 	rowMax = row;
 	columnMax = col;
 }
@@ -165,6 +166,25 @@ unsigned int ClickableObject::getTexture()
 void ClickableObject::setTexture(unsigned int Texture)
 {
 	this->texture = Texture;
+}
+
+void ClickableObject::setEffect(SpriteObject sprite, int row, int col)
+{
+	EffectTexture = sprite.getTexture();
+	rowMax = row;
+	columnMax = col;
+}
+
+void ClickableObject::onClick(bool isClick)
+{
+	if (isClick==true)
+	{
+		this->setTexture(EffectTexture);
+	}
+	if (isClick==false)
+	{
+		this->setTexture(temptexture);
+	}
 }
 
 

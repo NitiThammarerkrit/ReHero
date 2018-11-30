@@ -5,6 +5,7 @@
 #include "Deck.h"
 #include "SpriteObject.h"
 #include "ClickableObject.h"
+#include "Audio.h"
 #include <cmath>
 
 
@@ -221,6 +222,11 @@ void Game::init(int width, int height)
 	SquareMeshVbo * square = new SquareMeshVbo();
 	square->loadData();
 	renderer->addMesh(SquareMeshVbo::MESH_NAME, square);
+
+	AudioEngine audio;
+	audio.init();
+	Music music = audio.loadMusic("testsound.mp3");
+	music.play(-1);
 
 	SpriteObject * BG = new SpriteObject("BG.png", 1, 1);
 	BG->setSize(1280.0f, 720.0f);

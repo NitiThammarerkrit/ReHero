@@ -16,13 +16,15 @@ class Monster : public SpriteObject
 	bool isPoisoned;
 
 	string name;
-	ifstream * skillData;
+	vector<string> skillData;
 
 public:
 	Monster(int HP, string name, int row, int column);
 	~Monster();
 
 	virtual void update(float deltaTime);
+	void loadSkillData(string fileName);
+
 	int getHP();
 	int getMaxHP();
 	int getArmor();

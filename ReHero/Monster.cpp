@@ -19,14 +19,13 @@ Monster::Monster(int HP, string name, int row, int column) : SpriteObject(name +
 	state = 0;
 	c = 0;
 
-	skillData = new ifstream(name + ".txt");
+	loadSkillData(name + ".txt");
 
-	randomUseSkill(nullptr, nullptr);
-
+	//randomUseSkill(nullptr, nullptr);
 }
 
 Monster::~Monster() {
-	skillData->close();
+	skillData.clear();
 }
 
 void Monster::update(float deltaTime)
@@ -132,38 +131,50 @@ void Monster::startTurn() {
 	}
 }
 
-void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
-	if (skillData == nullptr)
+void Monster::loadSkillData(string fileName) {
+	//load a skill data file
+	ifstream datafile(fileName);
+	if (!datafile)
 	{
-		cout << "data file lost" << endl;
+		cout << "fail to load skill data for " << this->name << endl;
 		return;
 	}
-	
+
 	//this monster has how many skill?
 	int howManySkill;
-	*skillData >> howManySkill;
-
-	//random select one
-	int selectedSkill = rand() % howManySkill;
 	string skill;
-	getline(*skillData, skill, '\n');
+	datafile >> howManySkill;
+	getline(datafile, skill, '\n');
 
-	//loop for every skills
+	//get all skill data
 	for (int i = 0; i < howManySkill; i++)
 	{
-		getline(*skillData, skill, '\n');
+		getline(datafile, skill, '\n');
+		skillData.push_back(skill);
+	}
+
+	datafile.close();
+}
+
+void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
+
+	//random skill
+	int selectedSkill = rand() % skillData.size();
+
+	//loop to find the selected skill
+	for (int i = 0; i < skillData.size(); i++)
+	{
 		if (i == selectedSkill)
 		{
-			//get selected skill's name first
-			stringstream usedSkill(skill);
+			stringstream selectedData(skillData[i]);
 			string effect;
 			int value;
-			getline(usedSkill, effect, '\t');
+			getline(selectedData, effect, '\t'); //get skill name
 			cout << name << " use " << effect << endl;
 			while (1)
 			{
 				//read data of the selected skill (each action)
-				usedSkill >> effect >> value;
+				selectedData >> effect >> value;
 
 				//perform a skill
 				if (effect == "damage") doDamage(enemyTarget, value);
@@ -185,6 +196,7 @@ void Monster::doDamage(Hero * target, int damage) {
 		target->takeDamage(damage);
 		cout << name << " deal " << damage << " damage to Hero" << endl;
 	}
+	else cout << name << " deal " << damage << " damage, but no target!" << endl;
 }
 
 void Monster::heal(Monster * target, int amount) {
@@ -206,4 +218,5 @@ void Monster::usePoison(Hero * target) {
 		target->takePoison();
 		cout << name << " use poison to Hero" << endl;
 	}
+	else cout << name << " use poison, but no target!" << endl;
 }

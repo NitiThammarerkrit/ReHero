@@ -56,7 +56,7 @@ void Game::handleMouseUp(int x, int y)
 			//deck->drawToHand(1); 
 			resetHandPos();
 			state = 1;
-			myHero->setTexture(effect[0]->getTexture());
+			//myHero->setTexture(effect[0]->getTexture());
 			if (enemies[0]->takeDamage(clickObject->effect()))
 			{
 				cout <<"Monster take damage:" <<clickObject->effect();
@@ -88,12 +88,24 @@ void Game::handleMouseUp(int x, int y)
 				cout << "Reset"<<endl;
 			}
 	}
-	if (clickableObject)
-	{
-		endTurn();
-	}
 	clickObject = NULL;
 	clickableObject = NULL;
+
+	for (int i = 0; i < clickable.size(); i++)
+	{
+		ClickableObject* object = dynamic_cast<ClickableObject*>(clickable[i]);
+		if (object)
+		{
+			if (object->isClick(realX, realY))
+			{
+				endTurn();
+			}
+			clickableObject = object;
+			SpriteObject endturneffect("endturn.png", 1, 1);
+			object->setTexture(endturneffect.getTexture());
+			break;
+		}
+	}
 } 
 
 void Game::handleMouseDown(int x, int y)
@@ -125,9 +137,11 @@ void Game::handleMouseDown(int x, int y)
 			if (object->isClick(realX, realY))
 			{
 				//cardIndex = i;
-				cout <<endl<< "Click JA " << endl;
+				//cout <<endl<< "Click JA " << endl;
 				isMouseDown = true;
 				clickableObject = object;
+				SpriteObject endturneffect("endturneffect.png", 1, 1);
+				object->setTexture(endturneffect.getTexture());
 				break;
 			}
 		}
@@ -215,22 +229,6 @@ void Game::init(int width, int height)
 	BG->setTag("BG");
 	objects.push_back(BG);
 
-	Hero * Hero1 = new Hero(100,"Hero2.png", 1, 4);
-	Hero1->setSize(250.0f, -250.0f);
-	Hero1->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
-	Hero1->setAnimationLoop(1, 1, 4, 800);
-	Hero1->setTag("Hero");
-	objects.push_back(Hero1);
-	myHero = Hero1;
-
-	SpriteObject * Effect1 = new SpriteObject("Attack.png", 1, 4);
-	Effect1->setSize(-250.0f, -250.0f);
-	Effect1->translate(glm::vec3(270.0f, 60.0f, 0.0f));
-	Effect1->setAnimationLoop(1, 1, 4, 1000);
-	Effect1->setTag("Effect1");
-	//objects.push_back(Effect1);
-	effect.push_back(Effect1);
-
 	Monster * Monster1 = new Monster(100,"gob", 1, 2);
 	Monster1->setSize(-250.0f, -250.0f);
 	Monster1->translate(glm::vec3(350.0f, 60.0f, 0.0f));
@@ -239,8 +237,22 @@ void Game::init(int width, int height)
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
 
+	myHero = new Hero(100, "Hero2New.png", 2, 6);
+	myHero->setSize(250.0f, -250.0f);
+	myHero->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
+	myHero->setAnimationLoop(1, 1, 6, 1500);
+	myHero->setTag("Hero");
+	objects.push_back(myHero);
 
-	SpriteObject * BGF = new SpriteObject("BGF.png", 1, 1);
+	/*SpriteObject * Effect1 = new SpriteObject("Attack.png", 1, 6);
+	Effect1->setSize(-250.0f, -250.0f);
+	Effect1->translate(glm::vec3(270.0f, 60.0f, 0.0f));
+	Effect1->setAnimationLoop(1, 1, 4, 2000);
+	Effect1->setTag("Effect1");
+	//objects.push_back(Effect1);
+	effect.push_back(Effect1);		 */
+
+	/*SpriteObject * BGF = new SpriteObject("BGF.png", 1, 1);
 	BGF->setSize(1280.0f, 720.0f);
 	BGF->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	BGF->setAnimationLoop(1, 1, 3, 800);
@@ -283,7 +295,7 @@ void Game::init(int width, int height)
 	int id = 1;
 	SpriteObject cardsprite1("cardSprite1.png", 2, 3);
 	SpriteObject cardsprite2("cardSprite2.png", 2, 3);
-	SpriteObject clickableObject("endturn.png", 1, 1);
+	SpriteObject endturn("endturn.png", 1, 1);
 	deck = Deck::getInstance();
 	for (int i = 0; i < 6; i++)
 	{
@@ -381,7 +393,7 @@ void Game::init(int width, int height)
 
 
 	ClickableObject * endTurn = new ClickableObject;
-	endTurn->setSpriteClickableObject(clickableObject, 1, 1);
+	endTurn->setSpriteClickableObject(endturn, 1, 1);
 	endTurn->setColumn(1);
 	endTurn->setRow(1);
 	endTurn->genUV();
@@ -394,7 +406,7 @@ void Game::init(int width, int height)
 	
 	previewCard = new SpriteObject("cardSprite2.png", 2, 3);
 	previewCard->setSize(300.0f, 420.0f);
-	previewCard->translate(glm::vec3(0.0f, 80.0f, 0.0f));
+	previewCard->translate(glm::vec3(0.0f, 115.0f, 0.0f));
 	previewCard->setTag("previewCard");
 	objects.push_back(previewCard);
 	previewCard->setActive(false);

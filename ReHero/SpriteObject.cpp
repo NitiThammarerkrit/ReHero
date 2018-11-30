@@ -36,8 +36,8 @@ SpriteObject::SpriteObject(string fileName, int row, int column)
 
 	this->rowMax = row;
 	this->columnMax = column;
-	this->row =3;
-	this->column = 5;
+	this->row =1;
+	this->column = 1;
 	this->genUV();
 
 	this->animRow = 1;
@@ -91,10 +91,10 @@ void SpriteObject::update(float deltaTime)
 	
 	if (Game::getInstance()->state == 3 && tag == "randomMana")
 	{
-		cout << "0" << endl;
+		//cout << "0" << endl;
 		if (state == 0)
 		{
-			cout << "1" << endl;
+			//cout << "1" << endl;
 			Game::getInstance()->randomMana->setActive(true);
 			Game::getInstance()->randomMana->setPlayAnim(true);
 			c += deltaTime;
@@ -107,7 +107,7 @@ void SpriteObject::update(float deltaTime)
 		else
 			if (state == 1)
 			{
-				cout << "2" << endl;
+				//cout << "2" << endl;
 				Game::getInstance()->randomMana->setPlayAnim(false);
 				Game::getInstance()->randomMana->setColumn(Game::getInstance()->showMana->getColumn());
 				Game::getInstance()->randomMana->genUV();
@@ -121,7 +121,7 @@ void SpriteObject::update(float deltaTime)
 			else
 				if (state == 2)
 				{
-					cout << "3" << endl;
+					//cout << "3" << endl;
 					state = 0;
 					Game::getInstance()->randomMana->setActive(false);
 					Game::getInstance()->state = 0;
@@ -180,6 +180,8 @@ void SpriteObject::genUV()
 
 void SpriteObject::setAnimationLoop(int row, int column, int loop, int time)
 {
+	this->row = row;
+	this->column = column;
 	this->animRow = row;
 	this->animColumn = column;
 	this->loopMax = loop;

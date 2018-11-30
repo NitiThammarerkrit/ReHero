@@ -27,11 +27,12 @@ void Hero::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
-	if (Game::getInstance()->state == 1)
+	if (Game::getInstance()->state == 1)                          
 	{
 		if (state == 0)
 		{
 			this->translate(glm::vec3(550, 0, 0));
+			this->setAnimationLoop(2, 1, 4, 700);
 			state = 1;
 		}
 		else
@@ -48,7 +49,8 @@ void Hero::update(float deltaTime)
 		if (state == 2)
 		{
 			this->translate(glm::vec3(-550, 0, 0));
-			this->setTexture(temptexture);
+			this->setAnimationLoop(1, 1, 6, 800);
+			//this->setTexture(temptexture);
 			state = 0;
 			Game::getInstance()->state = 0;
 		}

@@ -9,6 +9,7 @@ class ClickableObject :public DrawableObject
 	glm::vec3 color;
 	string name;
 	unsigned int texture;
+	unsigned int temptexture;
 	int rowMax;
 	int columnMax;
 	int row;
@@ -38,6 +39,7 @@ public:
 	int getId();
 
 	unsigned int getTexture();
+	void setTexture(unsigned int Texture);
 	bool active;
 };
 

@@ -162,4 +162,9 @@ unsigned int ClickableObject::getTexture()
 	return texture;
 }
 
+void ClickableObject::setTexture(unsigned int Texture)
+{
+	this->texture = Texture;
+}
+
 

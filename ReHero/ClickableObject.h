@@ -15,6 +15,10 @@ class ClickableObject :public DrawableObject
 	int columnMax;
 	int row;
 	int column;
+	int effectrow;
+	int effectcolumn;
+	int normalrow;
+	int normalcolumn;
 	float uv[8];
 	int ID;
 

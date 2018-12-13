@@ -14,6 +14,10 @@ class Monster : public SpriteObject
 	int HP;
 	int defArmor;
 	bool isPoisoned;
+	int damage;
+	bool getAttack;
+	bool isHeal;
+	bool isAttack;
 
 	string name;
 	vector<string> skillData;
@@ -45,4 +49,6 @@ public:
 
 	int state;
 	int c;
+	DrawableObject* HPBar;
+
 };

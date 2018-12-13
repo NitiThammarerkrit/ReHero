@@ -19,6 +19,7 @@ class Game
 	float gameWidth, gameHeight;
 	vector<DrawableObject*> objects;
 	vector<DrawableObject*> Menu;
+	vector<DrawableObject*> Pause;
 	Hero * myHero;
 	vector<SpriteObject*> effect;
 	vector<Monster*> enemies;

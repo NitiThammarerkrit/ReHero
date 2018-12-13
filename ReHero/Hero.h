@@ -10,6 +10,9 @@ class Hero : public SpriteObject
 	int HP;
 	int defArmor;
 	bool isPoisoned;
+	bool getAttack;
+	int damage;
+	
 
 public:
 	Hero(int HP, string fileName, int row, int column);
@@ -31,6 +34,6 @@ public:
 
 	int state;
 	int c;
-
+	DrawableObject* HPBar;
 };
 

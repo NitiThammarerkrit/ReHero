@@ -11,6 +11,10 @@ ClickableObject::ClickableObject()
 	color = glm::vec3(0.0, 0.0, 0.0);
 	active = true;
 	ID = 0;
+	int effectrow=1;
+	int effectcolumn = 1;
+	int normalrow = 1;
+	int normalcolumn = 1;
 }
 
 
@@ -142,10 +146,15 @@ void ClickableObject::genUV()
 
 void ClickableObject::setSpriteClickableObject(SpriteObject sprite, int row, int col)
 {
-	texture = sprite.getTexture();
+	this->texture = sprite.getTexture();
 	temptexture = texture;
-	rowMax = row;
-	columnMax = col;
+	this->row = row;
+	this->column = col;
+	rowMax = sprite.getMaxRow();
+	columnMax = sprite.getMaxColumn();
+	this->normalrow = row;
+	this->normalcolumn = col;
+
 }
 
 void ClickableObject::setId(int id)
@@ -171,8 +180,8 @@ void ClickableObject::setTexture(unsigned int Texture)
 void ClickableObject::setEffect(SpriteObject sprite, int row, int col)
 {
 	EffectTexture = sprite.getTexture();
-	rowMax = row;
-	columnMax = col;
+	this->effectrow = row;
+	this->effectcolumn = col;
 }
 
 void ClickableObject::onClick(bool isClick)
@@ -180,10 +189,16 @@ void ClickableObject::onClick(bool isClick)
 	if (isClick==true)
 	{
 		this->setTexture(EffectTexture);
+		this->setRow(effectrow);
+		this->setColumn(effectcolumn);
+		genUV();
 	}
 	if (isClick==false)
 	{
 		this->setTexture(temptexture);
+		this->setRow(normalrow);
+		this->setColumn(normalcolumn);
+		genUV();
 	}
 }
 

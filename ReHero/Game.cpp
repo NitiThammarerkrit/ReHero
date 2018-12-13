@@ -37,14 +37,30 @@ void Game::handleMouseUp(int x, int y)
 	if (clickableObject)
 	{
 		cout << clickableObject->getTag() << endl;
-		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Start")
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Start"&&state==99)
+		{
+			restartGame();
+			state = 0;
+		}
+		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Quit"&&state == 99)
+		{
+			state = 999999;
+		}
+		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "ResumeButton" && state == 100)
 		{
 			state = 0;
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Quit")
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "optionButton" && state == 0)
 		{
-			state = 999999;
+			state = 100;
+		}
+		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "Exit" && state == 100)
+		{
+			state = 99;
 		}
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "endTurn" && state == 0)
@@ -80,14 +96,11 @@ void Game::handleMouseUp(int x, int y)
 			if (enemies[0]->takeDamage(clickObject->effect()))
 			{
 				cout <<"Monster take damage:" <<clickObject->effect();
-				for (int i = 0; i < 6; i++)
+				/*for (int i = 0; i < 6; i++)
 				{
 					enemies[0]->translate(glm::vec3(pow(-1, i) * 10, 0.0f, 0.0f));
 					this->getRenderer()->render(this->objects);
-				}
-				monsterHp[0]->setSize(((float)enemies[0]->getHP() / (float)enemies[0]->getMaxHP()) * 250.0f, 20);
-				cout << "\nMonster HP:" << enemies[0]->getHP();
-				monsterHp[0]->translate(glm::vec3((-clickObject->effect()/2)/100*250, 0.0f, 0.0f));
+				}		*/
 			}
 			else
 			{
@@ -199,7 +212,9 @@ void Game::handleKey(char ch)
 		case 'd': deck->drawToHand(1); resetHandPos(); break;
 		case 'e': endTurn(); break;
 		case 'l': obj->translate(glm::vec3(-0.3, 0, 0)); break;
-		case 'r': restartGame(); break;
+		case 'r': restartGame(); break;	 
+		case 'p': if (state == 0) { state = 100; }else if (state == 100) state = 0; cout << state; break;
+			
 		}
 	}
 }
@@ -250,6 +265,10 @@ void Game::init(int width, int height)
 	SpriteObject Setting_Glow("Menu_Setting_Glow.png", 1, 1);
 	SpriteObject Quit("Menu_Quit.png", 1, 1);
 	SpriteObject Quit_Glow("Menu_Quit_Glow.png", 1, 1);
+	SpriteObject pauseMenu("pasueMenu.png", 2, 3);
+	SpriteObject OptionButton("optionbutton.png", 1, 2);
+	
+	
 
 	ClickableObject * PlayButton = new ClickableObject;
 	PlayButton->setSpriteClickableObject(Play, 1, 1);
@@ -299,6 +318,33 @@ void Game::init(int width, int height)
 	clickable.push_back(QuitButton);
 	Menu.push_back(QuitButton);
 
+	SpriteObject * PauseBG = new SpriteObject("PauseBG.png", 1, 1);
+	PauseBG->setSize(1280.0f, 720.0f);
+	PauseBG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	PauseBG->setAnimationLoop(1, 1, 3, 800);
+	PauseBG->setTag("PauseBG");
+	Pause.push_back(PauseBG);
+
+	ClickableObject * ResumeButton = new ClickableObject;
+	ResumeButton->setSpriteClickableObject(pauseMenu, 2, 2);
+	ResumeButton->setEffect(pauseMenu, 1, 2);
+	ResumeButton->genUV();
+	ResumeButton->setTag("ResumeButton");
+	ResumeButton->setSize(250.0f, 100.0f);
+	ResumeButton->translate(glm::vec3(0.0f, -150.0f, 0.0f));
+	clickable.push_back(ResumeButton);
+	Pause.push_back(ResumeButton);
+
+	ClickableObject * ExitButton = new ClickableObject;
+	ExitButton->setSpriteClickableObject(pauseMenu, 2, 3);
+	ExitButton->setEffect(pauseMenu, 1, 3);
+	ExitButton->genUV();
+	ExitButton->setTag("Exit");
+	ExitButton->setSize(250.0f, 100.0f);
+	ExitButton->translate(glm::vec3(0.0f, -250.0f, 0.0f));
+	clickable.push_back(ExitButton);
+	Pause.push_back(ExitButton);
+
 	SpriteObject * BG = new SpriteObject("BG.png", 1, 1);
 	BG->setSize(1280.0f, 720.0f);
 	BG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -306,7 +352,7 @@ void Game::init(int width, int height)
 	BG->setTag("BG");
 	objects.push_back(BG);
 
-	Monster * Monster1 = new Monster(100,"gob", 1, 2);
+	Monster * Monster1 = new Monster(20,"gob", 1, 2);
 	Monster1->setSize(-250.0f, -250.0f);
 	Monster1->translate(glm::vec3(350.0f, 60.0f, 0.0f));
 	Monster1->setAnimationLoop(1, 1, 2, 400);
@@ -314,7 +360,7 @@ void Game::init(int width, int height)
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
 
-	myHero = new Hero(100, "Hero2New.png", 2, 6);
+	myHero = new Hero(20, "Hero2New.png", 2, 6);
 	myHero->setSize(250.0f, -250.0f);
 	myHero->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
 	myHero->setAnimationLoop(1, 1, 6, 1500);
@@ -423,6 +469,7 @@ void Game::init(int width, int height)
 	healthBarMonster->setTag("healthBarMonster");
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	monsterHp.push_back(healthBarMonster);
+	enemies[0]->HPBar = healthBarMonster;
 	objects.push_back(healthBarMonster);
 
 	SpriteObject * healthBarHero = new SpriteObject("hp.png", 1, 1);
@@ -431,8 +478,9 @@ void Game::init(int width, int height)
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
 	healthBarHero->setTag("healthBarHero");
 	heroHp.push_back(healthBarHero);
+	myHero->HPBar = healthBarHero;
 	objects.push_back(healthBarHero);
-
+	
 	SpriteObject * healthBarHeroBG = new SpriteObject("HPBar.png", 1, 1);
 	healthBarHeroBG->setSize(280.0f, 50.0f);
 	healthBarHeroBG->translate(glm::vec3(-360.0f, 200.0f, 0.0f));
@@ -491,6 +539,16 @@ void Game::init(int width, int height)
 	clickable.push_back(endTurn);
 	objects.push_back(endTurn);
 	
+	ClickableObject * optionButton= new ClickableObject;
+	optionButton->setSpriteClickableObject(OptionButton, 1, 1);
+	optionButton->setEffect(OptionButton, 1, 2);
+	optionButton->genUV();
+	optionButton->setTag("optionButton");
+	optionButton->setSize(50.0f, 50.0f);
+	optionButton->translate(glm::vec3(600.0f, 320.0f, 0.0f));
+	clickable.push_back(optionButton);
+	objects.push_back(optionButton);
+
 	previewCard = new SpriteObject("cardSprite2.png", 2, 10);
 	previewCard->setSize(300.0f, 420.0f);
 	previewCard->translate(glm::vec3(0.0f, 115.0f, 0.0f));
@@ -505,6 +563,11 @@ void Game::render()
 	if (state == 99)
 	{
 		this->getRenderer()->render(this->Menu);
+	}
+	else
+	if (state == 100)
+	{
+		this->getRenderer()->render(this->Pause);
 	}
 	else
 	{
@@ -592,18 +655,13 @@ void Game::endTurn()
 
 void Game::monsterTurn()
 {
-	
-		float damage = rand() % 21 + 10;
-		if (myHero->takeDamage(damage))
+		if (myHero->isAlive() == true)
 		{
-			cout << endl << "Hero take Damage:" << damage << endl;
-			cout << endl << "MaxHP: " << myHero->getMaxHP() << endl;
-			heroHp[0]->setSize((myHero->getHP() / (float)myHero->getMaxHP()) * 250.0f, 20);
-			cout << "Hero HP:" << myHero->getHP() << endl;
-			//int hpTrTemp = monsterHp[0]->getTranformX();
-			heroHp[0]->translate(glm::vec3((-damage / 2) / 100 * 250, 0.0f, 0.0f));
+			enemies[0]->randomUseSkill(myHero, nullptr);
+			//cout << endl << "Hero take Damage:" << damage << endl;
+			//cout << endl << "MaxHP: " << myHero->getMaxHP() << endl;
 		}
-		else
+		if (myHero->isAlive() == false)
 		{
 			heroHp[0]->setSize(0, 20);
 			myHero->setActive(false);
@@ -633,16 +691,16 @@ void Game::restartGame()
 {
 	cout << "Reset" << endl; 
 	endTurn();
-	myHero->setMaxHP(100);
-	myHero->setHP(100);
-	heroHp[0]->setSize((myHero->getHP() / (float)myHero->getMaxHP()) * 250.0f, 20);
+	myHero->setMaxHP(20);
+	myHero->setHP(20);
+	myHero->takeDamage(0);
 	heroHp[0]->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
-	enemies[0]->setMaxHP(100);
-	enemies[0]->setHP(100);
+	enemies[0]->setMaxHP(20);
+	enemies[0]->setHP(20);
+	enemies[0]->takeDamage(0);
+	monsterHp[0]->setPosition(glm::vec3(350.0f, 200.0f, 0.0f));
 	HPBG[0]->setActive(true);
 	HPBG[1]->setActive(true);
-	monsterHp[0]->setSize(((float)enemies[0]->getHP() / (float)enemies[0]->getMaxHP()) * 250.0f, 20);
-	monsterHp[0]->setPosition(glm::vec3(350.0f ,200.0f,0.0f));
 	deck->randomMana();
 	showMana->setColumn(deck->getMana()+1);
 	showMana->genUV();

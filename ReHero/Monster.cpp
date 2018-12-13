@@ -15,7 +15,10 @@ Monster::Monster(int HP, string name, int row, int column) : SpriteObject(name +
 	this->name = name;
 	defArmor = 0;
 	isPoisoned = false;
-
+	damage = 0;
+	getAttack = false;
+	isHeal = false;	 
+	isAttack = false;
 	state = 0;
 	c = 0;
 
@@ -37,9 +40,18 @@ void Monster::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
-
-	if (Game::getInstance()->state == 2)
+	if (getAttack)
 	{
+		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
+		//cout << "\nMonster HP:" << this->getHP();
+		cout << endl << "damage is" << damage;
+		HPBar->translate(glm::vec3(-damage / 2.0f / 20.0f*250.0f, 0.0f, 0.0f));
+		getAttack = false;
+	}
+	if (Game::getInstance()->state == 2 && isAttack == true)
+	{
+
+	//	cout << " SAS "<<endl;
 		if (state == 0)
 		{
 			this->translate(glm::vec3(-550, 0, 0));
@@ -60,9 +72,19 @@ void Monster::update(float deltaTime)
 				{
 					this->translate(glm::vec3(550, 0, 0));
 					state = 0;
+					isAttack = false;
 					Game::getInstance()->state = 3;
 				}
 	}
+	else
+	if (Game::getInstance()->state == 2 && isHeal==true)
+	{
+		Game::getInstance()->state = 3;
+		isHeal = false;
+	}
+
+
+
 }
 
 int Monster::getHP() {
@@ -86,6 +108,8 @@ void Monster::setMaxHP(int amount) {
 }
 
 bool Monster::takeDamage(int damage) {
+	this->damage = damage;
+	getAttack = true;
 	if (this->HP - damage > 0)
 	{
 		//survive the damage
@@ -98,13 +122,20 @@ bool Monster::takeDamage(int damage) {
 		this->HP = 0;
 		return false;
 	}
+
+
 }
 
 void Monster::getHeal(int amount) {
+
+	this->damage = -amount;
+	isHeal = true;
+	getAttack = true;
 	cout << name << " heal " << amount << " to himself" << endl;
 	if (this->HP + amount > this->maxHP)
 	{
 		this->HP = this->maxHP;
+		this->damage = 0;
 	}
 	else
 	{
@@ -113,7 +144,8 @@ void Monster::getHeal(int amount) {
 	
 }
 
-void Monster::gainArmor(int amount) {
+void Monster::gainArmor(int amount) {  
+	isHeal = true;
 	defArmor += amount;
 	cout << name << "gain " << amount << " armor" << endl;
 }
@@ -191,6 +223,7 @@ void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
 }
 
 void Monster::doDamage(Hero * target, int damage) {
+	isAttack = true;
 	if (target != nullptr)
 	{
 		target->takeDamage(damage);

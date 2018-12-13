@@ -12,6 +12,8 @@ Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName
 	this->maxHP = HP;
 	state = 0;
 	c = 0;
+	damage = 0;
+	getAttack = false;
 }
 
 Hero::~Hero() {
@@ -20,6 +22,7 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {
+
 	timeCount += deltaTime;
 	if (timeCount > animationTime / loopMax)
 	{
@@ -27,6 +30,16 @@ void Hero::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
+
+	if (getAttack)
+	{
+		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
+		//cout << "\nMonster HP:" << this->getHP();
+		cout << endl << "damage is" << damage;
+		HPBar->translate(glm::vec3(-damage / 2.0f / 20.0f*250.0f, 0.0f, 0.0f));
+		getAttack = false;
+	}
+
 	if (Game::getInstance()->state == 1)                          
 	{
 		if (state == 0)
@@ -79,6 +92,8 @@ void Hero::setMaxHP(int amount) {
 }
 
 bool Hero::takeDamage(int damage) {
+	this->damage = damage;
+	getAttack = true;
 	if (this->HP - damage > 0)
 	{
 		//survive the damage
@@ -91,6 +106,8 @@ bool Hero::takeDamage(int damage) {
 		this->HP = 0;
 		return false;
 	}
+
+
 }
 
 bool Hero::isAlive() {

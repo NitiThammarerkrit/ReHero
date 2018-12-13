@@ -106,7 +106,10 @@ bool Card::isClick(float x, float y)
 	transform = glm::rotate(transform, -angle * 3.14f / 180.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	transform = glm::translate(transform, glm::vec3(-pos.x, -pos.y, 0));
 	*/
-
+	if (!active)
+	{
+		return false;
+	}
 	float xCen = 0.0f;
 	float yCen = -650.0f;
 
@@ -143,6 +146,14 @@ void Card::setIsInHand(bool x)
 }
 void Card::update(float deltaTime)
 {
+	if (Game::getInstance()->state == 100|| Game::getInstance()->state == 99)
+	{
+		active = false;
+	}
+	else
+	{
+		active = true;
+	}
 	if (state == 10)
 	{
 		//this-> translate(glm::vec3(0,50,0));
@@ -205,7 +216,7 @@ void Card::setId(int id)
 	ID = id;
 	for (int i = 0; i < 12; i++)
 	{
-		damage = 20 + i;
+		damage = 2 + i;
 	}
 
 }

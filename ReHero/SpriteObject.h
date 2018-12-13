@@ -36,6 +36,8 @@ public:
 	void setColumn(int c);
 	int getRow();
 	int getColumn();
+	int getMaxRow();
+	int getMaxColumn();
 	void genUV();
 	void setAnimationLoop(int row, int column, int loop, int time); // 1000 = 1 second
 	void nextAnimation();

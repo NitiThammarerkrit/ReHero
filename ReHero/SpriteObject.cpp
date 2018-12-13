@@ -164,6 +164,16 @@ int SpriteObject::getColumn()
 	return this->column;
 }
 
+int SpriteObject::getMaxRow()
+{
+	return rowMax;
+}
+
+int SpriteObject::getMaxColumn()
+{
+	return columnMax;
+}
+
 void SpriteObject::genUV()
 {
 	

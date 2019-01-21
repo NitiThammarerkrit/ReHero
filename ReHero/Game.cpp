@@ -7,6 +7,10 @@
 #include "ClickableObject.h"
 #include "Audio.h"
 #include <cmath>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 
 
@@ -244,29 +248,29 @@ void Game::init(int width, int height)
 	Music music = audio.loadMusic("testsound.mp3");
 	music.play(-1);
 
-	SpriteObject * MenuBG = new SpriteObject("MenuBG.jpg", 1, 1);
+	SpriteObject * MenuBG = new SpriteObject("Sprite/MenuBG.jpg", 1, 1);
 	MenuBG->setSize(1280.0f, 720.0f);
 	MenuBG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	MenuBG->setAnimationLoop(1, 1, 3, 800);
 	MenuBG->setTag("MenuBG");
 	Menu.push_back(MenuBG);
 
-	SpriteObject * gameName = new SpriteObject("gameName.png", 1, 1);
+	SpriteObject * gameName = new SpriteObject("Sprite/gameName.png", 1, 1);
 	gameName->setSize(600.0f, 400.0f);
 	gameName->translate(glm::vec3(300.0f, 200.0f, 0.0f));
 	gameName->setTag("gameName");
 	Menu.push_back(gameName);
 
-	SpriteObject Play("Menu_Play.png", 1, 1);
-	SpriteObject Play_Glow("Menu_Play_Glow.png", 1, 1);
-	SpriteObject Libary("Menu_Libary.png", 1, 1);
-	SpriteObject Libary_Glow("Menu_Libary_Glow.png", 1, 1);
-	SpriteObject Setting("Menu_Setting.png", 1, 1);
-	SpriteObject Setting_Glow("Menu_Setting_Glow.png", 1, 1);
-	SpriteObject Quit("Menu_Quit.png", 1, 1);
-	SpriteObject Quit_Glow("Menu_Quit_Glow.png", 1, 1);
-	SpriteObject pauseMenu("pasueMenu.png", 2, 3);
-	SpriteObject OptionButton("optionbutton.png", 1, 2);
+	SpriteObject Play("Sprite/Menu_Play.png", 1, 1);
+	SpriteObject Play_Glow("Sprite/Menu_Play_Glow.png", 1, 1);
+	SpriteObject Libary("Sprite/Menu_Libary.png", 1, 1);
+	SpriteObject Libary_Glow("Sprite/Menu_Libary_Glow.png", 1, 1);
+	SpriteObject Setting("Sprite/Menu_Setting.png", 1, 1);
+	SpriteObject Setting_Glow("Sprite/Menu_Setting_Glow.png", 1, 1);
+	SpriteObject Quit("Sprite/Menu_Quit.png", 1, 1);
+	SpriteObject Quit_Glow("Sprite/Menu_Quit_Glow.png", 1, 1);
+	SpriteObject pauseMenu("Sprite/pasueMenu.png", 2, 3);
+	SpriteObject OptionButton("Sprite/optionbutton.png", 1, 2);
 	
 	
 
@@ -318,7 +322,7 @@ void Game::init(int width, int height)
 	clickable.push_back(QuitButton);
 	Menu.push_back(QuitButton);
 
-	SpriteObject * PauseBG = new SpriteObject("PauseBG.png", 1, 1);
+	SpriteObject * PauseBG = new SpriteObject("Sprite/PauseBG.png", 1, 1);
 	PauseBG->setSize(1280.0f, 720.0f);
 	PauseBG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	PauseBG->setAnimationLoop(1, 1, 3, 800);
@@ -345,7 +349,7 @@ void Game::init(int width, int height)
 	clickable.push_back(ExitButton);
 	Pause.push_back(ExitButton);
 
-	SpriteObject * BG = new SpriteObject("BG.png", 1, 1);
+	SpriteObject * BG = new SpriteObject("Sprite/BG.png", 1, 1);
 	BG->setSize(1280.0f, 720.0f);
 	BG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	BG->setAnimationLoop(1, 1, 3, 800);
@@ -360,7 +364,7 @@ void Game::init(int width, int height)
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
 
-	myHero = new Hero(20, "Hero2New.png", 2, 6);
+	myHero = new Hero(20, "Sprite/Hero2New.png", 2, 6);
 	myHero->setSize(250.0f, -250.0f);
 	myHero->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
 	myHero->setAnimationLoop(1, 1, 6, 1500);
@@ -416,12 +420,68 @@ void Game::init(int width, int height)
 	int spriteNum = 10;
 	int allCard = 20;
 	int id = 1;
-	SpriteObject cardsprite1("cardSprite1.png", 2, 10);
-	SpriteObject cardsprite2("cardSprite2.png", 2, 10);
-	SpriteObject endturn("endturn.png", 1, 1);
-	SpriteObject endturneffect("endturneffect.png", 1, 1);
+	SpriteObject cardsprite1("Sprite/cardSprite1.png", 2, 10);
+	SpriteObject cardsprite2("Sprite/cardSprite2.png", 2, 10);
+	SpriteObject endturn("Sprite/endturn.png", 1, 1);
+	SpriteObject endturneffect("Sprite/endturneffect.png", 1, 1);
 	deck = Deck::getInstance();
-	for (int i = 0; i < 20; i++)
+	int howManycard;
+	ifstream datafile("deck01.txt");
+	if (!datafile)
+	{
+		cout << "fail to load deck01 " << endl;
+		return;
+	}
+	string names;
+	datafile >> howManycard;
+	for (int i = 0; i < howManycard; i++)
+	{
+		getline(datafile, names, '\n');
+		cout << names << endl;
+		PlayerDeck.push_back(names);
+	}
+
+	datafile.close();
+
+	for (int c = 0; c < PlayerDeck.size(); c++)
+	{
+		cout << c << endl;
+		ifstream datafile("cardSpriteData.txt");
+		if (!datafile)
+		{
+			cout << "fail to load cardEffectData " << endl;
+			return;
+		}
+		int row;
+		int column;
+		datafile >> howManycard;
+		for (int i = 0; i < howManycard; i++)
+		{
+			datafile >> names >> row >> column;
+			cout << PlayerDeck[c] << " " << names << endl;
+			if (PlayerDeck[c] == names)
+			{
+				cout << names << " " << row << " " << column << endl;
+				Card * card = new Card();
+				card->setId(id++);
+				card->setName(names);
+				card->setSpriteCard(cardsprite1, 2, 10);
+				card->setEffectCard(cardsprite2, 2, 10);
+				deck->addCardToDeck(card);
+				card->setColumn(column);
+				cout << column << endl<<row<<endl;
+				card->setRow(row);
+				card->genUV();
+				break;
+			}
+		}
+		datafile.close();
+	}
+	deck->shufflePlayerDeck();
+	deck->drawToHand(5);
+	deck->randomMana();
+	resetHandPos();
+	/*for (int i = 0; i < 20; i++)
 	{
 		Card * card = new Card();
 		card->setId(id++);
@@ -441,11 +501,8 @@ void Game::init(int width, int height)
 		}
 		card->genUV();
 		spriteNum--;
-	}
-	deck->shufflePlayerDeck();
-	deck->drawToHand(5);
-	deck->randomMana();
-	resetHandPos();
+	}	   */
+
 	/*Card * obj6 = new Card();
 	obj6->setColor(0.0, 0.0, 0.0);
 	obj6->setSize(160.0f, 246.0f);
@@ -463,7 +520,7 @@ void Game::init(int width, int height)
 	objects.push_back(obj7); */
 	
 
-	SpriteObject * healthBarMonster = new SpriteObject("hp.png", 1, 1);
+	SpriteObject * healthBarMonster = new SpriteObject("Sprite/hp.png", 1, 1);
 	healthBarMonster->setSize(250.0f, 20.0f);
 	healthBarMonster->translate(glm::vec3(350.0f, 200.0f, 0.0f));
 	healthBarMonster->setTag("healthBarMonster");
@@ -472,7 +529,7 @@ void Game::init(int width, int height)
 	enemies[0]->HPBar = healthBarMonster;
 	objects.push_back(healthBarMonster);
 
-	SpriteObject * healthBarHero = new SpriteObject("hp.png", 1, 1);
+	SpriteObject * healthBarHero = new SpriteObject("Sprite/hp.png", 1, 1);
 	healthBarHero->setSize(250.0f, 20.0f);
 	healthBarHero->translate(glm::vec3(-350.0f, 200.0f, 0.0f));
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
@@ -481,7 +538,7 @@ void Game::init(int width, int height)
 	myHero->HPBar = healthBarHero;
 	objects.push_back(healthBarHero);
 	
-	SpriteObject * healthBarHeroBG = new SpriteObject("HPBar.png", 1, 1);
+	SpriteObject * healthBarHeroBG = new SpriteObject("Sprite/HPBar.png", 1, 1);
 	healthBarHeroBG->setSize(280.0f, 50.0f);
 	healthBarHeroBG->translate(glm::vec3(-360.0f, 200.0f, 0.0f));
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
@@ -489,7 +546,7 @@ void Game::init(int width, int height)
 	objects.push_back(healthBarHeroBG);
 	HPBG.push_back(healthBarHeroBG);
 
-	SpriteObject * healthBarMonsterBG = new SpriteObject("HPBar.png", 1, 1);
+	SpriteObject * healthBarMonsterBG = new SpriteObject("Sprite/HPBar.png", 1, 1);
 	healthBarMonsterBG->setSize(280.0f, 50.0f);
 	healthBarMonsterBG->translate(glm::vec3(340.0f, 200.0f, 0.0f));
 	//Hero1->setAnimationLoop(1, 1, 1, 800);
@@ -497,7 +554,7 @@ void Game::init(int width, int height)
 	objects.push_back(healthBarMonsterBG);
 	HPBG.push_back(healthBarMonsterBG);
 
-	showMana = new SpriteObject("manasprite.png", 1, 7);
+	showMana = new SpriteObject("Sprite/manasprite.png", 1, 7);
 	//showMana->setAnimationLoop(1, 1, 1, 800);
 	showMana->setPlayAnim(false);
 	showMana->setRow(1);
@@ -508,7 +565,7 @@ void Game::init(int width, int height)
 	showMana->setTag("showMana");
 	objects.push_back(showMana);
 
-	randomMana = new SpriteObject("manasprite.png", 1, 7);
+	randomMana = new SpriteObject("Sprite/manasprite.png", 1, 7);
 	randomMana->setAnimationLoop(1, 1, 7, 300);
 	randomMana->setRow(1);
 	randomMana->setColumn(deck->getMana() + 1);
@@ -519,7 +576,7 @@ void Game::init(int width, int height)
 	objects.push_back(randomMana);
 	randomMana->setActive(false);
 
-	randomManaText = new SpriteObject("mText2.png", 1, 1);
+	randomManaText = new SpriteObject("Sprite/mText2.png", 1, 1);
 	randomManaText->setSize(500.0f, 150.0f);
 	randomManaText->translate(glm::vec3(0.0f, 270.0f, 0.0f));
 	randomManaText->setTag("randomManaText");
@@ -549,7 +606,7 @@ void Game::init(int width, int height)
 	clickable.push_back(optionButton);
 	objects.push_back(optionButton);
 
-	previewCard = new SpriteObject("cardSprite2.png", 2, 10);
+	previewCard = new SpriteObject("Sprite/cardSprite2.png", 2, 10);
 	previewCard->setSize(300.0f, 420.0f);
 	previewCard->translate(glm::vec3(0.0f, 115.0f, 0.0f));
 	previewCard->setTag("previewCard");

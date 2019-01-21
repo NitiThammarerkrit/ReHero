@@ -23,6 +23,7 @@ class Card :public DrawableObject
 	float damage;
 	int attack;
 	int mana;
+	string effectData;
 	
 
 

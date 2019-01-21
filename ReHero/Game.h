@@ -14,6 +14,7 @@ class Game
 {
 	int cardIndex;
 	Deck * deck;
+	vector<string> PlayerDeck;
 	static Game* instance;
 	int winWidth, winHeight;
 	float gameWidth, gameHeight;
@@ -33,6 +34,7 @@ class Game
 	Game();
 	SpriteObject * previewCard;
 	vector<ClickableObject*> clickable;
+
 
 	
 public:

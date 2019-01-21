@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Monster::Monster(int HP, string name, int row, int column) : SpriteObject(name + ".png", row, column) {
+Monster::Monster(int HP, string name, int row, int column) : SpriteObject("Sprite/" + name + ".png", row, column) {
 	srand(time(NULL));
 	
 	this->maxHP = HP;

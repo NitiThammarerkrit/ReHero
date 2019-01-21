@@ -1,0 +1,19 @@
+#version 330
+uniform int mode = 0; // 0 = color, 1 = texture
+uniform vec3 color = vec3(1.0f,1.0f,0.0f);
+uniform sampler2D ourTexture;
+in vec2 OutTexCoord;
+out vec4 finalColor;
+void main()
+{
+
+	if(mode == 0)
+	{
+		finalColor = vec4( color, 1.0 ); 
+	}
+	else
+	{
+		finalColor = texture(ourTexture, OutTexCoord);
+	}
+    
+}

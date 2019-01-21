@@ -90,7 +90,39 @@ void Card::render(glm::mat4 globalModelTransform)
 
 void Card::setName(string n)
 {
-	name = n;
+	this->name = n;
+
+	ifstream datafile("cardEffectData.txt");
+	if (!datafile)
+	{
+		cout << "fail to load card effect data for " << this->name << endl;
+		return;
+	}
+
+	int howMany;
+	int mana;
+	string text;
+
+	datafile >> howMany;
+	getline(datafile, text, '\n');
+
+	//get all skill data
+	for (int i = 0; i < howMany; i++)
+	{
+		datafile >> text;
+
+		if (text == this->name)
+		{
+			datafile >> mana;
+			this->setMana(mana);
+			getline(datafile, text, '\n');
+			effectData = text;
+
+			break;
+		}
+	}
+
+	datafile.close();
 }
 
 string Card::getName()

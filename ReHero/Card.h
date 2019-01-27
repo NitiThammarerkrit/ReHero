@@ -4,6 +4,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "SpriteObject.h"
+#include "Hero.h"
+#include "Monster.h"
+
 class Card :public DrawableObject
 {
 	glm::vec3 color;
@@ -51,14 +54,20 @@ public:
 	int getId();
 
 	unsigned int getTexture();
-	float effect();
-	void setMana(int mana);			//random amount of mana
+	void effect(Hero * friendTarget, Monster * enemyTarget);
+	void setMana(int mana);			
 	int getMana();
 	bool active;
 
 	void setEffectCard(SpriteObject, int row, int col);
 	void setState(int state);
 
+	//card effect functions
+	void doDamage(Monster * target, int damage);
+	void heal(Hero * target, int amount);
+	void usePoison(Monster * target);
+	void gainArmor(Hero * target, int amount);
+	void drawCard(int amount);
 
 	int state;
 	int c;

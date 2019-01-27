@@ -3,7 +3,9 @@
 #include "Game.h"
 #include "SquareMeshVbo.h"
 #include "SpriteObject.h"
-#include<SDL_image.h>	
+#include "Hero.h"
+#include "Monster.h"
+#include <SDL_image.h>	
 
 
 Card::Card()
@@ -119,6 +121,10 @@ void Card::setName(string n)
 			effectData = text;
 
 			break;
+		}
+		else
+		{
+			getline(datafile, text, '\n');
 		}
 	}
 
@@ -263,9 +269,71 @@ unsigned int Card::getTexture()
 	return texture;
 }
 
-float Card::effect()
+void Card::effect(Hero * friendTarget, Monster * enemyTarget)
 {
-	return damage;
+	stringstream data(effectData);
+	string effect;
+	int value;
+
+	while (1)
+	{
+		//read data (each action)
+		data >> effect >> value;
+
+		//perform a skill
+		if (effect == "damage") doDamage(enemyTarget, value);
+		else if (effect == "heal") heal(friendTarget, value);
+		else if (effect == "poison") usePoison(enemyTarget);
+		else if (effect == "defend") gainArmor(friendTarget, value);
+		else if (effect == "draw") drawCard(value);
+		else break;
+	}
+}
+
+void Card::doDamage(Monster * target, int damage) {
+	if (target != nullptr)
+	{
+		target->takeDamage(damage);
+		cout << name << " deal " << damage << " damage to monster" << endl;
+	}
+	else cout << name << " deal " << damage << " damage, but no target!" << endl;
+}
+
+void Card::heal(Hero * target, int amount) {
+	if (target != nullptr)
+	{
+		target->getHeal(amount);
+		cout << name << " heal " << amount << endl;
+	}
+	else cout << name << " heal " << amount << ", but no target!" << endl;
+}
+
+void Card::usePoison(Monster * target) {
+	if (target != nullptr)
+	{
+		target->takePoison();
+		cout << name << " use poison to monster" << endl;
+	}
+	else cout << name << " use poison, but no target!" << endl;
+}
+
+void Card::gainArmor(Hero * target, int amount) {
+	if (target != nullptr)
+	{
+		target->gainArmor(amount);
+		cout << name << " gain " << amount << " armor" << endl;
+	}
+	else cout << name << " gain " << amount << " armor, but no target!" << endl;
+}
+
+void Card::drawCard(int amount) {
+	Deck * playDeck = Deck::getInstance();
+	if (playDeck != nullptr)
+	{
+		playDeck->drawToHand(amount);
+		cout << name << " draw " << amount << " card" << endl;
+	}
+	else cout << "Deck cannot be found" << endl;
 }
 
 void Card::setMana(int mana)

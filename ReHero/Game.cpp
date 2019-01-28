@@ -94,24 +94,11 @@ void Game::handleMouseUp(int x, int y)
 			showMana->genUV();
 			deck->handToDiscardPile(cardIndex);
 			//deck->drawToHand(1); 
-			resetHandPos();
 			state = 1;
 			//myHero->setTexture(effect[0]->getTexture());
-			if (enemies[0]->takeDamage(clickObject->effect()))
-			{
-				cout <<"Monster take damage:" <<clickObject->effect();
-				/*for (int i = 0; i < 6; i++)
-				{
-					enemies[0]->translate(glm::vec3(pow(-1, i) * 10, 0.0f, 0.0f));
-					this->getRenderer()->render(this->objects);
-				}		*/
-			}
-			else
-			{
-				  monsterHp[0]->setSize(0, 20);
-				  enemies[0]->setActive(false);
-				  HPBG[1]->setActive(false);
-			}
+			clickObject->effect(myHero, enemies[0]);
+			resetHandPos();
+			deck->playACard();
 			/*if(clickObject->active==true)
 				clickObject->active = false;	*/
 		}
@@ -356,7 +343,7 @@ void Game::init(int width, int height)
 	BG->setTag("BG");
 	objects.push_back(BG);
 
-	Monster * Monster1 = new Monster(20,"gob", 1, 2);
+	Monster * Monster1 = new Monster(20,"gob", 1, 1);
 	Monster1->setSize(-250.0f, -250.0f);
 	Monster1->translate(glm::vec3(350.0f, 60.0f, 0.0f));
 	Monster1->setAnimationLoop(1, 1, 2, 400);
@@ -701,6 +688,7 @@ void Game::resetHandPos()
 void Game::endTurn()
 {
 	state = 2;
+	deck->resetPlayedCard();
 	deck->discardHand();
 	monsterTurn();
 	deck->randomMana();

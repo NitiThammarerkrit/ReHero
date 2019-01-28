@@ -35,7 +35,7 @@ void Hero::update(float deltaTime)
 	{
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		//cout << "\nMonster HP:" << this->getHP();
-		cout << endl << "damage is" << damage;
+		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3(-damage / 2.0f / 20.0f*250.0f, 0.0f, 0.0f));
 		getAttack = false;
 	}

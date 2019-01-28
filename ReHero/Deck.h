@@ -12,6 +12,7 @@ class Deck
 	static Deck* instance;
 
 	int mana;
+	int cardPlayedThisTurn;
 	vector<Card*> hand;
 	vector<Card*> playerDeck;
 	vector<Card*> discardPile;
@@ -41,6 +42,10 @@ public:
 	void reshuffleDeckAndPile();	//add all cards in discard pile into player deck
 	void discardHand();				//discard all cards in hand into discard pile
 	void handToDiscardPile(int index);	//add used card to discard pile and remove it from hand
+
+	void playACard();				//cardPlayThisTurn + 1
+	void resetPlayedCard();			//reset cardPlayThisTurn to 0
+	int getCardPlayedThisTurn();	//return cardPlayThisTurn
 
 	void randomMana();			//random amount of mana
 	int getMana();				//return current mana

@@ -252,10 +252,10 @@ void Card::setSpriteCard(SpriteObject sprite, int row, int col)
 void Card::setId(int id)
 {
 	ID = id;
-	for (int i = 0; i < 12; i++)
+	/*for (int i = 0; i < 12; i++)
 	{
 		damage = 2 + i;
-	}
+	}	  */
 
 }
 
@@ -286,6 +286,12 @@ void Card::effect(Hero * friendTarget, Monster * enemyTarget)
 		else if (effect == "poison") usePoison(enemyTarget);
 		else if (effect == "defend") gainArmor(friendTarget, value);
 		else if (effect == "draw") drawCard(value);
+		else if (effect == "dppc")
+		{
+			Deck * d = Deck::getInstance();
+			cout << name << " count played card = " << d->getCardPlayedThisTurn() << endl;
+			doDamage(enemyTarget, value * d->getCardPlayedThisTurn());
+		}
 		else break;
 	}
 }

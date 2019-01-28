@@ -103,6 +103,8 @@ Deck::Deck() {
 	}
 	*/
 
+	resetPlayedCard();
+
 }
 
 Deck::~Deck() {
@@ -278,4 +280,16 @@ bool Deck::loseMana(int cost) {
 		//cannot spend cost more than mana!! return false
 		return false;
 	}
+}
+
+void Deck::playACard() {
+	cardPlayedThisTurn += 1;
+}
+
+void Deck::resetPlayedCard() {
+	cardPlayedThisTurn = 0;
+}
+
+int Deck::getCardPlayedThisTurn() {
+	return cardPlayedThisTurn;
 }

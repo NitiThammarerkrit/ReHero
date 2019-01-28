@@ -23,7 +23,7 @@ class Card :public DrawableObject
 	int column;
 	float uv[8];
 	int ID;
-	float damage;
+	//float damage;
 	int attack;
 	int mana;
 	string effectData;

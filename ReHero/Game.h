@@ -9,6 +9,7 @@
 
 
 
+
 using namespace std;
 class Game
 {
@@ -20,6 +21,7 @@ class Game
 	float gameWidth, gameHeight;
 	vector<DrawableObject*> objects;
 	vector<DrawableObject*> Menu;
+	vector<DrawableObject*> City;
 	vector<DrawableObject*> Pause;
 	Hero * myHero;
 	vector<SpriteObject*> effect;
@@ -27,6 +29,7 @@ class Game
 	vector<SpriteObject*> HPBG;
 	vector<DrawableObject*> monsterHp;
 	vector<DrawableObject*> heroHp;
+
 	GLRenderer *renderer;
 	bool isMouseDown;
 	class Card* clickObject;
@@ -34,9 +37,10 @@ class Game
 	Game();
 	SpriteObject * previewCard;
 	vector<ClickableObject*> clickable;
+	//vector<ClickableObject*> Cityclickable;
+	//vector<ClickableObject*> Menuclickable;
+	//vector<ClickableObject*> Pauseclickable;
 
-
-	
 public:
 	static Game* getInstance();
 	GLRenderer * getRenderer();
@@ -53,6 +57,7 @@ public:
 	void getHit();
 	int state;
 	void restartGame();
+	void setMonster(int HP, string name, int row, int column,int speed);
 	SpriteObject * showMana;
 	SpriteObject * randomMana;
 	SpriteObject * randomManaText;

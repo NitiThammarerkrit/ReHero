@@ -7,6 +7,7 @@
 class ClickableObject :public DrawableObject
 {
 	glm::vec3 color;
+	string tag;
 	string name;
 	unsigned int texture;
 	unsigned int temptexture;
@@ -22,14 +23,16 @@ class ClickableObject :public DrawableObject
 	float uv[8];
 	int ID;
 
+
 public:
 	ClickableObject();
 	~ClickableObject();
 	void setColor(float r, float g, float b);
 	void render(glm::mat4 globalModelTransform);
-	void setTag(string n);
+	void setTagAndName(string t,string n);
 	void update(float deltaTime);
 	string getTag();
+	string getName();
 	bool isClick(float x, float y);
 
 	void setRow(int r);

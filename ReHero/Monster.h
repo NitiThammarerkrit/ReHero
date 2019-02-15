@@ -46,7 +46,7 @@ public:
 	void doDamage(Hero * target, int damage);
 	void heal(Monster * target, int amount);
 	void usePoison(Hero * target);
-
+	bool isAlive();
 	int state;
 	int c;
 	DrawableObject* HPBar;

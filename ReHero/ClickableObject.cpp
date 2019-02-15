@@ -72,18 +72,28 @@ void ClickableObject::render(glm::mat4 globalModelTransform)
 	}
 }
 
-void ClickableObject::setTag(string n)
+void ClickableObject::setTagAndName(string t, string n)
 {
+	tag = t;
 	name = n;
 }
 
-string ClickableObject::getTag()
+string ClickableObject::getName()
 {
 	return name;
 }
 
+string ClickableObject::getTag()
+{
+	return tag;
+}
+
 bool ClickableObject::isClick(float x, float y)
 {
+	if (active == false)
+	{
+		return false;
+	}
 	/* ref
 	glm::mat4 transform = glm::mat4(1.0);
 	transform = glm::translate(transform, glm::vec3(pos.x, pos.y, 0));

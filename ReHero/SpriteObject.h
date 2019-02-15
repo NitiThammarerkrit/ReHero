@@ -6,13 +6,12 @@
 class SpriteObject :public DrawableObject
 {
 private:
-	unsigned int texture;
+	
 	
 	int rowMax;
 	int columnMax;
 	int row;
 	int column;
-	float uv[8];
 	int animRow;
 	int animColumn;
 	bool hasAnim;
@@ -26,6 +25,7 @@ protected:
 	int animationTime;
 	int timeCount;
 	unsigned int temptexture;
+	float uv[8];
 
 public:
 	SpriteObject(string fileName, int row, int column);
@@ -47,6 +47,7 @@ public:
 	void setPlayAnim(bool set);
 	void setTag(string tag);
 	int state;
-	int c;
+	int c; 
+	unsigned int texture;
 };
 

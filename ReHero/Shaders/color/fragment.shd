@@ -11,9 +11,21 @@ void main()
 	{
 		finalColor = vec4( color, 1.0 ); 
 	}
-	else
+	else if(mode == 1)
 	{
 		finalColor = texture(ourTexture, OutTexCoord);
+	}
+	else
+	{
+		vec4 temp = texture(ourTexture, OutTexCoord);
+		if(temp.a != 0.0f)
+		{
+			temp.x = 1.0f;
+			temp.y = 0.0f;
+			temp.z = 0.0f;
+			temp.a = 1.0f;
+		}
+		finalColor = temp;
 	}
     
 }

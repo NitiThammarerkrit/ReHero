@@ -54,14 +54,15 @@ void Monster::update(float deltaTime)
 	//	cout << " SAS "<<endl;
 		if (state == 0)
 		{
-			this->translate(glm::vec3(-550, 0, 0));
+			//this->translate(glm::vec3(-550, 0, 0))
+			this->setAnimationLoop(2, 1, 3, 700);
 			state = 1;
 		}
 		else
 			if (state == 1)
 			{
-				c += deltaTime;
-				if (c > 500)
+				c += 1*deltaTime;
+				if (c > 710)
 				{
 					state = 2;
 					c = 0;
@@ -70,7 +71,8 @@ void Monster::update(float deltaTime)
 			else
 				if (state = 2)
 				{
-					this->translate(glm::vec3(550, 0, 0));
+					//this->translate(glm::vec3(550, 0, 0));
+					this->setAnimationLoop(1, 1, 3, 400);
 					state = 0;
 					isAttack = false;
 					Game::getInstance()->state = 3;
@@ -85,6 +87,11 @@ void Monster::update(float deltaTime)
 
 
 
+}
+
+bool Monster::isAlive() {
+	if (HP > 0) return true;
+	else return false;
 }
 
 int Monster::getHP() {
@@ -151,6 +158,7 @@ void Monster::gainArmor(int amount) {
 }
 
 void Monster::takePoison() {
+	getAttack = true;
 	isPoisoned = true;
 }
 
@@ -200,7 +208,7 @@ void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
 		{
 			stringstream selectedData(skillData[i]);
 			string effect;
-			int value;
+		    int value;
 			getline(selectedData, effect, '\t'); //get skill name
 			cout << name << " use " << effect << endl;
 			while (1)
@@ -246,6 +254,7 @@ void Monster::heal(Monster * target, int amount) {
 }
 
 void Monster::usePoison(Hero * target) {
+	isAttack = true;
 	if (target != nullptr)
 	{
 		target->takePoison();

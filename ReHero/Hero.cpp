@@ -18,6 +18,7 @@ Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName
 	isHeal = false;
 	isAttack = false;
 	isGetAttack = false;
+	delayDie = 0;
 
 }
 
@@ -27,7 +28,8 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {
-
+	//float y = deltaTime * 1.0f;
+	//Game::getInstance()->damageText->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	timeCount += deltaTime;
 	if (timeCount > animationTime / loopMax)
 	{
@@ -36,7 +38,7 @@ void Hero::update(float deltaTime)
 		timeCount = 0;
 	}
 
-	if (getAttack) //get attacked
+	if (getAttack&&isAlive()) //get attacked
 	{
 		setAttack(true);   		 
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
@@ -44,24 +46,37 @@ void Hero::update(float deltaTime)
 		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
 		cout << "HP = "<<(float)this->getHP()<<endl;
+		this->setAnimationLoop(3, 1, 5, 100);
 		damage = 0;
+		Game::getInstance()->DamageAmount = 0;
 		getAttack = false;
 	}
-	if (isGetAttack)
+	if (isAlive()==false)
+	{
+		if(delayDie==0)
+		this->setAnimationLoop(4, 1, 5, 600);
+		delayDie += 1 * deltaTime;
+		if (delayDie > 590)
+		{
+			this->setActive(false);
+		}
+	}
+	if (isGetAttack&&isAlive())
 	{
 		delay += 1 * deltaTime;
-		if (delay > 100)
+		if (delay > 110)
 		{
 			delay = 0;
+			this->setAnimationLoop(1, 1, 7, 1500);
 			setAttack(false);
 		}
 	}
-	if (Game::getInstance()->state == 1 && isHeal == false)  //attack!
+	if (Game::getInstance()->state == 1 && isHeal == false && isAlive())  //attack!
 	{
 		if (state == 0)
 		{
 			//this->translate(glm::vec3(550, 0, 0));
-			this->setAnimationLoop(2, 1, 4, 700);
+			this->setAnimationLoop(2, 1, 8, 700);
 			state = 1;
 		}
 		else
@@ -78,7 +93,7 @@ void Hero::update(float deltaTime)
 		if (state == 2)
 		{
 			//this->translate(glm::vec3(-550, 0, 0));
-			this->setAnimationLoop(1, 1, 6, 800);
+			this->setAnimationLoop(1, 1, 7, 1500);
 			//this->setTexture(temptexture);
 			state = 0;
 			isAttack = false;
@@ -86,7 +101,7 @@ void Hero::update(float deltaTime)
 		}
 	}
 	else
-		if (Game::getInstance()->state == 1 && isHeal == true) //get Heal
+		if (Game::getInstance()->state == 1 && isHeal == true && isAlive()) //get Heal
 		{
 			Game::getInstance()->state = 0;
 			isHeal = false;
@@ -116,6 +131,7 @@ void Hero::setMaxHP(int amount) {
 
 bool Hero::takeDamage(int damage) {
 	this->damage = damage;
+	Game::getInstance()->DamageAmount = damage;
 	getAttack = true;
 	if (this->HP - damage > 0)
 	{

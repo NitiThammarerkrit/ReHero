@@ -10,6 +10,7 @@
 
 
 
+
 using namespace std;
 class Game
 {
@@ -29,6 +30,7 @@ class Game
 	vector<SpriteObject*> HPBG;
 	vector<DrawableObject*> monsterHp;
 	vector<DrawableObject*> heroHp;
+	
 
 	GLRenderer *renderer;
 	bool isMouseDown;
@@ -61,4 +63,8 @@ public:
 	SpriteObject * showMana;
 	SpriteObject * randomMana;
 	SpriteObject * randomManaText;
+
+	int DamageAmount;
+	bool isGetDamage = false;
+	DrawableObject * damageText;
 };

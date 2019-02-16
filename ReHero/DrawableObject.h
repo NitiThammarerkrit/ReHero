@@ -25,6 +25,7 @@ public:
 	glm::mat4 rotateAroundPoint(float x, float y,float a);
 	float getSizeX();
 	float getTranformX();
+	int dmg;
 
 
 	//Rotate, Scale ???

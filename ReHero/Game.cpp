@@ -12,7 +12,8 @@
 #include <string>
 #include <iostream>	
 #include "TextObject.h"
-#include "TextMeshVbo.h"						             
+#include "TextMeshVbo.h"
+						             
 											         
 
 
@@ -160,6 +161,17 @@ void Game::handleMouseUp(int x, int y)
 			state = 1;
 			//myHero->setTexture(effect[0]->getTexture());
 			clickObject->effect(myHero, enemies[0]);
+			if (DamageAmount>0)
+			{
+				TextObject * EnemydamageText = new TextObject();
+				EnemydamageText->setFontSize(120);
+				EnemydamageText->setFontName("Damaged.ttf");
+				EnemydamageText->translate(glm::vec3(400.0f, 100.0f, 0.0f));
+				EnemydamageText->setTextColor(SDL_Color{ 0,0,255 });
+				EnemydamageText->loadText(to_string(DamageAmount));
+				isGetDamage = true;
+				objects.push_back(EnemydamageText);
+			}
 			resetHandPos();
 			deck->playACard();
 			if (enemies[0]->isAlive() == false)
@@ -491,10 +503,10 @@ void Game::init(int width, int height)
 	//delete enemies[0];
 	//setMonster(20, "wasp", 1, 5,1000);
 
-	myHero = new Hero(20, "Sprite/Hero2New.png", 2, 6);
-	myHero->setSize(250.0f, -250.0f);
+	myHero = new Hero(20, "Sprite/Hero2.png", 4, 8);
+	myHero->setSize(350.0f, -350.0f);
 	myHero->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
-	myHero->setAnimationLoop(1, 1, 6, 1500);
+	myHero->setAnimationLoop(1, 1, 7, 1500);
 	myHero->setTag("Hero");
 	objects.push_back(myHero);
 
@@ -657,23 +669,7 @@ void Game::init(int width, int height)
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
 
-	TextObject * HerodamageText = new TextObject();
-	HerodamageText->setFontSize(40);
-	HerodamageText->setFontName("Damaged.ttf");
-	HerodamageText->setPosition(glm::vec3(-400.0f, 60.0f, 0.0f));
-	HerodamageText->setTextColor(SDL_Color{ 0,0,255 });
-	HerodamageText->loadText("999");
-	//myHero->DamageText = HerodamageText;
-	objects.push_back(HerodamageText);
-
-	TextObject * EnemydamageText = new TextObject();
-	EnemydamageText->setFontSize(40);
-	EnemydamageText->setFontName("Damaged.ttf");
-	EnemydamageText->setPosition(glm::vec3(400.0f, 60.0f, 0.0f));
-	EnemydamageText->setTextColor(SDL_Color{ 0,0,255 });
-	EnemydamageText->loadText("999");
-	//enemies[0]->DamageText = EnemydamageText;
-	objects.push_back(EnemydamageText);
+	
 }
 
 void Game::render()	 //Change game scene
@@ -705,10 +701,17 @@ void Game::render()	 //Change game scene
 
 void Game::update(float deltaTime)
 {
-	/*if (state == 0)
+	
+	if (state == 3 && isGetDamage)
 	{
-
-	}	  */
+		objects.pop_back();
+		isGetDamage = false;
+	}
+	if (state == 0 && isGetDamage)
+	{
+		objects.pop_back();
+		isGetDamage = false;
+	}
 	for (DrawableObject* menu : Menu)
 	{
 		menu->update(deltaTime);
@@ -787,13 +790,27 @@ void Game::monsterTurn()
 		if (myHero->isAlive() == true)
 		{
 			enemies[0]->randomUseSkill(myHero, nullptr);
+			if (DamageAmount > 0&&!isGetDamage)
+			{
+				TextObject * HerodamageText = new TextObject();
+				HerodamageText->setFontSize(120);
+				HerodamageText->setFontName("Damaged.ttf");
+				HerodamageText->translate(glm::vec3(-400.0f, 100.0f, 0.0f));
+				HerodamageText->setTextColor(SDL_Color{ 0,0,255 });
+				HerodamageText->loadText(to_string(DamageAmount));
+				isGetDamage = true;
+				damageText = HerodamageText;
+				objects.push_back(HerodamageText);
+			}
+			cout << "Damage is " << DamageAmount << endl;
 
-		}								   			//cout << endl << "Hero take Damage:" << damage << endl;
-			//cout << endl << "MaxHP: " << myHero->getMaxHP() << endl;
+		}	
+		//cout << endl << "Hero take Damage:" << damage << endl;
+		//cout << endl << "MaxHP: " << myHero->getMaxHP() << endl;
 		if (myHero->isAlive() == false)
 		{
 			heroHp[0]->setSize(0, 20);
-			myHero->setActive(false);
+			//myHero->setActive(false);
 			HPBG[0]->setActive(false);
 		}
 	
@@ -830,7 +847,7 @@ void Game::setMonster(int HP, string name, int row, int column,int speed)
 {
 	Monster * Monster1 = new Monster(HP, name, row, column);
 	Monster1->setSize(350.0f, -300.0f);
-	Monster1->translate(glm::vec3(350.0f, 80.0f, 0.0f));
+	Monster1->translate(glm::vec3(350.0f, 40.0f, 0.0f));
 	Monster1->setAnimationLoop(1, 1, column, speed);
 	Monster1->setTag("Monster");
 	objects.push_back(Monster1);

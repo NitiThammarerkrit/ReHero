@@ -55,10 +55,10 @@
     <ClCompile Include="Audio.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="TextObject.cpp">
+    <ClCompile Include="TextMeshVbo.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="TextMeshVbo.cpp">
+    <ClCompile Include="TextObject.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,10 +123,10 @@
     <ClInclude Include="Audio.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="TextObject.h">
+    <ClInclude Include="TextMeshVbo.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="TextMeshVbo.h">
+    <ClInclude Include="TextObject.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>

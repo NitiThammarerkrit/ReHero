@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "SpriteObject.h"
+//#include "TextObject.h"
 
 
 
@@ -42,7 +43,7 @@ public:
 	int state;
 	int c;
 	int delay;
+	int delayDie;
 	DrawableObject* HPBar;
-	//DrawableObject * DamageText;
 };
 

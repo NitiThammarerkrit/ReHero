@@ -54,7 +54,8 @@ void Monster::update(float deltaTime)
 	//	cout << " SAS "<<endl;
 		if (state == 0)
 		{
-			//this->translate(glm::vec3(-550, 0, 0))
+			//this->translate(glm::vec3(-550, 0, 0)) ;
+			//Game::getInstance()->damageText->translate(glm::vec3(0, 10, 0));
 			this->setAnimationLoop(2, 1, 3, 700);
 			state = 1;
 		}
@@ -62,6 +63,7 @@ void Monster::update(float deltaTime)
 			if (state == 1)
 			{
 				c += 1*deltaTime;
+				
 				if (c > 710)
 				{
 					state = 2;
@@ -116,6 +118,7 @@ void Monster::setMaxHP(int amount) {
 
 bool Monster::takeDamage(int damage) {
 	this->damage = damage;
+	Game::getInstance()->DamageAmount = damage;
 	getAttack = true;
 	if (this->HP - damage > 0)
 	{

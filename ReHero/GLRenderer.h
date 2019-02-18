@@ -37,6 +37,7 @@ protected:
 public:
 	virtual void render(vector <DrawableObject*> & objList);
 	virtual void render(vector <Card*> & objList);
+	void Clear();
 	GLRenderer(int w, int h);
 	bool initGL(string vertexShaderFile, string fragmentShaderFile);
 

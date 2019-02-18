@@ -157,6 +157,7 @@
     <ClInclude Include="ClickableObject.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="DrawableObject.h" />
+    <ClInclude Include="FloatText.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="GLRenderer.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="ClickableObject.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="DrawableObject.cpp" />
+    <ClCompile Include="FloatText.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="GLRenderer.cpp" />

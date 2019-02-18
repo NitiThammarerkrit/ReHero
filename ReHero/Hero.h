@@ -1,7 +1,7 @@
 #pragma once
 
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+//#include "glm/gtc/matrix_transform.hpp"
+//#include "glm/gtc/type_ptr.hpp"
 #include "SpriteObject.h"
 //#include "TextObject.h"
 
@@ -44,6 +44,7 @@ public:
 	int c;
 	int delay;
 	int delayDie;
+	int heroMakeDamage;
 	DrawableObject* HPBar;
 };
 

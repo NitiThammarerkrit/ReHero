@@ -21,6 +21,7 @@ class Monster : public SpriteObject
 
 	string name;
 	vector<string> skillData;
+	vector<string> itemDrop;
 
 public:
 	Monster(int HP, string name, int row, int column);

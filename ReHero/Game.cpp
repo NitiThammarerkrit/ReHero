@@ -11,8 +11,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>	
-#include "TextObject.h"
 #include "TextMeshVbo.h"
+#include "FloatText.h"
 						             
 											         
 
@@ -510,6 +510,14 @@ void Game::init(int width, int height)
 	myHero->setTag("Hero");
 	objects.push_back(myHero);
 
+	effectOnPlayer = new SpriteObject("Sprite/effect.png", 5, 7);
+	effectOnPlayer->setSize(650.0f, 650.0f);
+	effectOnPlayer->translate(glm::vec3(300.0f, 200.0f, 0.0f));
+	effectOnPlayer->setAnimationLoop(5, 1, 7, 800);
+	//effectOnPlayer->setActive(true);
+	effectOnPlayer->setTag("Effect");
+	objects.push_back(effectOnPlayer);
+
 	float colorR[5] = { 1.0f,0.0f,0.0f,1.0f,1.0f };
 	float colorG[5] = { 0.0f,1.0f,0.0f,1.0f,0.0f };
 	float colorB[5] = { 0.0f,0.0f,1.0f,0.0f,1.0f };
@@ -669,29 +677,46 @@ void Game::init(int width, int height)
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
 
+	for (int i = 0; i < 5; i++)
+	{
+		FloatText* tempTexts = new FloatText();
+		tempTexts->setFontName("Damaged.ttf");
+		tempTexts->setFontSize(300);
+		tempTexts->setTextColor(SDL_Color{ 255,0,0 });
+		tempTexts->loadText(" ");
+		tempText.push_back(tempTexts);
+	}
 	
+
+
 }
 
 void Game::render()	 //Change game scene
 {
 	if (state == 99)
 	{
+		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->Menu);
 	}
 	else
 	if (state == 100)
 	{
+		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->Pause);
 	}
 	else
 	if (state == 50)
 	{
+		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->City);
 	}
 	else
 	{
+		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->objects);
+		this->getRenderer()->render(this->tempText);
 		this->getRenderer()->render(*(deck->getHand()));
+		
 	}
 	
 	
@@ -730,6 +755,9 @@ void Game::update(float deltaTime)
 	for (Card* card : *(deck->getHand()))
 	{
 		card->update(deltaTime);
+	}
+	for (DrawableObject* text : tempText) {
+		text->update(deltaTime);
 	}
 
 }
@@ -852,6 +880,30 @@ void Game::setMonster(int HP, string name, int row, int column,int speed)
 	Monster1->setTag("Monster");
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
+}
+
+void Game::drawText(string text, glm::vec3 pos, int fontSize)
+{
+	/*FloatText* tempText = new FloatText();
+	tempText->setFontName("Damaged.ttf");
+	tempText->setFontSize(fontSize);
+	tempText->setTextColor(SDL_Color{ 255,0,0 });
+	tempText->loadText(text);
+	tempText->setPosition(pos);
+	Text.push_back(tempText);*/
+	for (int i = 0; i < tempText.size(); i++)
+	{
+		FloatText *Text = dynamic_cast<FloatText *>(tempText[i]);
+		if (Text->isRunning == false)
+		{
+			Text->setPosition(pos);
+			Text->loadText(text);
+			Text->setFontSize(fontSize);
+			Text->isRunning = true;
+			break;
+		}
+	}
+
 }
 
 

@@ -1,0 +1,21 @@
+20		
+Hit	2	1
+Whril	2	2
+Defend	2	3
+Whrilwind	2	4
+Wrath	2	5
+Slash	2	6
+Tempest	2	7
+Dash	2	8
+Strike	2	9
+Counter	2	10
+Spike	1	1
+Outburst	1	2
+Scratch	1	3
+Impact	1	4
+Rush	1	5
+Eclipse	1	6
+Punch	1	7
+Chaos	1	8
+Impervious	1	9
+Terror	1	10

@@ -5,16 +5,6 @@
 
 TextObject::TextObject()
 {
-	middleText = false;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-}
-
-TextObject::TextObject(bool mode)
-{
-	middleText = mode;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -34,14 +24,6 @@ void TextObject::render(glm::mat4 globalModelTransform)
 	GLuint modeId = Game::getInstance()->getRenderer()->getModeUniformId();
 
 	glBindTexture(GL_TEXTURE_2D, texture);
-	//glBindTexture(GL_TEXTURE_2D, texNum);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	
-
-	//glBindTexture(GL_TEXTURE_2D, texture);
-	//cout << "Render\n";
 
 
 	if (modelMatixId == -1) {
@@ -58,7 +40,6 @@ void TextObject::render(glm::mat4 globalModelTransform)
 			currentMatrix = globalModelTransform * currentMatrix;
 			glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 			glUniform1i(modeId, 1);
-			//squareMesh->resetTexcoord();
 			textMesh->render();
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
@@ -96,10 +77,6 @@ void TextObject::loadText(string text)
 	loadText(text, textColor, fontName, fontSize);
 }
 
-void TextObject::setFullText(string text)
-{
-	fullText = text;
-}
 
 void TextObject::setTextColor(SDL_Color color)
 {
@@ -114,24 +91,4 @@ void TextObject::setFontName(string font)
 void TextObject::setFontSize(int size)
 {
 	fontSize = size;
-}
-
-string TextObject::GetFullText()
-{
-	return fullText;
-}
-
-void TextObject::SetIndex(int ind)
-{
-	index = ind;
-}
-
-bool TextObject::GetComplete()
-{
-	return complete;
-}
-
-void TextObject::SetComplete(bool comp)
-{
-	complete = comp;
 }

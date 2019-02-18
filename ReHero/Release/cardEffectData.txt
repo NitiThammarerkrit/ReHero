@@ -1,0 +1,21 @@
+20						
+Hit	0	damage	2	;		
+Whril	0	damage	1	;		
+Defend	0	defend	2	;		
+Whrilwind	0	damage	3	;		
+Wrath	0	dppc	1	;		
+Slash	1	damage	3	;		
+Tempest	1	dppc	2	;		
+Dash	1	draw	2	;		
+Strike	2	damage	5	;		
+Counter	2	heal	-1	defend	3	;
+Spike	2	heal	-2	damage	5	;
+Outburst	2	damage	2	defend	2	;
+Scratch	2	damage	5	draw	2	;
+Impact	2	heal	2	damage	4	;
+Rush	2	dppc	3	;		
+Eclipse	2	heal	2	damage	4	;
+Punch	3	damage	6	;		
+Chaos	3	damage	5	defend	10	;
+Impervious	3	draw	3	defend	5	;
+Terror	4	damage	15	;		

@@ -63,8 +63,15 @@ public:
 	SpriteObject * showMana;
 	SpriteObject * randomMana;
 	SpriteObject * randomManaText;
+	SpriteObject * effectOnPlayer;
+	SpriteObject * effectOnEnemy;
 
 	int DamageAmount;
 	bool isGetDamage = false;
 	DrawableObject * damageText;
+
+	vector<DrawableObject*> Text;
+	void drawText(string text, glm::vec3 pos, int fontSize);
+
+	vector<DrawableObject*> tempText;
 };

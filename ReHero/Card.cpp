@@ -2,9 +2,6 @@
 #include "Card.h"
 #include "Game.h"
 #include "SquareMeshVbo.h"
-#include "SpriteObject.h"
-#include "Hero.h"
-#include "Monster.h"
 #include <SDL_image.h>	
 
 
@@ -279,7 +276,7 @@ void Card::effect(Hero * friendTarget, Monster * enemyTarget)
 	{
 		//read data (each action)
 		data >> effect >> value;
-
+		friendTarget->heroMakeDamage = value;
 		//perform a skill
 		if (effect == "damage") doDamage(enemyTarget, value);
 		else if (effect == "heal") heal(friendTarget, value);

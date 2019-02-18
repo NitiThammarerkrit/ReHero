@@ -101,8 +101,7 @@ bool GLRenderer::initialize(string vertexShaderFile, string fragmentShaderFile)
 
 void GLRenderer::render(vector <DrawableObject*> & objList)
 {
-	// Clear color buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 
 	// Update window with OpenGL rendering
 
@@ -143,6 +142,12 @@ void GLRenderer::render(vector <Card*> & objList)
 
 	//Unbind program
 	glUseProgram(NULL);
+}
+
+void GLRenderer::Clear()
+{
+	// Clear color buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GLRenderer::setMeshAttribId(MeshVbo * shape)

@@ -161,7 +161,7 @@ void Game::handleMouseUp(int x, int y)
 			state = 1;
 			//myHero->setTexture(effect[0]->getTexture());
 			clickObject->effect(myHero, enemies[0]);
-			if (DamageAmount>0)
+			/*if (DamageAmount>0)
 			{
 				TextObject * EnemydamageText = new TextObject();
 				EnemydamageText->setFontSize(120);
@@ -171,7 +171,7 @@ void Game::handleMouseUp(int x, int y)
 				EnemydamageText->loadText(to_string(DamageAmount));
 				isGetDamage = true;
 				objects.push_back(EnemydamageText);
-			}
+			}  */
 			resetHandPos();
 			deck->playACard();
 			if (enemies[0]->isAlive() == false)
@@ -682,7 +682,7 @@ void Game::init(int width, int height)
 		FloatText* tempTexts = new FloatText();
 		tempTexts->setFontName("Damaged.ttf");
 		tempTexts->setFontSize(300);
-		tempTexts->setTextColor(SDL_Color{ 255,0,0 });
+		tempTexts->setTextColor(SDL_Color{ 0,0,255 });
 		tempTexts->loadText(" ");
 		tempText.push_back(tempTexts);
 	}
@@ -897,8 +897,8 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize)
 		if (Text->isRunning == false)
 		{
 			Text->setPosition(pos);
-			Text->loadText(text);
 			Text->setFontSize(fontSize);
+			Text->loadText(text);
 			Text->isRunning = true;
 			break;
 		}

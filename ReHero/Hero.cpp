@@ -95,7 +95,7 @@ void Hero::update(float deltaTime)
 		{
 			//this->translate(glm::vec3(-550, 0, 0));
 			this->setAnimationLoop(1, 1, 7, 1500);
-			Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(300.0f, 0.f, 0.f), heroMakeDamage*10.f);
+			Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(350.0f, 0.f, 0.f), heroMakeDamage*50.0f);
 			//this->setTexture(temptexture);
 			state = 0;
 			isAttack = false;

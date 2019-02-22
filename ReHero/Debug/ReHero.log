@@ -5,17 +5,4 @@ c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(59): warning C4244: '+=
 c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(67): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
 c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(86): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
 c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(98): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Game.cpp
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(52): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(68): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(89): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(105): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(121): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(220): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(551): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(768): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(778): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(795): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(894): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
   ReHero.vcxproj -> C:\Users\LEVEL51pc\Desktop\Engine\ReHero\ReHero\Debug\ReHero.exe

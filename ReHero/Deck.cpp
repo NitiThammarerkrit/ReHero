@@ -104,7 +104,6 @@ Deck::Deck() {
 	*/
 
 	resetPlayedCard();
-
 }
 
 Deck::~Deck() {
@@ -292,4 +291,23 @@ void Deck::resetPlayedCard() {
 
 int Deck::getCardPlayedThisTurn() {
 	return cardPlayedThisTurn;
+}
+
+void Deck::saveCurrentPlayerDeck() {
+	discardHand();
+	reshuffleDeckAndPile();
+
+	ofstream deckdata("deck01.txt");
+
+	if (deckdata.is_open())
+	{
+		deckdata << playerDeck.size() << '\n';
+
+		for (int i = 0; i < playerDeck.size(); i++)
+		{
+			deckdata << playerDeck[i]->getName() << '\n';
+		}
+
+		deckdata.close();
+	}
 }

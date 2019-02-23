@@ -108,8 +108,8 @@ void Card::setName(string n)
 	//get all skill data
 	for (int i = 0; i < howMany; i++)
 	{
+		//getline(datafile, text, '\t');
 		datafile >> text;
-
 		if (text == this->name)
 		{
 			datafile >> mana;

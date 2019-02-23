@@ -35,7 +35,7 @@ public:
 	int cardsOnPlayerDeck();		//return number of cards in player deck
 	int cardsOnDiscardPile();		//return number of cards in discard pile
 
-	void addCardToDeck(Card * c);	//add a new card to player deck
+	//standard deck methods 
 	void drawToHand(int amount);	//draw 'amount' cards and add them to hand
 	Card * drawACard();				//return the first card in player deck
 	void shufflePlayerDeck();		//as the function name says
@@ -43,13 +43,19 @@ public:
 	void discardHand();				//discard all cards in hand into discard pile
 	void handToDiscardPile(int index);	//add used card to discard pile and remove it from hand
 
+	//played cards this turn
 	void playACard();				//cardPlayThisTurn + 1
 	void resetPlayedCard();			//reset cardPlayThisTurn to 0
 	int getCardPlayedThisTurn();	//return cardPlayThisTurn
 
+	//mana
 	void randomMana();			//random amount of mana
 	int getMana();				//return current mana
 	bool loseMana(int cost);	//allow to lose mana and return true if cost <= mana, if not, return false
+
+	//progression & data saving
+	void addCardToDeck(Card * c);	//add a new card to player deck
+	void saveCurrentPlayerDeck();	//save the current deck data into text file
 
 };
 

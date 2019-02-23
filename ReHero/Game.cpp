@@ -15,7 +15,7 @@
 #include "FloatText.h"
 						             
 											         
-
+#define CARD_SPRITE_ROW 4
 
 
 using namespace std;
@@ -525,8 +525,8 @@ void Game::init(int width, int height)
 	int spriteNum = 10;
 	int allCard = 20;
 	int id = 1;
-	SpriteObject cardsprite1("Sprite/cardSprite1.png", 2, 10);
-	SpriteObject cardsprite2("Sprite/cardSprite2.png", 2, 10);
+	SpriteObject cardsprite1("Sprite/cardSprite1.png", CARD_SPRITE_ROW, 10);
+	SpriteObject cardsprite2("Sprite/cardSprite2.png", CARD_SPRITE_ROW, 10);
 	SpriteObject endturn("Sprite/endturn.png", 1, 1);
 	SpriteObject endturneffect("Sprite/endturneffect.png", 1, 1);
 	deck = Deck::getInstance();
@@ -562,6 +562,7 @@ void Game::init(int width, int height)
 		datafile >> howManycard;
 		for (int i = 0; i < howManycard; i++)
 		{
+			//getline(datafile, names, '\t');
 			datafile >> names >> row >> column;
 			cout << PlayerDeck[c] << " " << names << endl;
 			if (PlayerDeck[c] == names)
@@ -570,8 +571,8 @@ void Game::init(int width, int height)
 				Card * card = new Card();
 				card->setId(id++);
 				card->setName(names);
-				card->setSpriteCard(cardsprite1, 2, 10);
-				card->setEffectCard(cardsprite2, 2, 10);
+				card->setSpriteCard(cardsprite1, CARD_SPRITE_ROW, 10);
+				card->setEffectCard(cardsprite2, CARD_SPRITE_ROW, 10);
 				deck->addCardToDeck(card);
 				card->setColumn(column);
 				cout << column << endl<<row<<endl;
@@ -670,7 +671,7 @@ void Game::init(int width, int height)
 	clickable.push_back(optionButton);
 	objects.push_back(optionButton);
 
-	previewCard = new SpriteObject("Sprite/cardSprite2.png", 2, 10);
+	previewCard = new SpriteObject("Sprite/cardSprite2.png", CARD_SPRITE_ROW, 10);
 	previewCard->setSize(300.0f, 420.0f);
 	previewCard->translate(glm::vec3(0.0f, 115.0f, 0.0f));
 	previewCard->setTag("previewCard");

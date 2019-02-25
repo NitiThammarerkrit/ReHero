@@ -806,12 +806,14 @@ void Game::endTurn()
 	state = 2;
 	deck->resetPlayedCard();
 	deck->discardHand();
+	enemies[0]->startTurn();
 	monsterTurn();
 	deck->randomMana();
 	showMana->setColumn(deck->getMana() + 1);
 	showMana->genUV();
 	deck->drawToHand(5);
 	resetHandPos();
+	myHero->startTurn();
 }
 
 void Game::monsterTurn()
@@ -868,8 +870,12 @@ void Game::restartGame()
 	showMana->setColumn(deck->getMana()+1);
 	showMana->genUV();
 	myHero->setActive(true);
-	enemies[0]->setActive(true);	
+	enemies[0]->setActive(true);
 
+	myHero->curePoison();
+	enemies[0]->curePoison();
+	myHero->startTurn();
+	enemies[0]->startTurn();
 }
 
 void Game::setMonster(int HP, string name, int row, int column,int speed)

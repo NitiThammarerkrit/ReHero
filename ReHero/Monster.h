@@ -39,6 +39,7 @@ public:
 	void getHeal(int amount);
 	void gainArmor(int amount);
 	void takePoison();
+	void curePoison();
 	
 	void startTurn(); //resolve every special condition & remove armor from last turn
 

@@ -120,10 +120,22 @@ bool Monster::takeDamage(int damage) {
 	this->damage = damage;
 	Game::getInstance()->DamageAmount = damage;
 	getAttack = true;
-	if (this->HP - damage > 0)
+
+	int leftoverDMG = damage - this->defArmor;
+	if (leftoverDMG <= 0)
+	{
+		this->defArmor -= damage;
+		return true;
+	}
+	else
+	{
+		this->defArmor = 0;
+	}
+
+	if (this->HP - leftoverDMG > 0)
 	{
 		//survive the damage
-		this->HP -= damage;
+		this->HP -= leftoverDMG;
 		return true;
 	}
 	else
@@ -132,7 +144,6 @@ bool Monster::takeDamage(int damage) {
 		this->HP = 0;
 		return false;
 	}
-
 
 }
 
@@ -171,6 +182,9 @@ void Monster::startTurn() {
 	{
 		cout << name << " take " << POISON_DMG << " damage from Poison."<< endl;
 		HP -= POISON_DMG;
+
+		this->damage = POISON_DMG;
+		getAttack = true;
 	}
 }
 
@@ -264,4 +278,8 @@ void Monster::usePoison(Hero * target) {
 		cout << name << " use poison to Hero" << endl;
 	}
 	else cout << name << " use poison, but no target!" << endl;
+}
+
+void Monster::curePoison() {
+	this->isPoisoned = false;
 }

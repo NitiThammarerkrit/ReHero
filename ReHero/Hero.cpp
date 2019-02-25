@@ -135,10 +135,22 @@ bool Hero::takeDamage(int damage) {
 	this->damage = damage;
 	Game::getInstance()->DamageAmount = damage;
 	getAttack = true;
-	if (this->HP - damage > 0)
+
+	int leftoverDMG = damage - this->defArmor;
+	if (leftoverDMG <= 0)
+	{
+		this->defArmor -= damage;
+		return true;
+	}
+	else
+	{
+		this->defArmor = 0;
+	}
+
+	if (this->HP - leftoverDMG > 0)
 	{
 		//survive the damage
-		this->HP -= damage;
+		this->HP -= leftoverDMG;
 		return true;
 	}
 	else
@@ -147,8 +159,6 @@ bool Hero::takeDamage(int damage) {
 		this->HP = 0;
 		return false;
 	}
-
-
 }
 
 bool Hero::isAlive() {
@@ -178,6 +188,10 @@ void Hero::takePoison() {
 	getAttack = true;
 	isPoisoned = true;
 
+}
+
+void Hero::curePoison() {
+	this->isPoisoned = false;
 }
 
 void Hero::render(glm::mat4 globalModelTransform)
@@ -229,6 +243,9 @@ void Hero::startTurn() {
 	{
 		cout << "Hero take " << POISON_DMG << " damage from Poison." << endl;
 		HP -= POISON_DMG;
+
+		this->damage = POISON_DMG;
+		getAttack = true;
 	}
 }
 

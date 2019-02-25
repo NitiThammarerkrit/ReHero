@@ -36,6 +36,7 @@ public:
 	void getHeal(int amount);
 	void gainArmor(int amount);
 	void takePoison();
+	void curePoison();
 	virtual void render(glm::mat4 globalModelTransform);
 	void setAttack(bool A);
 	void startTurn(); //resolve every special condition & remove armor from last turn

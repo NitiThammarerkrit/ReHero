@@ -28,7 +28,7 @@ Hero::~Hero() {
 }
 
 void Hero::update(float deltaTime)
-{
+{	  
 	//float y = deltaTime * 1.0f;
 	//Game::getInstance()->damageText->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	timeCount += deltaTime;
@@ -49,7 +49,6 @@ void Hero::update(float deltaTime)
 		cout << "HP = "<<(float)this->getHP()<<endl;
 		this->setAnimationLoop(3, 1, 5, 100);
 		damage = 0;
-		Game::getInstance()->DamageAmount = 0;
 		getAttack = false;
 	}
 	if (isAlive()==false)
@@ -72,42 +71,7 @@ void Hero::update(float deltaTime)
 			setAttack(false);
 		}
 	}
-	if (Game::getInstance()->state == 1 && isHeal == false && isAlive())  //attack!
-	{
-		if (state == 0)
-		{
-			//this->translate(glm::vec3(550, 0, 0));
-			this->setAnimationLoop(2, 1, 8, 700);
-			state = 1;
-		}
-		else
-		if (state == 1)
-		{
-			c += 1*deltaTime;
-			if (c > 500)
-			{
-				state = 2;
-				c = 0;
-			}
-		}
-		else
-		if (state == 2)
-		{
-			//this->translate(glm::vec3(-550, 0, 0));
-			this->setAnimationLoop(1, 1, 7, 1500);
-			Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(350.0f, 0.f, 0.f), heroMakeDamage*50.0f);
-			//this->setTexture(temptexture);
-			state = 0;
-			isAttack = false;
-			Game::getInstance()->state = 0;
-		}
-	}
-	else
-		if (Game::getInstance()->state == 1 && isHeal == true && isAlive()) //get Heal
-		{
-			Game::getInstance()->state = 0;
-			isHeal = false;
-		}
+	
 
 }
 
@@ -133,7 +97,6 @@ void Hero::setMaxHP(int amount) {
 
 bool Hero::takeDamage(int damage) {
 	this->damage = damage;
-	Game::getInstance()->DamageAmount = damage;
 	getAttack = true;
 
 	int leftoverDMG = damage - this->defArmor;
@@ -238,14 +201,90 @@ void Hero::setAttack(bool A)
 
 
 void Hero::startTurn() {
+	Game::getInstance()->state = State::PLAYER_CONDITION;
 	defArmor = 0;
 	if (isPoisoned)
 	{
 		cout << "Hero take " << POISON_DMG << " damage from Poison." << endl;
-		HP -= POISON_DMG;
+		this->takeDamage(POISON_DMG);
 
-		this->damage = POISON_DMG;
-		getAttack = true;
+		/*this->damage = POISON_DMG;
+		getAttack = true;	 */
+	}
+	if (isAlive()==false)
+	{
+		Game::getInstance()->state = State::PLAYER_DIE;
+	}
+	else
+	{
+		Game::getInstance()->state = State::PLAYER_RANDOM_MANA;
+	}
+}
+
+void Hero::SetAnim(int animRow, int loopNum, int time)
+{
+	while (state == 0)
+	{
+		this->setAnimationLoop(animRow, 1, loopNum, time);
+		state = 1;
+	}
+	while (state == 1)
+	{
+		c += 1;
+		if (c > time + 10)
+		{
+
+			state = 2;
+			c = 0;
+		}
+	}
+	
+	while (state == 2)
+	{
+		this->setAnimationLoop(1, 1, 7, 1500);
+		state = 0;
+		heroMakeDamage = 0;
+		isAttack = false;
+		Game::getInstance()->state = State::PLAYER_PLAY;
+	}
+}
+void Hero::CheckState()
+{
+	 if (Game::getInstance()->state == State::PLAYER_ATTACK_ANIM)
+	{
+		state = 0;
+		SetAnim(2, 8, 1000);
+		//Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(-350.0f, 0.f, 0.f), heroMakeDamage*50.0f);
+	}
+	else
+	if (Game::getInstance()->state == State::PLAYER_HEAL_ANIM)
+	{
+		state = 0;
+		SetAnim(3, 4, 600);
+		//Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(350.0f, 0.f, 0.f), heroMakeDamage*50.0f);
+	}
+	else
+	if (Game::getInstance()->state == State::PLAYER_DEFENSE_ANIM)
+	{
+		state = 0;
+		SetAnim(1, 7, 1500);
+	}
+	else
+	if (Game::getInstance()->state == State::PLAYER_SPELL_ANIM)
+	{
+		state = 0;
+		SetAnim(2, 8, 1000);
+	}
+	else
+	if (Game::getInstance()->state == State::PLAYER_PAY_HP_ANIM)
+	{
+		state = 0;
+		SetAnim(3, 5, 700);
+	}
+	else
+	if (Game::getInstance()->state == State::PLAYER_DIE)
+	{
+		active = false;
 	}
 }
 

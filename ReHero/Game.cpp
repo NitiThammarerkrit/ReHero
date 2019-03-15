@@ -45,10 +45,10 @@ void Game::handleMouseUp(int x, int y)
 	if (clickableObject)
 	{
 		cout << clickableObject->getTag() << endl;
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Start"&&state==99/*in Mainmenu*/)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Start"&&state == State::GAME_MAINMENU)
 		{
 			restartGame();
-			state = 50;	  //To City
+			state = State::GAME_CITY;//To City
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if(clickable[i]->getTag()== "Menu")
@@ -62,9 +62,9 @@ void Game::handleMouseUp(int x, int y)
 			}
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building3"&&state == 50/*in Mainmenu*/)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building3"&& state == State::GAME_CITY)
 		{
-			state = 0;
+			state = State::PLAYER_PLAY;
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -78,14 +78,13 @@ void Game::handleMouseUp(int x, int y)
 			}
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Quit"&&state == 99/*in Mainmenu*/)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Quit"&&state == State::GAME_MAINMENU/*in Mainmenu*/)
 		{
-			state = 999999; //Exit Game
+			state = State::GAME_QUIT; //Exit Game
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "ResumeButton" && state == 100/*in Pause*/)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "ResumeButton")
 		{
-			state = 0;	   //To fight
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -99,9 +98,8 @@ void Game::handleMouseUp(int x, int y)
 			}
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "optionButton" && state == 0/*inFight*/)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "optionButton")
 		{
-			state = 100;	 //To pause
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -115,9 +113,9 @@ void Game::handleMouseUp(int x, int y)
 			}
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Exit" && state == 100/*in Pause*/)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Exit" && state == State::GAME_PAUSE/*in Pause*/)
 		{
-			state = 99; /*To mainMenu*/
+			state = State::GAME_MAINMENU; /*To mainMenu*/
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -131,13 +129,13 @@ void Game::handleMouseUp(int x, int y)
 			}
 		}
 		else
-		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "endTurn" && state == 0)
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "endTurn" && state == State::PLAYER_PLAY)
 		{
 			endTurn();
 		}
 		clickableObject->onClick(false);
 	}
-	if (realY < 0.0f||(realY > 0.0f&&state==2|| state == 3))
+	if (realY < 0.0f||(realY > 0.0f&&state!= State::PLAYER_PLAY))
 	{
 		if (clickObject)
 		{
@@ -146,7 +144,7 @@ void Game::handleMouseUp(int x, int y)
 			cout << "Reset";
 		}
 	}
-	else
+	else if (realY > 0.0f&&state == State::PLAYER_PLAY)
 	{
 		//do something
 		if (clickObject&&deck->getMana()>= clickObject->getMana())
@@ -157,21 +155,7 @@ void Game::handleMouseUp(int x, int y)
 			showMana->setColumn(deck->getMana()+1);
 			showMana->genUV();
 			deck->handToDiscardPile(cardIndex);
-			//deck->drawToHand(1); 
-			state = 1;
-			//myHero->setTexture(effect[0]->getTexture());
 			clickObject->effect(myHero, enemies[0]);
-			/*if (DamageAmount>0)
-			{
-				TextObject * EnemydamageText = new TextObject();
-				EnemydamageText->setFontSize(120);
-				EnemydamageText->setFontName("Damaged.ttf");
-				EnemydamageText->translate(glm::vec3(400.0f, 100.0f, 0.0f));
-				EnemydamageText->setTextColor(SDL_Color{ 0,0,255 });
-				EnemydamageText->loadText(to_string(DamageAmount));
-				isGetDamage = true;
-				objects.push_back(EnemydamageText);
-			}  */
 			resetHandPos();
 			deck->playACard();
 			if (enemies[0]->isAlive() == false)
@@ -252,7 +236,7 @@ void Game::handleMouseMotion(int x, int y)
 		}
 	}
 	else
-	if(state==0)
+	if(state==State::PLAYER_PLAY)
 	{
 		for (int i = deck->cardsOnHand() - 1; i >= 0; i--) {
 			deck->handAt(i)->setState(0);
@@ -285,7 +269,7 @@ void Game::handleKey(char ch)
 		case 'e': endTurn(); break;
 		case 'l': obj->translate(glm::vec3(-0.3, 0, 0)); break;
 		case 'r': restartGame(); break;	 
-		case 'p': if (state == 0) { state = 100; }else if (state == 100) state = 0; cout << state; break;
+		//case 'p': if (state == 0) { state = 100; }else if (state == 100) state = 0; cout << state; break;
 			
 		}
 	}
@@ -297,7 +281,7 @@ void Game::init(int width, int height)
 	winHeight = height;
 	renderer = new GLRendererColor(width, height);
 	renderer->initGL("shaders/color/vertext.shd", "shaders/color/fragment.shd");
-	state = 99;
+	state = State::GAME_MAINMENU;
 
 	gameWidth = 1280;
 	gameHeight = 720;
@@ -694,19 +678,19 @@ void Game::init(int width, int height)
 
 void Game::render()	 //Change game scene
 {
-	if (state == 99)
+	if (state == State::GAME_MAINMENU)
 	{
 		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->Menu);
 	}
 	else
-	if (state == 100)
+	if (state == State::GAME_PAUSE)
 	{
 		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->Pause);
 	}
 	else
-	if (state == 50)
+	if (state == State::GAME_CITY)
 	{
 		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->City);
@@ -727,17 +711,6 @@ void Game::render()	 //Change game scene
 
 void Game::update(float deltaTime)
 {
-	
-	if (state == 3 && isGetDamage)
-	{
-		objects.pop_back();
-		isGetDamage = false;
-	}
-	if (state == 0 && isGetDamage)
-	{
-		objects.pop_back();
-		isGetDamage = false;
-	}
 	for (DrawableObject* menu : Menu)
 	{
 		menu->update(deltaTime);
@@ -803,7 +776,7 @@ void Game::resetHandPos()
 
 void Game::endTurn()
 {
-	state = 2;
+	state = State::PLAYER_END_TURN;
 	deck->resetPlayedCard();
 	deck->discardHand();
 	enemies[0]->startTurn();
@@ -814,6 +787,7 @@ void Game::endTurn()
 	deck->drawToHand(5);
 	resetHandPos();
 	myHero->startTurn();
+	state = State::PLAYER_PLAY;
 }
 
 void Game::monsterTurn()
@@ -821,20 +795,6 @@ void Game::monsterTurn()
 		if (myHero->isAlive() == true)
 		{
 			enemies[0]->randomUseSkill(myHero, nullptr);
-			if (DamageAmount > 0&&!isGetDamage)
-			{
-				TextObject * HerodamageText = new TextObject();
-				HerodamageText->setFontSize(120);
-				HerodamageText->setFontName("Damaged.ttf");
-				HerodamageText->translate(glm::vec3(-400.0f, 100.0f, 0.0f));
-				HerodamageText->setTextColor(SDL_Color{ 0,0,255 });
-				HerodamageText->loadText(to_string(DamageAmount));
-				isGetDamage = true;
-				damageText = HerodamageText;
-				objects.push_back(HerodamageText);
-			}
-			cout << "Damage is " << DamageAmount << endl;
-
 		}	
 		//cout << endl << "Hero take Damage:" << damage << endl;
 		//cout << endl << "MaxHP: " << myHero->getMaxHP() << endl;
@@ -855,7 +815,7 @@ void Game::getHit()
 void Game::restartGame()
 {
 	cout << "Reset" << endl; 
-	endTurn();
+	//endTurn();
 	myHero->setMaxHP(20);
 	myHero->setHP(20);
 	myHero->takeDamage(0);
@@ -887,6 +847,7 @@ void Game::setMonster(int HP, string name, int row, int column,int speed)
 	Monster1->setTag("Monster");
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
+	
 }
 
 void Game::drawText(string text, glm::vec3 pos, int fontSize)

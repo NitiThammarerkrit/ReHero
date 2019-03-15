@@ -7,11 +7,37 @@
 #include "Hero.h"
 #include "Monster.h"
 
-
-
-
-
 using namespace std;
+
+
+enum class State
+{
+	PLAYER_CONDITION = 0,
+	PLAYER_RANDOM_MANA = 1,
+	PLAYER_DRAW = 2,
+	PLAYER_PLAY = 3,
+	PLAYER_ATTACK_ANIM = 4,
+	PLAYER_HEAL_ANIM = 5,
+	PLAYER_DEFENSE_ANIM = 6,
+	PLAYER_SPELL_ANIM = 7,
+	PLAYER_PAY_HP_ANIM = 8,
+	PLAYER_END_TURN = 9,
+	PLAYER_DIE = 20,
+	
+	ENEMY_CONDITION = 10,
+	ENEMY_HEAL_ANIM = 11,
+	ENEMY_DEFENSE_ANIM = 12,
+	ENEMY_SPELL_ANIM = 13,
+	ENEMY_PAY_HP_ANIM = 14,
+	ENEMY_ATTACK_ANIM = 15,
+	ENEMY_DIE = 21,
+
+	GAME_MAINMENU = 16,
+	GAME_QUIT = 17,
+	GAME_CITY = 18,
+	GAME_PAUSE = 19,
+};
+
 class Game
 {
 	int cardIndex;
@@ -57,7 +83,7 @@ public:
 	void endTurn();
 	void monsterTurn();
 	void getHit();
-	int state;
+	State state;
 	void restartGame();
 	void setMonster(int HP, string name, int row, int column,int speed);
 	SpriteObject * showMana;
@@ -66,12 +92,10 @@ public:
 	SpriteObject * effectOnPlayer;
 	SpriteObject * effectOnEnemy;
 
-	int DamageAmount;
-	bool isGetDamage = false;
 	DrawableObject * damageText;
 
 	vector<DrawableObject*> Text;
 	void drawText(string text, glm::vec3 pos, int fontSize);
-
+	
 	vector<DrawableObject*> tempText;
 };

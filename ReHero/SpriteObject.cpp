@@ -89,7 +89,7 @@ void SpriteObject::render(glm::mat4 globalModelTransform)
 void SpriteObject::update(float deltaTime)
 {
 	
-	if (Game::getInstance()->state == 3 && tag == "randomMana")
+	if (Game::getInstance()->state == State::PLAYER_RANDOM_MANA && tag == "randomMana")
 	{
 		//cout << "0" << endl;
 		if (state == 0)
@@ -126,7 +126,7 @@ void SpriteObject::update(float deltaTime)
 					state = 0;
 					Game::getInstance()->randomMana->setActive(false);
 					Game::getInstance()->randomManaText->setActive(false);
-					Game::getInstance()->state = 0;
+					Game::getInstance()->state = State::PLAYER_DRAW;
 				}
 	}
 

@@ -136,6 +136,7 @@ void Deck::drawToHand(int amount) {
 		}
 		hand.push_back(drawACard());
 	}
+	
 }
 
 vector<Card*> * Deck::getHand() {

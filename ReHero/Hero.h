@@ -40,7 +40,8 @@ public:
 	virtual void render(glm::mat4 globalModelTransform);
 	void setAttack(bool A);
 	void startTurn(); //resolve every special condition & remove armor from last turn
-	
+	void SetAnim(int animRow, int loopNum, int time);
+	void CheckState();
 	int state;
 	int c;
 	int delay;

@@ -181,7 +181,7 @@ void Card::setIsInHand(bool x)
 }
 void Card::update(float deltaTime)
 {
-	if (Game::getInstance()->state == 100|| Game::getInstance()->state == 99)
+	if (Game::getInstance()->state == State::GAME_MAINMENU || Game::getInstance()->state == State::GAME_CITY|| Game::getInstance()->state == State::GAME_PAUSE)
 	{
 		active = false;
 	}
@@ -275,21 +275,54 @@ void Card::effect(Hero * friendTarget, Monster * enemyTarget)
 	while (1)
 	{
 		//read data (each action)
+		if (Game::getInstance()->state != State::PLAYER_PLAY)
+		{
+			friendTarget->CheckState();
+			enemyTarget->CheckState();
+			continue;
+		}
+
 		data >> effect >> value;
 		friendTarget->heroMakeDamage = value;
 		//perform a skill
-		if (effect == "damage") doDamage(enemyTarget, value);
-		else if (effect == "heal") heal(friendTarget, value);
-		else if (effect == "poison") usePoison(enemyTarget);
-		else if (effect == "defend") gainArmor(friendTarget, value);
-		else if (effect == "draw") drawCard(value);
+		if (effect == "damage")
+		{
+			Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
+			doDamage(enemyTarget, value);
+		}
+		else if (effect == "heal") 
+		{ 
+			Game::getInstance()->state = State::PLAYER_HEAL_ANIM;
+			heal(friendTarget, value);
+		}
+		else if (effect == "poison")
+		{ 
+			Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
+			usePoison(enemyTarget);
+		}
+		else if (effect == "defend")
+		{ 
+			Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
+			gainArmor(friendTarget, value);
+		}
+		else if (effect == "draw") 
+		{
+			Game::getInstance()->state = State::PLAYER_DRAW;
+			drawCard(value);
+		}
 		else if (effect == "dppc")
 		{
 			Deck * d = Deck::getInstance();
 			cout << name << " count played card = " << d->getCardPlayedThisTurn() << endl;
+			Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
 			doDamage(enemyTarget, value * d->getCardPlayedThisTurn());
 		}
-		else break;
+		else
+		{
+			Game::getInstance()->state = State::PLAYER_PLAY;
+			break;
+		}
+			
 	}
 }
 
@@ -300,6 +333,7 @@ void Card::doDamage(Monster * target, int damage) {
 		cout << name << " deal " << damage << " damage to monster" << endl;
 	}
 	else cout << name << " deal " << damage << " damage, but no target!" << endl;
+	
 }
 
 void Card::heal(Hero * target, int amount) {
@@ -330,6 +364,7 @@ void Card::gainArmor(Hero * target, int amount) {
 }
 
 void Card::drawCard(int amount) {
+	Game::getInstance()->state = State::PLAYER_PLAY;
 	Deck * playDeck = Deck::getInstance();
 	if (playDeck != nullptr)
 	{

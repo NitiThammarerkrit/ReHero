@@ -19,8 +19,8 @@ Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName
 	isAttack = false;
 	isGetAttack = false;
 	delayDie = 0;
-	heroMakeDamage = 0;
-
+	delay = 0;
+	oneTime = true;
 }
 
 Hero::~Hero() {
@@ -29,6 +29,7 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {	  
+	//cout << endl << cd << endl;
 	//float y = deltaTime * 1.0f;
 	//Game::getInstance()->damageText->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	timeCount += deltaTime;
@@ -38,19 +39,130 @@ void Hero::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
-
-	if (getAttack&&isAlive()) //get attacked
+	if (!effect.empty())
 	{
-		setAttack(true);   		 
+		if (effect[0] == "damage")
+		{
+			if (oneTime == true)
+			{
+				this->setAnimationLoop(2, 1, 8, 700);
+				if (!heroMakeDamage.empty())
+				{
+					Game::getInstance()->drawText(to_string(heroMakeDamage[0]), glm::vec3(350.0f, 0.f, 0.f), heroMakeDamage[0] * 40.0f, 3);
+					heroMakeDamage.pop_back();
+				}
+				
+				oneTime = false;
+			}
+			delay += 1 * deltaTime;
+			if (delay > 710)
+			{
+				effect.pop_back();
+				delay = 0;
+				this->setAnimationLoop(1, 1, 7, 1500);
+				oneTime = true;
+			}
+		}
+		else if (effect[0] == "heal")
+		{
+			if (oneTime == true)
+			{
+				 this->setAnimationLoop(3, 1, 4, 400);
+				 if (!heroMakeDamage.empty())
+				 {
+					 Game::getInstance()->drawText(to_string(heroMakeDamage[0]), glm::vec3(-350.0f, 0.f, 0.f), heroMakeDamage[0] * 40.0f, 2);
+					 heroMakeDamage.pop_back();
+				 }
+				
+				 oneTime = false;
+			}
+			delay += 1 * deltaTime;
+			if (delay > 410)
+			{
+				effect.pop_back();
+				delay = 0;
+				this->setAnimationLoop(1, 1, 7, 1500);
+				oneTime = true;
+			}
+		}
+		else if (effect[0] == "poison")
+		{
+			if (oneTime == true)
+			this->setAnimationLoop(2, 1, 8, 700);
+			oneTime = false;
+			delay += 1 * deltaTime;
+			if (delay > 710)
+			{
+				effect.pop_back();
+				delay = 0;
+				this->setAnimationLoop(1, 1, 7, 1500);
+				oneTime = true;
+			}
+		}
+		else if (effect[0] == "defend")
+		{
+			if (oneTime == true)
+			this->setAnimationLoop(3, 1, 4, 400);
+			oneTime = false;
+			delay += 1 * deltaTime;
+			if (delay > 410)
+			{
+				effect.pop_back();
+				delay = 0;
+				this->setAnimationLoop(1, 1, 7, 1500);
+				oneTime = true;
+			}
+		}
+		else if (effect[0] == "draw")
+		{
+			if (oneTime == true)
+				this->setAnimationLoop(3, 1, 4, 400);
+			oneTime = false;
+			delay += 1 * deltaTime;
+			if (delay > 410)
+			{
+				effect.pop_back();
+				delay = 0;
+				this->setAnimationLoop(1, 1, 7, 1500);
+				oneTime = true;
+			}
+		}
+		else if (effect[0] == "dppc")
+		{
+			if (oneTime == true)
+			this->setAnimationLoop(2, 1, 8, 1200);
+			oneTime = false;
+			delay += 1 * deltaTime;
+			if (delay > 1210)
+			{
+				effect.pop_back();
+				delay = 0;
+				this->setAnimationLoop(1, 1, 7, 1500);
+				oneTime = true;
+			}
+		}
+	}
+	if (getAttack&&isAlive()) //get attacked
+	{ 		 
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		//cout << "\nMonster HP:" << this->getHP();
 		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
 		cout << "HP = "<<(float)this->getHP()<<endl;
-		this->setAnimationLoop(3, 1, 5, 100);
+		if(oneTime == true)
+		this->setAnimationLoop(3, 1, 4, 400);
+		oneTime = false;
 		damage = 0;
-		getAttack = false;
+		delay += deltaTime;
+		if (delay > 410)
+		{
+			delay = 0;
+			this->setAnimationLoop(1, 1, 7, 1500);
+			getAttack = false;
+			oneTime = true;
+		}	
 	}
+	else
 	if (isAlive()==false)
 	{
 		if(delayDie==0)
@@ -60,19 +172,7 @@ void Hero::update(float deltaTime)
 		{
 			this->setActive(false);
 		}
-	}
-	if (isGetAttack&&isAlive())
-	{
-		delay += 1 * deltaTime;
-		if (delay > 110)
-		{
-			delay = 0;
-			this->setAnimationLoop(1, 1, 7, 1500);
-			setAttack(false);
-		}
-	}
-	
-
+	} 
 }
 
 int Hero::getHP() {
@@ -180,7 +280,7 @@ void Hero::render(glm::mat4 globalModelTransform)
 
 		currentMatrix = globalModelTransform * currentMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
-		if (isGetAttack)
+		if (getAttack)
 		{
 			glUniform1i(modeId, 2);
 		}
@@ -194,10 +294,6 @@ void Hero::render(glm::mat4 globalModelTransform)
 	}
 }
 
-void Hero::setAttack(bool A)
-{
-	isGetAttack = A;
-}
 
 
 void Hero::startTurn() {
@@ -214,6 +310,7 @@ void Hero::startTurn() {
 	if (isAlive()==false)
 	{
 		Game::getInstance()->state = State::PLAYER_DIE;
+		//CheckState();
 	}
 	else
 	{
@@ -221,19 +318,21 @@ void Hero::startTurn() {
 	}
 }
 
-void Hero::SetAnim(int animRow, int loopNum, int time)
+/*void Hero::SetAnim(int animRow, int loopNum, int time)
 {
 	while (state == 0)
 	{
+		cout << endl << "change anim" << endl;
 		this->setAnimationLoop(animRow, 1, loopNum, time);
 		state = 1;
 	}
 	while (state == 1)
 	{
 		c += 1;
-		if (c > time + 10)
+		cout << endl << c << endl;
+		if (c > (time + 10))
 		{
-
+			cout << endl << "change state" << endl;
 			state = 2;
 			c = 0;
 		}
@@ -250,41 +349,43 @@ void Hero::SetAnim(int animRow, int loopNum, int time)
 }
 void Hero::CheckState()
 {
-	 if (Game::getInstance()->state == State::PLAYER_ATTACK_ANIM)
+	if (Game::getInstance()->state == State::PLAYER_ATTACK_ANIM)
 	{
-		state = 0;
-		SetAnim(2, 8, 1000);
+		cout << endl << "attack" << endl;
+		SetAnim(2, 8, 20000);
 		//Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(-350.0f, 0.f, 0.f), heroMakeDamage*50.0f);
 	}
 	else
 	if (Game::getInstance()->state == State::PLAYER_HEAL_ANIM)
 	{
-		state = 0;
-		SetAnim(3, 4, 600);
+		SetAnim(3, 4, 20000);
 		//Game::getInstance()->drawText(to_string(heroMakeDamage), glm::vec3(350.0f, 0.f, 0.f), heroMakeDamage*50.0f);
 	}
 	else
 	if (Game::getInstance()->state == State::PLAYER_DEFENSE_ANIM)
 	{
-		state = 0;
-		SetAnim(1, 7, 1500);
+		SetAnim(3, 4, 20000);
 	}
 	else
 	if (Game::getInstance()->state == State::PLAYER_SPELL_ANIM)
 	{
-		state = 0;
-		SetAnim(2, 8, 1000);
+		SetAnim(2, 8, 20000);
 	}
 	else
 	if (Game::getInstance()->state == State::PLAYER_PAY_HP_ANIM)
 	{
-		state = 0;
-		SetAnim(3, 5, 700);
+		SetAnim(3, 4, 20000);
 	}
 	else
 	if (Game::getInstance()->state == State::PLAYER_DIE)
 	{
 		active = false;
 	}
-}
+	else
+	if (Game::getInstance()->state == State::ENEMY_ATTACK_ANIM)
+	{
+		cout << endl << "get hit" << endl;
+		SetAnim(3, 4, 200);
+	}
+}	   */
 

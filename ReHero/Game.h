@@ -95,7 +95,7 @@ public:
 	DrawableObject * damageText;
 
 	vector<DrawableObject*> Text;
-	void drawText(string text, glm::vec3 pos, int fontSize);
+	void drawText(string text, glm::vec3 pos, int fontSize, int color);
 	
 	vector<DrawableObject*> tempText;
 };

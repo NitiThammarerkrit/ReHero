@@ -301,8 +301,8 @@ void Game::init(int width, int height)
 
 	AudioEngine audio;
 	audio.init();
-	Music music = audio.loadMusic("testsound.mp3");
-	music.play(-1);
+	//Music music = audio.loadMusic("testsound.mp3");
+	//music.play(-1);
 	/////////////////////////////////////////////////////////////////MainMenu/////////////////////////////////////////////////////////////
 	SpriteObject * MenuBG = new SpriteObject("Sprite/MenuBG.jpg", 1, 1);
 	MenuBG->setSize(1280.0f, 720.0f);
@@ -483,7 +483,7 @@ void Game::init(int width, int height)
 	BG->setTag("BG");
 	objects.push_back(BG);
 
-	setMonster(20,"gob", 3, 5,400);
+	setMonster(20,"gob", 4, 5,400);
 	//delete enemies[0];
 	//setMonster(20, "wasp", 1, 5,1000);
 
@@ -842,7 +842,7 @@ void Game::setMonster(int HP, string name, int row, int column,int speed)
 {
 	Monster * Monster1 = new Monster(HP, name, row, column);
 	Monster1->setSize(350.0f, -300.0f);
-	Monster1->translate(glm::vec3(350.0f, 40.0f, 0.0f));
+	Monster1->translate(glm::vec3(350.0f, 80.0f, 0.0f));
 	Monster1->setAnimationLoop(1, 1, column, speed);
 	Monster1->setTag("Monster");
 	objects.push_back(Monster1);
@@ -850,7 +850,7 @@ void Game::setMonster(int HP, string name, int row, int column,int speed)
 	
 }
 
-void Game::drawText(string text, glm::vec3 pos, int fontSize)
+void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)
 {
 	/*FloatText* tempText = new FloatText();
 	tempText->setFontName("Damaged.ttf");
@@ -864,10 +864,24 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize)
 		FloatText *Text = dynamic_cast<FloatText *>(tempText[i]);
 		if (Text->isRunning == false)
 		{
+			if (color == 0)
+			{
+				Text->setTextColor(SDL_Color{ 255,0,0 });
+			}
+			else
+			if (color == 1)
+			{
+				Text->setTextColor(SDL_Color{ 0,255,0 });
+			}	
+			else
+			{
+				Text->setTextColor(SDL_Color{ 0,0,255 });
+			}
 			Text->setPosition(pos);
 			Text->setFontSize(fontSize);
 			Text->loadText(text);
 			Text->isRunning = true;
+
 			break;
 		}
 	}

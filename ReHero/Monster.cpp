@@ -21,7 +21,8 @@ Monster::Monster(int HP, string name, int row, int column) : SpriteObject("Sprit
 	isAttack = false;
 	state = 0;
 	c = 0;
-	monsterMakeDamage = 0;
+	delay = 0;
+	oneTime = true;
 
 	loadSkillData(name + ".txt");
 
@@ -41,14 +42,101 @@ void Monster::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
+	if (!effect.empty())
+	{
+		if (effect[0] == "damage")
+		{
+			if (oneTime == true)
+			{
+				this->setAnimationLoop(2, 1, 5, 600);
+				if (!monsterMakeDamage.empty())
+				{
+					Game::getInstance()->drawText(to_string(monsterMakeDamage[0]), glm::vec3(-350.0f, 0.f, 0.f), monsterMakeDamage[0] * 40.0f, 3);
+					monsterMakeDamage.pop_back();
+				}
+				oneTime = false;
+			}
+			delay += 1 * deltaTime;
+			if (delay > 610)
+			{
+				delay = 0;
+				this->setAnimationLoop(1, 1, 5, 400);
+				oneTime = true;
+				effect.pop_back();
+			}
+		}
+		else if (effect[0] == "heal")
+		{
+			if (oneTime == true)
+			{
+				this->setAnimationLoop(3, 1, 4, 200);
+				if (!monsterMakeDamage.empty())
+				{
+					Game::getInstance()->drawText(to_string(monsterMakeDamage[0]), glm::vec3(350.0f, 0.f, 0.f), monsterMakeDamage[0] * 40.0f, 2);
+					monsterMakeDamage.pop_back();
+				}
+				
+				oneTime = false;
+			}	
+			delay += 1 * deltaTime;
+			if (delay > 210)
+			{
+				delay = 0;
+				this->setAnimationLoop(1, 1, 5, 400);
+				oneTime = true;
+				effect.pop_back();
+			}
+		}
+		else if (effect[0] == "poison")
+		{
+			if (oneTime == true)
+				this->setAnimationLoop(3, 1, 4, 300);
+			oneTime = false;
+			delay += 1 * deltaTime;
+			if (delay > 310)
+			{
+				delay = 0;
+				this->setAnimationLoop(1, 1, 5, 400);
+				oneTime = true;
+				effect.pop_back();
+			}
+		}
+		else if (effect[0] == "defend")
+		{
+			if (oneTime == true)
+				this->setAnimationLoop(3, 1, 4, 300);
+			oneTime = false;
+			delay += 1 * deltaTime;
+			if (delay > 310)
+			{
+				delay = 0;
+				this->setAnimationLoop(1, 1, 5, 400);
+				oneTime = true;
+				effect.pop_back();
+			}
+		}
+	}
+	else
 	if (getAttack)
 	{
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		//cout << "\nMonster HP:" << this->getHP();
 		cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3(-damage / 2.0f / 20.0f*250.0f, 0.0f, 0.0f));
-		getAttack = false;
+		this->setAnimationLoop(4, 1, 1, 200);
+		oneTime = false;
+		damage = 0;
+		delay += deltaTime;
+		if (delay > 410)
+		{
+			delay = 0;
+			this->setAnimationLoop(1, 1, 5, 400);
+			getAttack = false;
+			oneTime = true;
+		}
 	}
+
+
 	
 		
 }
@@ -194,36 +282,33 @@ void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
 			while (1)
 			{
 				//read data of the selected skill (each action)
-				if (Game::getInstance()->state != State::ENEMY_CONDITION)
-				{
-					this->CheckState();
-					enemyTarget->CheckState();
-					continue;
-				}
 
 				selectedData >> effect >> value;
-
 				//perform a skill
 				if (effect == "damage")
 				{
 					Game::getInstance()->state = State::ENEMY_ATTACK_ANIM;
-					monsterMakeDamage = value;
+					this->effect.push_back(effect);
+					this->monsterMakeDamage.push_back(value);
 					doDamage(enemyTarget, value);
 				}
 				else if (effect == "heal")
 				{
 					Game::getInstance()->state = State::ENEMY_HEAL_ANIM;
-					monsterMakeDamage = value;
+					this->effect.push_back(effect);
+					this->monsterMakeDamage.push_back(value);
 					heal(friendTarget, value);
 				}
 				else if (effect == "poison")
 				{
 					Game::getInstance()->state = State::ENEMY_SPELL_ANIM;
+					this->effect.push_back(effect);
 					usePoison(enemyTarget);
 				}
 				else if (effect == "defend")
 				{
 					Game::getInstance()->state = State::ENEMY_DEFENSE_ANIM;
+					this->effect.push_back(effect);
 					gainArmor(value); 
 				}
 				else
@@ -275,11 +360,11 @@ void Monster::curePoison() {
 	this->isPoisoned = false;
 }
 
-void Monster::SetAnim(int animRow,int loopNum, int time)
+/*void Monster::SetAnim(int animRow,int loopNum, int time)
 {
+	cout << endl << "state is " << state << endl;
 	while (state == 0)
 	{
-
 		this->setAnimationLoop(animRow, 1, loopNum, time);
 		state = 1;
 	}
@@ -334,4 +419,9 @@ void Monster::CheckState()
 		active = false;
 		//SetAnim(3, 4, 600, deltaTime);
 	}
-}
+	else
+	if (Game::getInstance()->state == State::PLAYER_ATTACK_ANIM)
+	{
+		SetAnim(4, 1, 300);
+	}		
+}		   */

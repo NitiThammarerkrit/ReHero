@@ -38,15 +38,16 @@ public:
 	void takePoison();
 	void curePoison();
 	virtual void render(glm::mat4 globalModelTransform);
-	void setAttack(bool A);
 	void startTurn(); //resolve every special condition & remove armor from last turn
-	void SetAnim(int animRow, int loopNum, int time);
-	void CheckState();
+	/*void SetAnim(int animRow, int loopNum, int time);
+	void CheckState();	*/
 	int state;
 	int c;
 	int delay;
 	int delayDie;
-	int heroMakeDamage;
+	vector<int> heroMakeDamage;
+	bool oneTime;
+	vector<string> effect;
 	DrawableObject* HPBar;
 };
 

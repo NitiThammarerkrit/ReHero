@@ -275,43 +275,52 @@ void Card::effect(Hero * friendTarget, Monster * enemyTarget)
 	while (1)
 	{
 		//read data (each action)
-		if (Game::getInstance()->state != State::PLAYER_PLAY)
+		/*if (Game::getInstance()->state != State::PLAYER_PLAY)
 		{
-			friendTarget->CheckState();
+			//friendTarget->CheckState();
 			enemyTarget->CheckState();
 			continue;
-		}
+		}	  */
 
 		data >> effect >> value;
-		friendTarget->heroMakeDamage = value;
+		
+
 		//perform a skill
 		if (effect == "damage")
 		{
 			Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
+			friendTarget->effect.push_back(effect);
+			friendTarget->heroMakeDamage.push_back(value);
 			doDamage(enemyTarget, value);
 		}
 		else if (effect == "heal") 
 		{ 
 			Game::getInstance()->state = State::PLAYER_HEAL_ANIM;
+			friendTarget->effect.push_back(effect);
+			friendTarget->heroMakeDamage.push_back(value);
 			heal(friendTarget, value);
 		}
 		else if (effect == "poison")
 		{ 
 			Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
+			friendTarget->effect.push_back(effect);
 			usePoison(enemyTarget);
 		}
 		else if (effect == "defend")
 		{ 
 			Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
+			friendTarget->effect.push_back(effect);
 			gainArmor(friendTarget, value);
 		}
 		else if (effect == "draw") 
 		{
 			Game::getInstance()->state = State::PLAYER_DRAW;
+			friendTarget->effect.push_back(effect);
 			drawCard(value);
 		}
 		else if (effect == "dppc")
 		{
+			friendTarget->effect.push_back(effect);
 			Deck * d = Deck::getInstance();
 			cout << name << " count played card = " << d->getCardPlayedThisTurn() << endl;
 			Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;

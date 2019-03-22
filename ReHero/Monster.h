@@ -40,8 +40,8 @@ public:
 	void gainArmor(int amount);
 	void takePoison();
 	void curePoison();
-	void SetAnim(int animRow, int loopNum, int time);
-	void CheckState();
+	/*void SetAnim(int animRow, int loopNum, int time);
+	void CheckState(); */
 	void startTurn(); //resolve every special condition & remove armor from last turn
 
 	//monster skills
@@ -52,7 +52,10 @@ public:
 	bool isAlive();
 	int state;
 	int c;
-	int monsterMakeDamage;
+	vector<int> monsterMakeDamage;
 	DrawableObject* HPBar;
+	vector<string> effect;
+	bool oneTime;
+	int delay;
 
 };

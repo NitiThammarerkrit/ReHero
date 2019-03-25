@@ -89,12 +89,12 @@ void SpriteObject::render(glm::mat4 globalModelTransform)
 void SpriteObject::update(float deltaTime)
 {
 	
-	if (Game::getInstance()->state == State::PLAYER_RANDOM_MANA && tag == "randomMana")
+	if (Game::getInstance()->state == State::PLAYER_SHOW_RANDOM_MANA && tag == "randomMana")
 	{
-		//cout << "0" << endl;
+		//cout << "random0" << endl;
 		if (state == 0)
 		{
-			//cout << "1" << endl;
+			//cout << "random1" << endl;
 			Game::getInstance()->randomMana->setActive(true);
 			Game::getInstance()->randomMana->setPlayAnim(true);
 			Game::getInstance()->randomManaText->setActive(true);
@@ -108,7 +108,7 @@ void SpriteObject::update(float deltaTime)
 		else
 			if (state == 1)
 			{
-				//cout << "2" << endl;
+				//cout << "random2" << endl;
 				Game::getInstance()->randomMana->setPlayAnim(false);
 				Game::getInstance()->randomMana->setColumn(Game::getInstance()->showMana->getColumn());
 				Game::getInstance()->randomMana->genUV();
@@ -122,7 +122,7 @@ void SpriteObject::update(float deltaTime)
 			else
 				if (state == 2)
 				{
-					//cout << "3" << endl;
+					//cout << "random3" << endl;
 					state = 0;
 					Game::getInstance()->randomMana->setActive(false);
 					Game::getInstance()->randomManaText->setActive(false);

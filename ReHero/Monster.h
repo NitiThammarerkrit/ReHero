@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <queue>
 #include "Hero.h"
 
 class Monster : public SpriteObject
@@ -49,12 +50,18 @@ public:
 	void doDamage(Hero * target, int damage);
 	void heal(Monster * target, int amount);
 	void usePoison(Hero * target);
+	void endMyTurn();
 	bool isAlive();
 	int state;
 	int c;
-	vector<int> monsterMakeDamage;
+	
 	DrawableObject* HPBar;
-	vector<string> effect;
+
+	queue<string> effect;
+	queue<int> monsterMakeDamage;
+	Hero * enemyTarget;
+	Monster * friendTarget;
+
 	bool oneTime;
 	int delay;
 

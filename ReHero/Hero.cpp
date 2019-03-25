@@ -148,7 +148,7 @@ void Hero::update(float deltaTime)
 		//cout << "\nMonster HP:" << this->getHP();
 		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
-		cout << "HP = "<<(float)this->getHP()<<endl;
+		//cout << "HP = "<<(float)this->getHP()<<endl;
 		if(oneTime == true)
 		this->setAnimationLoop(3, 1, 4, 400);
 		oneTime = false;
@@ -314,7 +314,7 @@ void Hero::startTurn() {
 	}
 	else
 	{
-		Game::getInstance()->state = State::PLAYER_RANDOM_MANA;
+		Game::getInstance()->state = State::PLAYER_PLAY;
 	}
 }
 

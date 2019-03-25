@@ -44,15 +44,17 @@ void Monster::update(float deltaTime)
 	}
 	if (!effect.empty())
 	{
-		if (effect[0] == "damage")
+		if (effect.front() == "damage")
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->state = State::ENEMY_ATTACK_ANIM;
 				this->setAnimationLoop(2, 1, 5, 600);
 				if (!monsterMakeDamage.empty())
 				{
-					Game::getInstance()->drawText(to_string(monsterMakeDamage[0]), glm::vec3(-350.0f, 0.f, 0.f), monsterMakeDamage[0] * 40.0f, 3);
-					monsterMakeDamage.pop_back();
+					doDamage(enemyTarget, monsterMakeDamage.front());
+					Game::getInstance()->drawText(to_string(monsterMakeDamage.front()), glm::vec3(-350.0f, 0.f, 0.f), monsterMakeDamage.front() * 40.0f, 3);
+					monsterMakeDamage.pop();
 				}
 				oneTime = false;
 			}
@@ -60,20 +62,22 @@ void Monster::update(float deltaTime)
 			if (delay > 610)
 			{
 				delay = 0;
-				this->setAnimationLoop(1, 1, 5, 400);
 				oneTime = true;
-				effect.pop_back();
+				effect.pop();
+				if (effect.empty()) endMyTurn();
 			}
 		}
-		else if (effect[0] == "heal")
+		else if (effect.front() == "heal")
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->state = State::ENEMY_HEAL_ANIM;
 				this->setAnimationLoop(3, 1, 4, 200);
 				if (!monsterMakeDamage.empty())
 				{
-					Game::getInstance()->drawText(to_string(monsterMakeDamage[0]), glm::vec3(350.0f, 0.f, 0.f), monsterMakeDamage[0] * 40.0f, 2);
-					monsterMakeDamage.pop_back();
+					heal(friendTarget, monsterMakeDamage.front());
+					Game::getInstance()->drawText(to_string(monsterMakeDamage.front()), glm::vec3(350.0f, 0.f, 0.f), monsterMakeDamage.front() * 40.0f, 2);
+					monsterMakeDamage.pop();
 				}
 				
 				oneTime = false;
@@ -82,46 +86,57 @@ void Monster::update(float deltaTime)
 			if (delay > 210)
 			{
 				delay = 0;
-				this->setAnimationLoop(1, 1, 5, 400);
 				oneTime = true;
-				effect.pop_back();
+				effect.pop();
+				if (effect.empty()) endMyTurn();
 			}
 		}
-		else if (effect[0] == "poison")
+		else if (effect.front() == "poison")
 		{
 			if (oneTime == true)
+			{
+				Game::getInstance()->state = State::ENEMY_SPELL_ANIM;
 				this->setAnimationLoop(3, 1, 4, 300);
+			}
 			oneTime = false;
 			delay += 1 * deltaTime;
 			if (delay > 310)
 			{
+				usePoison(enemyTarget);
 				delay = 0;
-				this->setAnimationLoop(1, 1, 5, 400);
 				oneTime = true;
-				effect.pop_back();
+				effect.pop();
+				Game::getInstance()->drawText(to_string(monsterMakeDamage.front()), glm::vec3(-350.0f, 0.f, 0.f), monsterMakeDamage.front() * 40.0f, 3);
+				monsterMakeDamage.pop();
+				if (effect.empty()) endMyTurn();
 			}
 		}
-		else if (effect[0] == "defend")
+		else if (effect.front() == "defend")
 		{
 			if (oneTime == true)
+			{
+				Game::getInstance()->state = State::ENEMY_DEFENSE_ANIM;
 				this->setAnimationLoop(3, 1, 4, 300);
+			}	
 			oneTime = false;
 			delay += 1 * deltaTime;
 			if (delay > 310)
 			{
+				gainArmor(monsterMakeDamage.front());
 				delay = 0;
-				this->setAnimationLoop(1, 1, 5, 400);
 				oneTime = true;
-				effect.pop_back();
+				effect.pop();
+				monsterMakeDamage.pop();
+				if (effect.empty()) endMyTurn();
 			}
 		}
 	}
-	else
+
 	if (getAttack)
 	{
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		//cout << "\nMonster HP:" << this->getHP();
-		cout << endl << "damage is" << damage;
+		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3(-damage / 2.0f / 20.0f*250.0f, 0.0f, 0.0f));
 		this->setAnimationLoop(4, 1, 1, 200);
 		oneTime = false;
@@ -134,11 +149,12 @@ void Monster::update(float deltaTime)
 			getAttack = false;
 			oneTime = true;
 		}
-	}
+	}	
+}
 
-
-	
-		
+void Monster::endMyTurn() {
+	this->setAnimationLoop(1, 1, 5, 400);
+	Game::getInstance()->state = State::PLAYER_RANDOM_MANA;
 }
 
 bool Monster::isAlive() {
@@ -266,6 +282,9 @@ void Monster::loadSkillData(string fileName) {
 
 void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
 
+	this->enemyTarget = enemyTarget;
+	this->friendTarget = friendTarget;
+
 	//random skill
 	int selectedSkill = rand() % skillData.size();
 
@@ -284,39 +303,43 @@ void Monster::randomUseSkill(Hero * enemyTarget, Monster * friendTarget) {
 				//read data of the selected skill (each action)
 
 				selectedData >> effect >> value;
+
+				if (effect == ";") break;
+
+				this->effect.push(effect);
+				this->monsterMakeDamage.push(value);
+
+				cout << "push " << effect << " " << value << endl;
 				//perform a skill
-				if (effect == "damage")
+				/*if (effect == "damage")
 				{
-					Game::getInstance()->state = State::ENEMY_ATTACK_ANIM;
 					this->effect.push_back(effect);
 					this->monsterMakeDamage.push_back(value);
 					doDamage(enemyTarget, value);
 				}
 				else if (effect == "heal")
 				{
-					Game::getInstance()->state = State::ENEMY_HEAL_ANIM;
 					this->effect.push_back(effect);
 					this->monsterMakeDamage.push_back(value);
 					heal(friendTarget, value);
 				}
 				else if (effect == "poison")
 				{
-					Game::getInstance()->state = State::ENEMY_SPELL_ANIM;
 					this->effect.push_back(effect);
 					usePoison(enemyTarget);
 				}
 				else if (effect == "defend")
 				{
-					Game::getInstance()->state = State::ENEMY_DEFENSE_ANIM;
 					this->effect.push_back(effect);
 					gainArmor(value); 
 				}
 				else
 				{
-					Game::getInstance()->state = State::PLAYER_CONDITION;
 					break;
-				}
+				}*/
+				
 			}
+
 			break;
 		}
 

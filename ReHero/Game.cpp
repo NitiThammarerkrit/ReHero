@@ -44,7 +44,7 @@ void Game::handleMouseUp(int x, int y)
 	isMouseDown = false;
 	if (clickableObject)
 	{
-		cout << clickableObject->getTag() << endl;
+		//cout << clickableObject->getTag() << endl;
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Start"&&state == State::GAME_MAINMENU)
 		{
 			restartGame();
@@ -209,7 +209,7 @@ void Game::handleMouseDown(int x, int y)
 			if (object->isClick(realX, realY))
 			{
 				//cardIndex = i;
-				cout <<endl<< "Click JA " << endl;
+				//cout <<endl<< "Click JA " << endl;
 				isMouseDown = true;
 				clickableObject = object;
 				object->onClick(true);
@@ -526,7 +526,7 @@ void Game::init(int width, int height)
 	for (int i = 0; i < howManycard; i++)
 	{
 		getline(datafile, names, '\n');
-		cout << names << endl;
+		//cout << names << endl;
 		PlayerDeck.push_back(names);
 	}
 
@@ -534,7 +534,7 @@ void Game::init(int width, int height)
 
 	for (int c = 0; c < PlayerDeck.size(); c++)
 	{
-		cout << c << endl;
+		//cout << c << endl;
 		ifstream datafile("cardSpriteData.txt");
 		if (!datafile)
 		{
@@ -548,10 +548,10 @@ void Game::init(int width, int height)
 		{
 			//getline(datafile, names, '\t');
 			datafile >> names >> row >> column;
-			cout << PlayerDeck[c] << " " << names << endl;
+			//cout << PlayerDeck[c] << " " << names << endl;
 			if (PlayerDeck[c] == names)
 			{
-				cout << names << " " << row << " " << column << endl;
+				//cout << names << " " << row << " " << column << endl;
 				Card * card = new Card();
 				card->setId(id++);
 				card->setName(names);
@@ -559,7 +559,7 @@ void Game::init(int width, int height)
 				card->setEffectCard(cardsprite2, CARD_SPRITE_ROW, 10);
 				deck->addCardToDeck(card);
 				card->setColumn(column);
-				cout << column << endl<<row<<endl;
+				//cout << column << endl<<row<<endl;
 				card->setRow(row);
 				card->genUV();
 				break;
@@ -734,6 +734,19 @@ void Game::update(float deltaTime)
 		text->update(deltaTime);
 	}
 
+	if (Game::getInstance()->state == State::PLAYER_RANDOM_MANA)
+	{
+		deck->randomMana();
+		showMana->setColumn(deck->getMana() + 1);
+		showMana->genUV();
+		Game::getInstance()->state = State::PLAYER_SHOW_RANDOM_MANA;
+	}
+	if (Game::getInstance()->state == State::PLAYER_DRAW)
+	{
+		deck->drawToHand(5);
+		resetHandPos();
+		myHero->startTurn();
+	}
 }
 
 void Game::resetHandPos()
@@ -781,13 +794,6 @@ void Game::endTurn()
 	deck->discardHand();
 	enemies[0]->startTurn();
 	monsterTurn();
-	deck->randomMana();
-	showMana->setColumn(deck->getMana() + 1);
-	showMana->genUV();
-	deck->drawToHand(5);
-	resetHandPos();
-	myHero->startTurn();
-	state = State::PLAYER_PLAY;
 }
 
 void Game::monsterTurn()

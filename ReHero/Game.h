@@ -71,6 +71,7 @@ class Game
 	//vector<ClickableObject*> Pauseclickable;
 
 public:
+	~Game();
 	static Game* getInstance();
 	GLRenderer * getRenderer();
 	void handleMouseUp(int x, int y);
@@ -99,4 +100,12 @@ public:
 	void drawText(string text, glm::vec3 pos, int fontSize, int color);
 	
 	vector<DrawableObject*> tempText;
+
+	//for card creating
+	void addNewCardToDeck(string cardName);
+	void addNewCardToDeck(Card * c);
+	SpriteObject * cardsprite1;
+	SpriteObject * cardsprite2;
+	int id = 1;
+	int cardSpriteRow = 4;
 };

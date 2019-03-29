@@ -54,8 +54,8 @@ public:
 	bool loseMana(int cost);	//allow to lose mana and return true if cost <= mana, if not, return false
 
 	//progression & data saving
-	void addCardToDeck(Card * c);	//add a new card to player deck
-	void saveCurrentPlayerDeck();	//save the current deck data into text file
+	void addCardToDeck(Card * c);			//add a new card to player deck by Card object
+	void saveCurrentPlayerDeck();			//save the current deck data into text file
 
 };
 

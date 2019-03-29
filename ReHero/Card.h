@@ -49,7 +49,7 @@ public:
 	int getRow();
 	int getColumn();
 	void genUV();
-	void setSpriteCard(SpriteObject, int row, int col);
+	void setSpriteCard(SpriteObject * sprite, int row, int col);
 	void setId(int id);
 	int getId();
 
@@ -59,7 +59,7 @@ public:
 	int getMana();
 	bool active;
 
-	void setEffectCard(SpriteObject, int row, int col);
+	void setEffectCard(SpriteObject * sprite, int row, int col);
 	void setState(int state);
 
 	//card effect functions

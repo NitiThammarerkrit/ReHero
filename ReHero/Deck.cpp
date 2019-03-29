@@ -311,4 +311,8 @@ void Deck::saveCurrentPlayerDeck() {
 
 		deckdata.close();
 	}
+	else 
+	{
+		cout << "Cannot open deck data file" << endl;
+	}
 }

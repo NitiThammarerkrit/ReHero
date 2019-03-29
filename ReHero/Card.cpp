@@ -238,9 +238,9 @@ void Card::genUV()
 	uv[7] = (1.0f / rowMax) * (row);
 }
 
-void Card::setSpriteCard(SpriteObject sprite, int row, int col)
+void Card::setSpriteCard(SpriteObject * sprite, int row, int col)
 {	   
-	texture = sprite.getTexture();
+	texture = sprite->getTexture();
 	tempTexture = texture;
 	rowMax = row;
 	columnMax = col;
@@ -393,9 +393,9 @@ int Card::getMana()
 	return mana;
 }
 
-void Card::setEffectCard(SpriteObject sprite, int row, int col)
+void Card::setEffectCard(SpriteObject * sprite, int row, int col)
 {
-	effectTexture = sprite.getTexture();
+	effectTexture = sprite->getTexture();
 	rowMax = row;
 	columnMax = col;
 }

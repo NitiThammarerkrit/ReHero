@@ -13,10 +13,6 @@
 #include <iostream>	
 #include "TextMeshVbo.h"
 #include "FloatText.h"
-						             
-											         
-#define CARD_SPRITE_ROW 4
-
 
 using namespace std;
 
@@ -508,9 +504,8 @@ void Game::init(int width, int height)
 	string name[5] = { "RED","GREEN","BLUE","YELLOW","PINK" };
 	int spriteNum = 10;
 	int allCard = 20;
-	int id = 1;
-	SpriteObject cardsprite1("Sprite/cardSprite1.png", CARD_SPRITE_ROW, 10);
-	SpriteObject cardsprite2("Sprite/cardSprite2.png", CARD_SPRITE_ROW, 10);
+	cardsprite1 = new SpriteObject("Sprite/cardSprite1.png", cardSpriteRow, 10);
+	cardsprite2 = new SpriteObject("Sprite/cardSprite2.png", cardSpriteRow, 10);
 	SpriteObject endturn("Sprite/endturn.png", 1, 1);
 	SpriteObject endturneffect("Sprite/endturneffect.png", 1, 1);
 	deck = Deck::getInstance();
@@ -555,8 +550,8 @@ void Game::init(int width, int height)
 				Card * card = new Card();
 				card->setId(id++);
 				card->setName(names);
-				card->setSpriteCard(cardsprite1, CARD_SPRITE_ROW, 10);
-				card->setEffectCard(cardsprite2, CARD_SPRITE_ROW, 10);
+				card->setSpriteCard(cardsprite1, cardSpriteRow, 10);
+				card->setEffectCard(cardsprite2, cardSpriteRow, 10);
 				deck->addCardToDeck(card);
 				card->setColumn(column);
 				//cout << column << endl<<row<<endl;
@@ -655,7 +650,7 @@ void Game::init(int width, int height)
 	clickable.push_back(optionButton);
 	objects.push_back(optionButton);
 
-	previewCard = new SpriteObject("Sprite/cardSprite2.png", CARD_SPRITE_ROW, 10);
+	previewCard = new SpriteObject("Sprite/cardSprite2.png", cardSpriteRow, 10);
 	previewCard->setSize(300.0f, 420.0f);
 	previewCard->translate(glm::vec3(0.0f, 115.0f, 0.0f));
 	previewCard->setTag("previewCard");
@@ -813,9 +808,45 @@ void Game::monsterTurn()
 	
 }
 
-void Game::getHit()
+void Game::addNewCardToDeck(string cardName)
 {
+	ifstream datafile("cardSpriteData.txt");
+	if (!datafile)
+	{
+		cout << "fail to load cardEffectData " << endl;
+		return;
+	}
+	string names;
+	int row;
+	int column;
+	int howManyCard;
+	datafile >> howManyCard;
+	for (int i = 0; i < howManyCard; i++)
+	{
+		//getline(datafile, names, '\t');
+		datafile >> names >> row >> column;
+		//cout << PlayerDeck[c] << " " << names << endl;
+		if (cardName == names)
+		{
+			//cout << names << " " << row << " " << column << endl;
+			Card * card = new Card();
+			card->setId(id++);
+			card->setName(names);
+			card->setSpriteCard(cardsprite1, cardSpriteRow, 10);
+			card->setEffectCard(cardsprite2, cardSpriteRow, 10);
+			deck->addCardToDeck(card);
+			card->setColumn(column);
+			//cout << column << endl<<row<<endl;
+			card->setRow(row);
+			card->genUV();
+			break;
+		}
+	}
+	datafile.close();
+}
 
+void Game::addNewCardToDeck(Card * c) {
+	deck->addCardToDeck(c);
 }
 
 void Game::restartGame()
@@ -894,7 +925,11 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)
 
 }
 
-
+Game::~Game() {
+	delete cardsprite1;
+	delete cardsprite2;
+	delete Deck::getInstance();
+}
 
 
 Game::Game()

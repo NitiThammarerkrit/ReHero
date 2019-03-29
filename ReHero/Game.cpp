@@ -973,9 +973,13 @@ void Game::restartGame()
 	deck->randomMana();
 	showMana->setColumn(deck->getMana()+1);
 	showMana->genUV();
+	deck->resetPlayedCard();
+	deck->discardHand();
+	deck->drawToHand(5);
+	resetHandPos();
 	myHero->setActive(true);
 	enemies[0]->setActive(true);
-
+	
 	myHero->curePoison();
 	enemies[0]->curePoison();
 	myHero->startTurn();

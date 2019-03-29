@@ -251,3 +251,52 @@ void SpriteObject::setTag(string tag)
 	this->tag = tag;
 }
 
+void SpriteObject::changeSprite(string fileName, int row, int column)
+{
+	glActiveTexture(GL_TEXTURE0);
+	SDL_Surface *image = IMG_Load(fileName.c_str());
+	if (image == NULL)
+	{
+		cerr << "IMG_Load: " << SDL_GetError() << endl;
+		return;
+	}
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	int Mode = GL_RGB;
+	if (image->format->BytesPerPixel == 4)
+	{
+		Mode = GL_RGBA;
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, Mode, image->w, image->h, 0, Mode, GL_UNSIGNED_BYTE, image->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	SDL_FreeSurface(image);
+
+	this->rowMax = row;
+	this->columnMax = column;
+	this->row = 1;
+	this->column = 1;
+	this->genUV();
+
+	this->animRow = 1;
+	this->animColumn = 1;
+	this->loopMax = 1;
+	this->loopCount = 0;
+	this->animationTime = 0;
+	this->timeCount = 0;
+	temptexture = texture;
+	hasAnim = true;
+	state = 0;
+	c = 0;
+}
+
+
+

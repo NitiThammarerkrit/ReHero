@@ -313,6 +313,6 @@ void Deck::saveCurrentPlayerDeck() {
 	}
 	else 
 	{
-		cout << "Cannot open deck data file" << endl;
+		//cout << "Cannot open deck data file" << endl;
 	}
 }

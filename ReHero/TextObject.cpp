@@ -45,7 +45,7 @@ void TextObject::render(glm::mat4 globalModelTransform)
 		}
 	
 }
-
+                                                                                      
 void TextObject::update(float deltaTime)
 {
 }

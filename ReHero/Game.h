@@ -66,6 +66,8 @@ class Game
 	Game();
 	SpriteObject * previewCard;
 	vector<ClickableObject*> clickable;
+	vector<ClickableObject*> cardDropList;
+	vector<string> dropList;
 	//vector<ClickableObject*> Cityclickable;
 	//vector<ClickableObject*> Menuclickable;
 	//vector<ClickableObject*> Pauseclickable;

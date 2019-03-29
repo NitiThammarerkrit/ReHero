@@ -129,6 +129,17 @@ void Game::handleMouseUp(int x, int y)
 		{
 			endTurn();
 		}
+		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "cardDrop" && state == State::ENEMY_DIE)
+		{
+			addNewCardToDeck(clickableObject->getName());
+			//setMonster(40, "wasp", 4, 5, 400);
+			enemies[0]->changeSprite("Sprite/wasp.png", 4, 5);
+			cardDropList[0]->active = false;
+			cardDropList[1]->active = false;
+			restartGame();
+		}
+
 		clickableObject->onClick(false);
 	}
 	if (realY < 0.0f||(realY > 0.0f&&state!= State::PLAYER_PLAY))
@@ -248,6 +259,22 @@ void Game::handleMouseMotion(int x, int y)
 				previewCard->setColumn(gameObject->getColumn());
 				previewCard->genUV();
 				previewCard->setAnimationLoop(gameObject->getRow(), gameObject->getColumn(), 1, 800);
+				break;
+			}
+		}
+	}
+	else
+	if (state == State::ENEMY_DIE)
+	{
+		for (int i = 1; i >= 0; i--) {
+			cardDropList[i]->onClick(false);
+		}
+
+		for (int i = 1; i >= 0; i--) {
+			ClickableObject* gameObject = cardDropList[i];
+			if (gameObject->isClick(realX, realY))
+			{
+				cardDropList[i]->onClick(true);
 				break;
 			}
 		}
@@ -657,6 +684,37 @@ void Game::init(int width, int height)
 	objects.push_back(previewCard);
 	previewCard->setActive(false);
 
+	SpriteObject cardDrop("Sprite/cardSprite1.png", cardSpriteRow, 10);
+	SpriteObject cardDropeffect("Sprite/cardSprite2.png", cardSpriteRow, 10);
+
+	ClickableObject * cardDrop1 = new ClickableObject;
+	cardDrop1->setSpriteClickableObject(cardDrop, cardSpriteRow, 10);
+	cardDrop1->setEffect(cardDropeffect, cardSpriteRow, 10);
+	cardDrop1->setColumn(1);
+	cardDrop1->setRow(1);
+	cardDrop1->genUV();
+	cardDrop1->setTagAndName("cardDrop", "one");
+	cardDrop1->setSize(300.0f, 420.0f);
+	cardDrop1->translate(glm::vec3(-200.0f, 75.0f, 0.0f));
+	cardDrop1->active = false;
+	clickable.push_back(cardDrop1);
+	objects.push_back(cardDrop1);
+	cardDropList.push_back(cardDrop1);
+
+	ClickableObject * cardDrop2 = new ClickableObject;
+	cardDrop2->setSpriteClickableObject(cardDrop, cardSpriteRow, 10);
+	cardDrop2->setEffect(cardDropeffect, cardSpriteRow, 10);
+	cardDrop2->setColumn(1);
+	cardDrop2->setRow(1);
+	cardDrop2->genUV();
+	cardDrop2->setTagAndName("cardDrop", "two");
+	cardDrop2->setSize(300.0f, 420.0f);
+	cardDrop2->translate(glm::vec3(200.0f, 75.0f, 0.0f));
+	cardDrop2->active = false;
+	clickable.push_back(cardDrop2);
+	objects.push_back(cardDrop2);
+	cardDropList.push_back(cardDrop2);
+
 	for (int i = 0; i < 5; i++)
 	{
 		FloatText* tempTexts = new FloatText();
@@ -695,11 +753,8 @@ void Game::render()	 //Change game scene
 		this->getRenderer()->Clear();
 		this->getRenderer()->render(this->objects);
 		this->getRenderer()->render(this->tempText);
-		this->getRenderer()->render(*(deck->getHand()));
-		
+		this->getRenderer()->render(*(deck->getHand()));	
 	}
-	
-	
 }
 
 
@@ -742,6 +797,59 @@ void Game::update(float deltaTime)
 		resetHandPos();
 		myHero->startTurn();
 	}
+	if (state == State::ENEMY_DIE)
+	{
+		int howManycard;
+		ifstream datafile("deck01.txt");
+		if (!datafile)
+		{
+			cout << "fail to load deck01 " << endl;
+			return;
+		}
+		string names;
+		datafile >> howManycard;
+		int drop1 = rand() % howManycard;
+		int drop2 = rand() % howManycard;
+		for (int i = 0; i < howManycard; i++)
+		{
+			getline(datafile, names, '\n');
+			if (i == drop1)
+				dropList.push_back(names);
+			if (i == drop2)
+				dropList.push_back(names);
+		}
+		datafile.close();
+
+		ifstream datafiles("cardSpriteData.txt");
+		if (!datafiles)
+		{
+			cout << "fail to load cardEffectData " << endl;
+			return;
+		}
+		int row;
+		int column;
+		datafiles >> howManycard;
+		for (int k = 0; k < 2; k++)
+		{
+			for (int i = 0; i < howManycard; i++)
+			{
+				//getline(datafile, names, '\t');
+				datafiles >> names >> row >> column;
+				//cout << PlayerDeck[c] << " " << names << endl;
+				if (dropList[k] == names)
+				{
+					cardDropList[k]->setTagAndName("cardDrop", names);
+					cardDropList[k]->setColumn(column);
+					cardDropList[k]->setRow(row);
+					cardDropList[k]->genUV();
+					cardDropList[k]->active = true;
+					break;
+				}
+			}
+		}
+		
+		datafiles.close();
+	}
 }
 
 void Game::resetHandPos()
@@ -751,7 +859,6 @@ void Game::resetHandPos()
 	float cardAngel;
 	if (deck->cardsOnHand() <= 5)
 	{
-
 
 		cardAngel = 20;
 	}
@@ -872,7 +979,7 @@ void Game::restartGame()
 	myHero->curePoison();
 	enemies[0]->curePoison();
 	myHero->startTurn();
-	enemies[0]->startTurn();
+	//enemies[0]->startTurn();
 }
 
 void Game::setMonster(int HP, string name, int row, int column,int speed)
@@ -884,7 +991,6 @@ void Game::setMonster(int HP, string name, int row, int column,int speed)
 	Monster1->setTag("Monster");
 	objects.push_back(Monster1);
 	enemies.push_back(Monster1);
-	
 }
 
 void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)

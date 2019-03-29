@@ -48,6 +48,7 @@ public:
 	void setTag(string tag);
 	int state;
 	int c; 
+	void changeSprite(string fileName, int row, int column);
 	unsigned int texture;
 };
 

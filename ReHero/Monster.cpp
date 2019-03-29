@@ -42,7 +42,7 @@ void Monster::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
-	if (!effect.empty())
+	if (!effect.empty()&&isAlive())
 	{
 		if (effect.front() == "damage")
 		{
@@ -150,6 +150,10 @@ void Monster::update(float deltaTime)
 			oneTime = true;
 		}
 	}	
+	if (isAlive() == false)
+	{
+		Game::getInstance()->state = State::ENEMY_DIE;
+	}
 }
 
 void Monster::endMyTurn() {

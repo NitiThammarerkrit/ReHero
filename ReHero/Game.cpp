@@ -134,9 +134,14 @@ void Game::handleMouseUp(int x, int y)
 		{
 			addNewCardToDeck(clickableObject->getName());
 			//setMonster(40, "wasp", 4, 5, 400);
+			level++;
+			if(level%2==0)	   
 			enemies[0]->changeSprite("Sprite/wasp.png", 4, 5);
+			else
+				enemies[0]->changeSprite("Sprite/gob.png", 4, 5);
 			cardDropList[0]->active = false;
 			cardDropList[1]->active = false;
+			BGD->changeSprite("Sprite/BGD2.png", 1, 1);
 			restartGame();
 		}
 
@@ -324,10 +329,12 @@ void Game::init(int width, int height)
 
 	AudioEngine audio;
 	audio.init();
-	//Music music = audio.loadMusic("testsound.mp3");
-	//music.play(-1);
+	Music music = audio.loadMusic("Sound_fighting_monster.wav");
+	music.play(-1);
+
+	level = 1;
 	/////////////////////////////////////////////////////////////////MainMenu/////////////////////////////////////////////////////////////
-	SpriteObject * MenuBG = new SpriteObject("Sprite/MenuBG.jpg", 1, 1);
+	SpriteObject * MenuBG = new SpriteObject("Sprite/MenuBG.png", 1, 1);
 	MenuBG->setSize(1280.0f, 720.0f);
 	MenuBG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	MenuBG->setAnimationLoop(1, 1, 3, 800);
@@ -499,11 +506,12 @@ void Game::init(int width, int height)
 	City.push_back(Building4);
 
 	////////////////////////////////////////////////////////////////City/////////////////////////////////////////////////////////////////
-	SpriteObject * BG = new SpriteObject("Sprite/BG.png", 1, 1);
+	SpriteObject * BG = new SpriteObject("Sprite/BGD1.png", 1, 1);
 	BG->setSize(1280.0f, 720.0f);
 	BG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	BG->setAnimationLoop(1, 1, 3, 800);
 	BG->setTag("BG");
+	BGD = BG;
 	objects.push_back(BG);
 
 	setMonster(20,"gob", 4, 5,400);
@@ -808,8 +816,7 @@ void Game::update(float deltaTime)
 		}
 		string names;
 		datafile >> howManycard;
-		int drop1 = rand() % howManycard;
-		int drop2 = rand() % howManycard;
+
 		for (int i = 0; i < howManycard; i++)
 		{
 			getline(datafile, names, '\n');
@@ -847,6 +854,7 @@ void Game::update(float deltaTime)
 				}
 			}
 		}
+		dropList.clear();
 		
 		datafiles.close();
 	}
@@ -958,12 +966,17 @@ void Game::addNewCardToDeck(Card * c) {
 
 void Game::restartGame()
 {
+	drop1 = rand() % 40;
+	drop2 = rand() % 40;
 	cout << "Reset" << endl; 
 	//endTurn();
-	myHero->setMaxHP(20);
-	myHero->setHP(20);
-	myHero->takeDamage(0);
-	heroHp[0]->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
+	if (state != State::ENEMY_DIE)
+	{
+		myHero->setMaxHP(20);
+		myHero->setHP(20);
+		myHero->takeDamage(0);
+		heroHp[0]->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
+	}
 	enemies[0]->setMaxHP(20);
 	enemies[0]->setHP(20);
 	enemies[0]->takeDamage(0);

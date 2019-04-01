@@ -1,4 +1,4 @@
-20						
+40						
 Hit	0	damage	2	;		
 Whril	0	damage	1	;		
 Defend	0	defend	2	;		
@@ -19,3 +19,23 @@ Punch	3	damage	6	;
 Chaos	3	damage	5	defend	10	;
 Impervious	3	draw	3	defend	5	;
 Terror	4	damage	15	;		
+Attack	0	damage	2	;		
+Critical	2	dppc	1	defend	3	;
+Blind	1	draw	2	;		
+All-out	3	damage	5	;		
+FirstAid	0	heal	2	;		
+Jump	1	draw	2	;		
+Trip	0	heal	-2	draw	3	;
+Triumph	1	damage	3	;		
+Bleed	1	poison	3	;		
+Panacea	2	heal	4	;		
+Fitness	3	defend	5	;		
+Manuver	2	draw	4	;		
+CounterA	1	damage	1	defend	4	;
+Enlightment	0	draw	3	;		
+HiddenWeapon	1	draw	1	poison	1	;
+HiddenTeachnique	0	dppc	2	heal	-2	;
+Acid	2	poison	4	;		
+Entice	1	heal	3	;		
+Backstab	2	damage	2	poison	2	;
+Camouflage	1	defend	3	poison	1	;

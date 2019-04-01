@@ -41,7 +41,10 @@ enum class State
 
 class Game
 {
+	int level;
 	int cardIndex;
+	int drop1;
+	int drop2;
 	Deck * deck;
 	vector<string> PlayerDeck;
 	static Game* instance;
@@ -95,6 +98,7 @@ public:
 	SpriteObject * randomManaText;
 	SpriteObject * effectOnPlayer;
 	SpriteObject * effectOnEnemy;
+	SpriteObject * BGD;
 
 	DrawableObject * damageText;
 

@@ -53,7 +53,7 @@ void Monster::update(float deltaTime)
 				if (!monsterMakeDamage.empty())
 				{
 					doDamage(enemyTarget, monsterMakeDamage.front());
-					Game::getInstance()->drawText(to_string(monsterMakeDamage.front()), glm::vec3(-350.0f, 0.f, 0.f), monsterMakeDamage.front() * 40.0f, 3);
+					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 3);
 					monsterMakeDamage.pop();
 				}
 				oneTime = false;
@@ -76,7 +76,7 @@ void Monster::update(float deltaTime)
 				if (!monsterMakeDamage.empty())
 				{
 					heal(friendTarget, monsterMakeDamage.front());
-					Game::getInstance()->drawText(to_string(monsterMakeDamage.front()), glm::vec3(350.0f, 0.f, 0.f), monsterMakeDamage.front() * 40.0f, 2);
+					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 2);
 					monsterMakeDamage.pop();
 				}
 				
@@ -106,7 +106,7 @@ void Monster::update(float deltaTime)
 				delay = 0;
 				oneTime = true;
 				effect.pop();
-				Game::getInstance()->drawText(to_string(monsterMakeDamage.front()), glm::vec3(-350.0f, 0.f, 0.f), monsterMakeDamage.front() * 40.0f, 3);
+				//Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 3);
 				monsterMakeDamage.pop();
 				if (effect.empty()) endMyTurn();
 			}

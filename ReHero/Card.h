@@ -63,11 +63,11 @@ public:
 	void setState(int state);
 
 	//card effect functions
-	void doDamage(Monster * target, int damage);
-	void heal(Hero * target, int amount);
-	void usePoison(Monster * target);
-	void gainArmor(Hero * target, int amount);
-	void drawCard(int amount);
+	//void doDamage(Monster * target, int damage);
+	//void heal(Hero * target, int amount);
+	//void usePoison(Monster * target);
+	//void gainArmor(Hero * target, int amount);
+	//void drawCard(int amount);
 
 	int state;
 	int c;

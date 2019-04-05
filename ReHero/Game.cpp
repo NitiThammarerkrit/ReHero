@@ -1048,6 +1048,49 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)
 
 }
 
+//---------------------------------- for Hero --------------------------------------
+
+void Game::doDamage(int damage) {
+	if (enemies[0] != nullptr)
+	{
+		enemies[0]->takeDamage(damage);
+		cout << "Hero deal " << damage << " damage to monster" << endl;
+	}
+	else cout << "Hero deal " << damage << " damage, but no target!" << endl;
+
+}
+
+void Game::heal(int amount) {
+	myHero->getHeal(amount);
+	cout << "Hero heal " << amount << endl;
+}
+
+void Game::usePoison() {
+	if (enemies[0] != nullptr)
+	{
+		enemies[0]->takePoison();
+		cout << "Hero use poison to monster" << endl;
+	}
+	else cout << "Hero use poison, but no target!" << endl;
+}
+
+void Game::gainArmor(int amount) {
+	myHero->gainArmor(amount);
+	cout << "Hero gain " << amount << " armor" << endl;
+}
+
+void Game::drawCard(int amount) {
+	Deck * playDeck = Deck::getInstance();
+	if (playDeck != nullptr)
+	{
+		playDeck->drawToHand(amount);
+		cout << "Hero draw " << amount << " card" << endl;
+	}
+	else cout << "Deck cannot be found" << endl;
+}
+
+//----------------------------------------------------------------------------------
+
 Game::~Game() {
 	delete cardsprite1;
 	delete cardsprite2;

@@ -3,6 +3,9 @@
 //#include "glm/gtc/matrix_transform.hpp"
 //#include "glm/gtc/type_ptr.hpp"
 #include "SpriteObject.h"
+//#include "Monster.h"
+//#include "Deck.h"
+#include <queue>
 //#include "TextObject.h"
 
 
@@ -45,9 +48,11 @@ public:
 	int c;
 	int delay;
 	int delayDie;
-	vector<int> heroMakeDamage;
 	bool oneTime;
-	vector<string> effect;
 	DrawableObject* HPBar;
+
+	queue<string> effect;
+	queue<int> heroMakeDamage;
+	void endAction();
 };
 

@@ -114,4 +114,10 @@ public:
 	SpriteObject * cardsprite2;
 	int id = 1;
 	int cardSpriteRow = 4;
+
+	void doDamage(int damage);
+	void heal(int amount);
+	void usePoison();
+	void gainArmor(int amount);
+	void drawCard(int amount);
 };

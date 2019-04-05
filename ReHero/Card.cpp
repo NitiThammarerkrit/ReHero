@@ -288,99 +288,48 @@ void Card::effect(Hero * friendTarget, Monster * enemyTarget)
 		//perform a skill
 		if (effect == "damage")
 		{
-			Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
-			friendTarget->effect.push_back(effect);
-			friendTarget->heroMakeDamage.push_back(value);
-			doDamage(enemyTarget, value);
+			friendTarget->effect.push(effect);
+			friendTarget->heroMakeDamage.push(value);
+			//doDamage(enemyTarget, value);
 		}
 		else if (effect == "heal") 
 		{ 
-			Game::getInstance()->state = State::PLAYER_HEAL_ANIM;
-			friendTarget->effect.push_back(effect);
-			friendTarget->heroMakeDamage.push_back(value);
-			heal(friendTarget, value);
+			friendTarget->effect.push(effect);
+			friendTarget->heroMakeDamage.push(value);
+			//heal(friendTarget, value);
 		}
 		else if (effect == "poison")
 		{ 
-			Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
-			friendTarget->effect.push_back(effect);
-			usePoison(enemyTarget);
+			friendTarget->effect.push(effect);
+			friendTarget->heroMakeDamage.push(value);
+			//usePoison(enemyTarget);
 		}
 		else if (effect == "defend")
 		{ 
-			Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
-			friendTarget->effect.push_back(effect);
-			gainArmor(friendTarget, value);
+			friendTarget->effect.push(effect);
+			friendTarget->heroMakeDamage.push(value);
+			//gainArmor(friendTarget, value);
 		}
 		else if (effect == "draw") 
 		{
-			Game::getInstance()->state = State::PLAYER_DRAW;
-			friendTarget->effect.push_back(effect);
-			drawCard(value);
+			friendTarget->effect.push(effect);
+			friendTarget->heroMakeDamage.push(value);
+			//drawCard(value);
 		}
 		else if (effect == "dppc")
 		{
-			friendTarget->effect.push_back(effect);
 			Deck * d = Deck::getInstance();
-			cout << name << " count played card = " << d->getCardPlayedThisTurn() << endl;
-			Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
-			doDamage(enemyTarget, value * d->getCardPlayedThisTurn());
+			friendTarget->effect.push("damage");
+			friendTarget->heroMakeDamage.push(value * d->getCardPlayedThisTurn());
+			cout << "Played card count = " << d->getCardPlayedThisTurn() << endl;
+			//doDamage(enemyTarget, value * d->getCardPlayedThisTurn());
 		}
 		else
 		{
-			Game::getInstance()->state = State::PLAYER_PLAY;
 			break;
 		}
 			
 	}
-}
-
-void Card::doDamage(Monster * target, int damage) {
-	if (target != nullptr)
-	{
-		target->takeDamage(damage);
-		cout << name << " deal " << damage << " damage to monster" << endl;
-	}
-	else cout << name << " deal " << damage << " damage, but no target!" << endl;
-	
-}
-
-void Card::heal(Hero * target, int amount) {
-	if (target != nullptr)
-	{
-		target->getHeal(amount);
-		cout << name << " heal " << amount << endl;
-	}
-	else cout << name << " heal " << amount << ", but no target!" << endl;
-}
-
-void Card::usePoison(Monster * target) {
-	if (target != nullptr)
-	{
-		target->takePoison();
-		cout << name << " use poison to monster" << endl;
-	}
-	else cout << name << " use poison, but no target!" << endl;
-}
-
-void Card::gainArmor(Hero * target, int amount) {
-	if (target != nullptr)
-	{
-		target->gainArmor(amount);
-		cout << name << " gain " << amount << " armor" << endl;
-	}
-	else cout << name << " gain " << amount << " armor, but no target!" << endl;
-}
-
-void Card::drawCard(int amount) {
-	Game::getInstance()->state = State::PLAYER_PLAY;
-	Deck * playDeck = Deck::getInstance();
-	if (playDeck != nullptr)
-	{
-		playDeck->drawToHand(amount);
-		cout << name << " draw " << amount << " card" << endl;
-	}
-	else cout << "Deck cannot be found" << endl;
 }
 
 void Card::setMana(int mana)

@@ -41,15 +41,17 @@ void Hero::update(float deltaTime)
 	}
 	if (!effect.empty())
 	{
-		if (effect[0] == "damage")
+		if (effect.front() == "damage")
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
 				this->setAnimationLoop(2, 1, 8, 700);
 				if (!heroMakeDamage.empty())
 				{
-					Game::getInstance()->drawText(to_string(heroMakeDamage[0]), glm::vec3(350.0f, 0.f, 0.f), heroMakeDamage[0] * 40.0f, 3);
-					heroMakeDamage.pop_back();
+					Game::getInstance()->doDamage(heroMakeDamage.front());
+					Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 3);
+					heroMakeDamage.pop();
 				}
 				
 				oneTime = false;
@@ -57,21 +59,23 @@ void Hero::update(float deltaTime)
 			delay += 1 * deltaTime;
 			if (delay > 710)
 			{
-				effect.pop_back();
+				effect.pop();
 				delay = 0;
-				this->setAnimationLoop(1, 1, 7, 1500);
 				oneTime = true;
+				if (effect.empty()) endAction();
 			}
 		}
-		else if (effect[0] == "heal")
+		else if (effect.front() == "heal")
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->state = State::PLAYER_HEAL_ANIM;
 				 this->setAnimationLoop(3, 1, 4, 400);
 				 if (!heroMakeDamage.empty())
 				 {
-					 Game::getInstance()->drawText(to_string(heroMakeDamage[0]), glm::vec3(-350.0f, 0.f, 0.f), heroMakeDamage[0] * 40.0f, 2);
-					 heroMakeDamage.pop_back();
+					 Game::getInstance()->heal(heroMakeDamage.front());
+					 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 2);
+					 heroMakeDamage.pop();
 				 }
 				
 				 oneTime = false;
@@ -79,68 +83,86 @@ void Hero::update(float deltaTime)
 			delay += 1 * deltaTime;
 			if (delay > 410)
 			{
-				effect.pop_back();
+				effect.pop();
 				delay = 0;
-				this->setAnimationLoop(1, 1, 7, 1500);
 				oneTime = true;
+				if (effect.empty()) endAction();
 			}
 		}
-		else if (effect[0] == "poison")
+		else if (effect.front() == "poison")
 		{
 			if (oneTime == true)
-			this->setAnimationLoop(2, 1, 8, 700);
-			oneTime = false;
+			{
+				Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
+				Game::getInstance()->usePoison();
+				heroMakeDamage.pop();
+				this->setAnimationLoop(2, 1, 8, 700);
+				oneTime = false;
+			}
 			delay += 1 * deltaTime;
 			if (delay > 710)
 			{
-				effect.pop_back();
+				effect.pop();
 				delay = 0;
-				this->setAnimationLoop(1, 1, 7, 1500);
 				oneTime = true;
+				if (effect.empty()) endAction();
 			}
 		}
-		else if (effect[0] == "defend")
+		else if (effect.front() == "defend")
 		{
 			if (oneTime == true)
-			this->setAnimationLoop(3, 1, 4, 400);
-			oneTime = false;
-			delay += 1 * deltaTime;
-			if (delay > 410)
 			{
-				effect.pop_back();
-				delay = 0;
-				this->setAnimationLoop(1, 1, 7, 1500);
-				oneTime = true;
-			}
-		}
-		else if (effect[0] == "draw")
-		{
-			if (oneTime == true)
+				Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
+				Game::getInstance()->gainArmor(heroMakeDamage.front());
+				heroMakeDamage.pop();
 				this->setAnimationLoop(3, 1, 4, 400);
-			oneTime = false;
+				oneTime = false;
+			}
 			delay += 1 * deltaTime;
 			if (delay > 410)
 			{
-				effect.pop_back();
+				effect.pop();
 				delay = 0;
-				this->setAnimationLoop(1, 1, 7, 1500);
 				oneTime = true;
+				if (effect.empty()) endAction();
 			}
 		}
-		else if (effect[0] == "dppc")
+		else if (effect.front() == "draw")
 		{
 			if (oneTime == true)
-			this->setAnimationLoop(2, 1, 8, 1200);
-			oneTime = false;
+			{
+				Game::getInstance()->state = State::PLAYER_DRAW;
+				Game::getInstance()->drawCard(heroMakeDamage.front());
+				heroMakeDamage.pop();
+				this->setAnimationLoop(3, 1, 4, 400);
+				oneTime = false;
+			}
+			delay += 1 * deltaTime;
+			if (delay > 410)
+			{
+				effect.pop();
+				delay = 0;
+				oneTime = true;
+				if (effect.empty()) endAction();
+			}
+		}
+		/*else if (effect.front() == "dppc")
+		{
+			if (oneTime == true)
+			{
+				Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
+				this->setAnimationLoop(2, 1, 8, 1200);
+				oneTime = false;
+			}
 			delay += 1 * deltaTime;
 			if (delay > 1210)
 			{
-				effect.pop_back();
+				effect.pop();
 				delay = 0;
 				this->setAnimationLoop(1, 1, 7, 1500);
 				oneTime = true;
 			}
-		}
+		}*/
 	}
 	if (getAttack&&isAlive()) //get attacked
 	{ 		 
@@ -173,6 +195,11 @@ void Hero::update(float deltaTime)
 			this->setActive(false);
 		}
 	} 
+}
+
+void Hero::endAction() {
+	this->setAnimationLoop(1, 1, 7, 1500);
+	Game::getInstance()->state = State::PLAYER_PLAY;
 }
 
 int Hero::getHP() {
@@ -244,7 +271,7 @@ void Hero::getHeal(int amount) {
 void Hero::gainArmor(int amount) {
 	isHeal = true;
 	defArmor += amount;
-	cout << "gain " << amount << " armor" << endl;
+	cout << "Hero gain " << amount << " armor" << endl;
 }
 
 void Hero::takePoison() {

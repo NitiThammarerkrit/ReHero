@@ -92,3 +92,8 @@ void TextObject::setFontSize(int size)
 {
 	fontSize = size;
 }
+
+int TextObject::getFontSize()
+{
+	return fontSize;
+}

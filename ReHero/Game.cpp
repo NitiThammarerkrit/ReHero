@@ -1084,6 +1084,7 @@ void Game::drawCard(int amount) {
 	if (playDeck != nullptr)
 	{
 		playDeck->drawToHand(amount);
+		resetHandPos();
 		cout << "Hero draw " << amount << " card" << endl;
 	}
 	else cout << "Deck cannot be found" << endl;

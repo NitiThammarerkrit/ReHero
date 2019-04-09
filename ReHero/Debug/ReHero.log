@@ -1,14 +1,13 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Try1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Game.cpp
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(48): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(64): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(84): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(99): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(115): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(216): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(565): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(866): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(875): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(892): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1022): warning C4018: '<': signed/unsigned mismatch
+  Hero.cpp
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(35): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(59): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(77): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(83): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(102): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(121): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(140): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(201): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(218): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
   ReHero.vcxproj -> C:\Users\LEVEL51pc\Desktop\Engine\ReHero\ReHero\Debug\ReHero.exe

@@ -7,7 +7,7 @@ using namespace std;
 class FloatText:public TextObject
 {
 	float delay;
-	
+	float size = 40;
 
 public:
 	

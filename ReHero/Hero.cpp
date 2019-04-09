@@ -50,7 +50,7 @@ void Hero::update(float deltaTime)
 				if (!heroMakeDamage.empty())
 				{
 					Game::getInstance()->doDamage(heroMakeDamage.front());
-					Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 3);
+					if (heroMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 2);
 					heroMakeDamage.pop();
 				}
 				
@@ -74,7 +74,7 @@ void Hero::update(float deltaTime)
 				 if (!heroMakeDamage.empty())
 				 {
 					 Game::getInstance()->heal(heroMakeDamage.front());
-					 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 2);
+					 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 1);
 					 heroMakeDamage.pop();
 				 }
 				
@@ -131,7 +131,7 @@ void Hero::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
-				Game::getInstance()->state = State::PLAYER_DRAW;
+				//Game::getInstance()->state = State::PLAYER_DRAW;
 				Game::getInstance()->drawCard(heroMakeDamage.front());
 				heroMakeDamage.pop();
 				this->setAnimationLoop(3, 1, 4, 400);
@@ -139,6 +139,26 @@ void Hero::update(float deltaTime)
 			}
 			delay += 1 * deltaTime;
 			if (delay > 410)
+			{
+				effect.pop();
+				delay = 0;
+				oneTime = true;
+				if (effect.empty()) endAction();
+			}
+		}
+		/*else if (effect.front() == "dppc")
+		{
+			if (oneTime == true)
+			{
+				Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
+				this->setAnimationLoop(2, 1, 8, 700);
+				Game::getInstance()->doDamage();
+				Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs(heroMakeDamage.front()) * 40.0f, 2);
+
+				oneTime = false;
+			}
+			delay += 1 * deltaTime;
+			if (delay > 710)
 			{
 				effect.pop();
 				delay = 0;
@@ -164,15 +184,18 @@ void Hero::update(float deltaTime)
 			}
 		}*/
 	}
-	if (getAttack&&isAlive()) //get attacked
+	if (getAttack&&isAlive() || isHeal == true &&isAlive()) //get attacked
 	{ 		 
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		//cout << "\nMonster HP:" << this->getHP();
 		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
 		//cout << "HP = "<<(float)this->getHP()<<endl;
-		if(oneTime == true)
+		if(oneTime == true&& getAttack)
 		this->setAnimationLoop(3, 1, 4, 400);
+		else
+		if (oneTime == true && isHeal == true)
+		this->setAnimationLoop(2, 1, 8, 700);
 		oneTime = false;
 		damage = 0;
 		delay += deltaTime;
@@ -180,7 +203,10 @@ void Hero::update(float deltaTime)
 		{
 			delay = 0;
 			this->setAnimationLoop(1, 1, 7, 1500);
+			if(getAttack==true)
 			getAttack = false;
+			if(isHeal==true)
+			isHeal = false;
 			oneTime = true;
 		}	
 	}
@@ -271,7 +297,6 @@ void Hero::getHeal(int amount) {
 void Hero::gainArmor(int amount) {
 	isHeal = true;
 	defArmor += amount;
-	cout << "Hero gain " << amount << " armor" << endl;
 }
 
 void Hero::takePoison() {

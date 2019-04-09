@@ -20,6 +20,7 @@ public:
 	void setTextColor(SDL_Color color);
 	void setFontName(string font);
 	void setFontSize(int size);
+	int getFontSize();
 	virtual void render(glm::mat4 globalModelTransform);
 	void update(float deltaTime);
 	virtual void loadText(string text, SDL_Color textColor, string fontname, int fontSize);

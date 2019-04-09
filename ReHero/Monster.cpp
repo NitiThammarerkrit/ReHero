@@ -53,7 +53,7 @@ void Monster::update(float deltaTime)
 				if (!monsterMakeDamage.empty())
 				{
 					doDamage(enemyTarget, monsterMakeDamage.front());
-					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 3);
+					if (monsterMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 3);
 					monsterMakeDamage.pop();
 				}
 				oneTime = false;
@@ -132,13 +132,16 @@ void Monster::update(float deltaTime)
 		}
 	}
 
-	if (getAttack)
+	if ((getAttack||isHeal)&&isAlive())
 	{
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		//cout << "\nMonster HP:" << this->getHP();
 		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3(-damage / 2.0f / 20.0f*250.0f, 0.0f, 0.0f));
+		if (oneTime == true && getAttack == true)
 		this->setAnimationLoop(4, 1, 1, 200);
+		if (oneTime == true && isHeal == true)
+		this->setAnimationLoop(3, 1, 4, 200);
 		oneTime = false;
 		damage = 0;
 		delay += deltaTime;
@@ -146,7 +149,10 @@ void Monster::update(float deltaTime)
 		{
 			delay = 0;
 			this->setAnimationLoop(1, 1, 5, 400);
+			if(getAttack)
 			getAttack = false;
+			if (isHeal)
+				isHeal = false;
 			oneTime = true;
 		}
 	}	
@@ -220,7 +226,7 @@ void Monster::getHeal(int amount) {
 
 	this->damage = -amount;
 	isHeal = true;
-	getAttack = true;
+	//getAttack = true;
 	cout << name << " heal " << amount << " to himself" << endl;
 	if (this->HP + amount > this->maxHP)
 	{
@@ -235,7 +241,7 @@ void Monster::getHeal(int amount) {
 }
 
 void Monster::gainArmor(int amount) {  
-	isHeal = true;
+	//isHeal = true;
 	defArmor += amount;
 	cout << name << "gain " << amount << " armor" << endl;
 }

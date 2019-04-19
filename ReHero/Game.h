@@ -60,6 +60,7 @@ class Game
 	vector<SpriteObject*> HPBG;
 	vector<DrawableObject*> monsterHp;
 	vector<DrawableObject*> heroHp;
+	vector<SpriteObject*> statusIcon;
 	
 
 	GLRenderer *renderer;

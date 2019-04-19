@@ -633,6 +633,34 @@ void Game::init(int width, int height)
 	objects.push_back(healthBarMonsterBG);
 	HPBG.push_back(healthBarMonsterBG);
 
+	SpriteObject * shieldHero = new SpriteObject("Sprite/metal_shield.png", 1, 1);
+	shieldHero->setSize(60.0f, 60.0f);
+	shieldHero->translate(glm::vec3(-470.0f, 200.0f, 0.0f));
+	shieldHero->setTag("shieldHero");
+	objects.push_back(shieldHero);
+	statusIcon.push_back(shieldHero);
+
+	SpriteObject * shieldMonster = new SpriteObject("Sprite/metal_shield.png", 1, 1);
+	shieldMonster->setSize(60.0f, 60.0f);
+	shieldMonster->translate(glm::vec3(230.0f, 200.0f, 0.0f));
+	shieldMonster->setTag("shieldMonster");
+	objects.push_back(shieldMonster);
+	statusIcon.push_back(shieldMonster);
+
+	SpriteObject * poisonHero = new SpriteObject("Sprite/icon_poison.png", 1, 1);
+	poisonHero->setSize(40.0f, 40.0f);
+	poisonHero->translate(glm::vec3(-200.0f, 200.0f, 0.0f));
+	poisonHero->setTag("poisonHero");
+	objects.push_back(poisonHero);
+	statusIcon.push_back(poisonHero);
+
+	SpriteObject * poisonMonster = new SpriteObject("Sprite/icon_poison.png", 1, 1);
+	poisonMonster->setSize(40.0f, 40.0f);
+	poisonMonster->translate(glm::vec3(500.0f, 200.0f, 0.0f));
+	poisonMonster->setTag("poisonMonster");
+	objects.push_back(poisonMonster);
+	statusIcon.push_back(poisonMonster);
+
 	showMana = new SpriteObject("Sprite/manasprite.png", 1, 7);
 	showMana->setPlayAnim(false);
 	showMana->setRow(1);
@@ -783,6 +811,18 @@ void Game::update(float deltaTime)
 	}
 	for (DrawableObject* obj : objects) {
 		obj->update(deltaTime);
+	}
+	for (SpriteObject* obj : statusIcon) {
+		if (state == State::PLAYER_DIE || state == State::ENEMY_DIE)
+		{
+			obj->setActive(false);
+			continue;
+		}
+		if (obj->getTag() == "shieldHero" && myHero->getArmor() <= 0) obj->setActive(false);
+		else if (obj->getTag() == "shieldMonster" && enemies[0]->getArmor() <= 0) obj->setActive(false);
+		else if (obj->getTag() == "poisonHero" && !myHero->getPoisoned()) obj->setActive(false);
+		else if (obj->getTag() == "poisonMonster" && !enemies[0]->getPoisoned()) obj->setActive(false);
+		else obj->setActive(true);
 	}
 	for (Card* card : *(deck->getHand()))
 	{

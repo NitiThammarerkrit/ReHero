@@ -184,6 +184,10 @@ int Monster::getArmor() {
 	return this->defArmor;
 }
 
+bool Monster::getPoisoned() {
+	return this->isPoisoned;
+}
+
 void Monster::setHP(int amount) {
 	this->HP = amount;
 }

@@ -251,6 +251,11 @@ void SpriteObject::setTag(string tag)
 	this->tag = tag;
 }
 
+string SpriteObject::getTag()
+{
+	return tag;
+}
+
 void SpriteObject::changeSprite(string fileName, int row, int column)
 {
 	glActiveTexture(GL_TEXTURE0);

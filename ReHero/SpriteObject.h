@@ -46,6 +46,7 @@ public:
 	void setActive(bool active);
 	void setPlayAnim(bool set);
 	void setTag(string tag);
+	string getTag();
 	int state;
 	int c; 
 	void changeSprite(string fileName, int row, int column);

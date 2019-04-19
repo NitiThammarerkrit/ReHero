@@ -240,6 +240,10 @@ int Hero::getArmor() {
 	return this->defArmor;
 }
 
+bool Hero::getPoisoned() {
+	return this->isPoisoned;
+}
+
 void Hero::setHP(int amount) {
 	this->HP = amount;
 }
@@ -345,8 +349,6 @@ void Hero::render(glm::mat4 globalModelTransform)
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
-
-
 
 void Hero::startTurn() {
 	Game::getInstance()->state = State::PLAYER_CONDITION;

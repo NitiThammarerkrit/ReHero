@@ -34,6 +34,7 @@ public:
 	int getHP();
 	int getMaxHP();
 	int getArmor();
+	bool getPoisoned();
 	void setHP(int amount);
 	void setMaxHP(int amount);
 	bool takeDamage(int damage); //true if alive, false if die

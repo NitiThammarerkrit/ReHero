@@ -21,6 +21,7 @@ Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName
 	delayDie = 0;
 	delay = 0;
 	oneTime = true;
+	poison = 0;
 }
 
 Hero::~Hero() {
@@ -94,7 +95,7 @@ void Hero::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
-				Game::getInstance()->usePoison();
+				Game::getInstance()->usePoison(heroMakeDamage.front());
 				heroMakeDamage.pop();
 				this->setAnimationLoop(2, 1, 8, 700);
 				oneTime = false;
@@ -240,8 +241,8 @@ int Hero::getArmor() {
 	return this->defArmor;
 }
 
-bool Hero::getPoisoned() {
-	return this->isPoisoned;
+int Hero::getPoison() {
+	return this->poison;
 }
 
 void Hero::setHP(int amount) {
@@ -303,14 +304,14 @@ void Hero::gainArmor(int amount) {
 	defArmor += amount;
 }
 
-void Hero::takePoison() {
+void Hero::takePoison(int amount) {
 	getAttack = true;
-	isPoisoned = true;
+	poison += amount;
 
 }
 
 void Hero::curePoison() {
-	this->isPoisoned = false;
+	this->poison = 0;
 }
 
 void Hero::render(glm::mat4 globalModelTransform)
@@ -353,11 +354,11 @@ void Hero::render(glm::mat4 globalModelTransform)
 void Hero::startTurn() {
 	Game::getInstance()->state = State::PLAYER_CONDITION;
 	defArmor = 0;
-	if (isPoisoned)
+	if (poison > 0)
 	{
-		cout << "Hero take " << POISON_DMG << " damage from Poison." << endl;
-		this->takeDamage(POISON_DMG);
-
+		cout << "Hero take " << poison << " damage from Poison." << endl;
+		this->takeDamage(poison);
+		poison -= 1;
 		/*this->damage = POISON_DMG;
 		getAttack = true;	 */
 	}

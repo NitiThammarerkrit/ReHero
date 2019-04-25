@@ -14,7 +14,7 @@ class Monster : public SpriteObject
 	int maxHP;
 	int HP;
 	int defArmor;
-	bool isPoisoned;
+	int poison;
 	int damage;
 	bool getAttack;
 	bool isHeal;
@@ -34,13 +34,13 @@ public:
 	int getHP();
 	int getMaxHP();
 	int getArmor();
-	bool getPoisoned();
+	int getPoison();
 	void setHP(int amount);
 	void setMaxHP(int amount);
 	bool takeDamage(int damage); //true if alive, false if die
 	void getHeal(int amount);
 	void gainArmor(int amount);
-	void takePoison();
+	void takePoison(int amount);
 	void curePoison();
 	/*void SetAnim(int animRow, int loopNum, int time);
 	void CheckState(); */
@@ -50,7 +50,7 @@ public:
 	void randomUseSkill(Hero * enemyTarget, Monster * friendTarget);
 	void doDamage(Hero * target, int damage);
 	void heal(Monster * target, int amount);
-	void usePoison(Hero * target);
+	void usePoison(Hero * target, int amount);
 	void endMyTurn();
 	bool isAlive();
 	int state;

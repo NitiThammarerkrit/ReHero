@@ -118,7 +118,7 @@ public:
 
 	void doDamage(int damage);
 	void heal(int amount);
-	void usePoison();
+	void usePoison(int amount);
 	void gainArmor(int amount);
 	void drawCard(int amount);
 };

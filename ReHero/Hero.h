@@ -16,7 +16,7 @@ class Hero : public SpriteObject
 	int maxHP;
 	int HP;
 	int defArmor;
-	bool isPoisoned;
+	int poison;
 	bool getAttack;
 	bool isHeal;
 	bool isAttack;
@@ -32,14 +32,14 @@ public:
 	int getHP();
 	int getMaxHP();
 	int getArmor();
-	bool getPoisoned();
+	int getPoison();
 	void setHP(int amount);
 	void setMaxHP(int amount);
 	bool takeDamage(int damage); //true if alive, false if die
 	bool isAlive();
 	void getHeal(int amount);
 	void gainArmor(int amount);
-	void takePoison();
+	void takePoison(int amount);
 	void curePoison();
 	virtual void render(glm::mat4 globalModelTransform);
 	void startTurn(); //resolve every special condition & remove armor from last turn

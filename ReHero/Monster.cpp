@@ -14,7 +14,7 @@ Monster::Monster(int HP, string name, int row, int column) : SpriteObject("Sprit
 	this->HP = HP;
 	this->name = name;
 	defArmor = 0;
-	isPoisoned = false;
+	poison = 0;
 	damage = 0;
 	getAttack = false;
 	isHeal = false;	 
@@ -97,17 +97,20 @@ void Monster::update(float deltaTime)
 			{
 				Game::getInstance()->state = State::ENEMY_SPELL_ANIM;
 				this->setAnimationLoop(3, 1, 4, 300);
+				if (!monsterMakeDamage.empty())
+				{
+					usePoison(enemyTarget, monsterMakeDamage.front());
+					monsterMakeDamage.pop();
+				}
 			}
 			oneTime = false;
 			delay += 1 * deltaTime;
 			if (delay > 310)
 			{
-				usePoison(enemyTarget);
 				delay = 0;
 				oneTime = true;
 				effect.pop();
 				//Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 3);
-				monsterMakeDamage.pop();
 				if (effect.empty()) endMyTurn();
 			}
 		}
@@ -184,8 +187,8 @@ int Monster::getArmor() {
 	return this->defArmor;
 }
 
-bool Monster::getPoisoned() {
-	return this->isPoisoned;
+int Monster::getPoison() {
+	return this->poison;
 }
 
 void Monster::setHP(int amount) {
@@ -250,18 +253,19 @@ void Monster::gainArmor(int amount) {
 	cout << name << "gain " << amount << " armor" << endl;
 }
 
-void Monster::takePoison() {
+void Monster::takePoison(int amount) {
 	getAttack = true;
-	isPoisoned = true;
+	poison += amount;
 }
 
 void Monster::startTurn() {
 	Game::getInstance()->state = State::ENEMY_CONDITION;
 	defArmor = 0;
-	if (isPoisoned)
+	if (poison > 0)
 	{
-		cout << name << " take " << POISON_DMG << " damage from Poison."<< endl;
-		this->takeDamage(POISON_DMG);
+		cout << name << " take " << poison << " damage from Poison."<< endl;
+		this->takeDamage(poison);
+		poison -= 1;
 	}
 	if (isAlive()==false)
 	{
@@ -277,6 +281,8 @@ void Monster::loadSkillData(string fileName) {
 		cout << "fail to load skill data for " << this->name << endl;
 		return;
 	}
+
+	skillData.clear();
 
 	//this monster has how many skill?
 	int howManySkill;
@@ -383,18 +389,18 @@ void Monster::heal(Monster * target, int amount) {
 	
 }
 
-void Monster::usePoison(Hero * target) {
+void Monster::usePoison(Hero * target, int amount) {
 	isAttack = true;
 	if (target != nullptr)
 	{
-		target->takePoison();
-		cout << name << " use poison to Hero" << endl;
+		target->takePoison(amount);
+		cout << name << " use poison " << amount << " to Hero" << endl;
 	}
-	else cout << name << " use poison, but no target!" << endl;
+	else cout << name << " use poison " << amount << ", but no target!" << endl;
 }
 
 void Monster::curePoison() {
-	this->isPoisoned = false;
+	this->poison = 0;
 }
 
 /*void Monster::SetAnim(int animRow,int loopNum, int time)

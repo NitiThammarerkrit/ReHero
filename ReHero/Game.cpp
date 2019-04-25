@@ -820,8 +820,8 @@ void Game::update(float deltaTime)
 		}
 		if (obj->getTag() == "shieldHero" && myHero->getArmor() <= 0) obj->setActive(false);
 		else if (obj->getTag() == "shieldMonster" && enemies[0]->getArmor() <= 0) obj->setActive(false);
-		else if (obj->getTag() == "poisonHero" && !myHero->getPoisoned()) obj->setActive(false);
-		else if (obj->getTag() == "poisonMonster" && !enemies[0]->getPoisoned()) obj->setActive(false);
+		else if (obj->getTag() == "poisonHero" && myHero->getPoison() <= 0) obj->setActive(false);
+		else if (obj->getTag() == "poisonMonster" && enemies[0]->getPoison() <= 0) obj->setActive(false);
 		else obj->setActive(true);
 	}
 	for (Card* card : *(deck->getHand()))
@@ -1105,13 +1105,13 @@ void Game::heal(int amount) {
 	cout << "Hero heal " << amount << endl;
 }
 
-void Game::usePoison() {
+void Game::usePoison(int amount) {
 	if (enemies[0] != nullptr)
 	{
-		enemies[0]->takePoison();
-		cout << "Hero use poison to monster" << endl;
+		enemies[0]->takePoison(amount);
+		cout << "Hero use poison " << amount << " to monster" << endl;
 	}
-	else cout << "Hero use poison, but no target!" << endl;
+	else cout << "Hero use poison " << amount << ", but no target!" << endl;
 }
 
 void Game::gainArmor(int amount) {

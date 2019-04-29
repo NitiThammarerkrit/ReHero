@@ -15,6 +15,7 @@ public:
 	~FloatText();
 	virtual void update(float deltaTime);
 	virtual void render(glm::mat4 globalModelTransform);
+	void changeSize(float n);
 	bool isRunning;
 };
 

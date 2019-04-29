@@ -134,11 +134,16 @@ void Game::handleMouseUp(int x, int y)
 		{
 			addNewCardToDeck(clickableObject->getName());
 			//setMonster(40, "wasp", 4, 5, 400);
-			level++;
-			if(level%2==0)	   
+			level = rand()%3;
+			if(level==0)	   
 			enemies[0]->changeSprite("Sprite/wasp.png", 4, 5);
 			else
-				enemies[0]->changeSprite("Sprite/gob.png", 4, 5);
+			if(level == 1)
+			enemies[0]->changeSprite("Sprite/gob.png", 5, 5);
+			else
+			if (level == 2)
+			enemies[0]->changeSprite("Sprite/skull.png", 4, 5);
+
 			cardDropList[0]->active = false;
 			cardDropList[1]->active = false;
 			BGD->changeSprite("Sprite/BGD2.png", 1, 1);
@@ -170,8 +175,9 @@ void Game::handleMouseUp(int x, int y)
 			clickObject->effect(myHero, enemies[0]);
 			resetHandPos();
 			deck->playACard();
-			if (enemies[0]->isAlive() == false)
+			if (state == State::ENEMY_DIE)
 			{
+				//cout<<endl << "enemy die" << endl;
 				monsterHp[0]->setSize(0, 20);
 				enemies[0]->setActive(false);
 				HPBG[1]->setActive(false);
@@ -514,7 +520,7 @@ void Game::init(int width, int height)
 	BGD = BG;
 	objects.push_back(BG);
 
-	setMonster(20,"gob", 4, 5,400);
+	setMonster(20,"skull", 4, 5,400);
 	//delete enemies[0];
 	//setMonster(20, "wasp", 1, 5,1000);
 
@@ -528,8 +534,8 @@ void Game::init(int width, int height)
 	effectOnPlayer = new SpriteObject("Sprite/effect.png", 5, 7);
 	effectOnPlayer->setSize(650.0f, 650.0f);
 	effectOnPlayer->translate(glm::vec3(300.0f, 200.0f, 0.0f));
-	effectOnPlayer->setAnimationLoop(5, 1, 7, 800);
-	//effectOnPlayer->setActive(true);
+	effectOnPlayer->setAnimationLoop(5, 1, 7, 700);
+	effectOnPlayer->setActive(false);
 	effectOnPlayer->setTag("Effect");
 	objects.push_back(effectOnPlayer);
 
@@ -755,7 +761,7 @@ void Game::init(int width, int height)
 	{
 		FloatText* tempTexts = new FloatText();
 		tempTexts->setFontName("Damaged.ttf");
-		tempTexts->setFontSize(300);
+		tempTexts->setFontSize(400);
 		tempTexts->setTextColor(SDL_Color{ 0,0,255 });
 		tempTexts->loadText(" ");
 		tempText.push_back(tempTexts);
@@ -847,6 +853,10 @@ void Game::update(float deltaTime)
 	}
 	if (state == State::ENEMY_DIE)
 	{
+		//cout << endl << "enemy die" << endl;
+		monsterHp[0]->setSize(0, 20);
+		enemies[0]->setActive(false);
+		HPBG[1]->setActive(false);
 		int howManycard;
 		ifstream datafile("deck01.txt");
 		if (!datafile)
@@ -1078,7 +1088,8 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)
 				Text->setTextColor(SDL_Color{ 0,0,255 });
 			}
 			Text->setPosition(pos);
-			Text->setFontSize(fontSize);
+			Text->setFontSize(300.0f);
+			Text->changeSize(fontSize);
 			Text->loadText(text);
 			Text->isRunning = true;
 

@@ -53,7 +53,7 @@ void Monster::update(float deltaTime)
 				if (!monsterMakeDamage.empty())
 				{
 					doDamage(enemyTarget, monsterMakeDamage.front());
-					if (monsterMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 3);
+					if (monsterMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((monsterMakeDamage.front()*2) + 15.f), 3);
 					monsterMakeDamage.pop();
 				}
 				oneTime = false;
@@ -76,7 +76,7 @@ void Monster::update(float deltaTime)
 				if (!monsterMakeDamage.empty())
 				{
 					heal(friendTarget, monsterMakeDamage.front());
-					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs(monsterMakeDamage.front()) * 40.0f, 2);
+					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((monsterMakeDamage.front()*2)+15.f), 2);
 					monsterMakeDamage.pop();
 				}
 				
@@ -161,7 +161,13 @@ void Monster::update(float deltaTime)
 	}	
 	if (isAlive() == false)
 	{
-		Game::getInstance()->state = State::ENEMY_DIE;
+		setAnimationLoop(5, 1, 2, 400);
+		delay += deltaTime;
+		if (delay > 410)
+		{
+			delay = 0;
+			Game::getInstance()->state = State::ENEMY_DIE;
+		}
 	}
 }
 

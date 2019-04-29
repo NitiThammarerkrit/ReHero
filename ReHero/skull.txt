@@ -1,0 +1,6 @@
+5
+Hit	damage	3	;			
+Poson	poison	2	;			
+Decoy	defend	3	;			
+Ridicule	damage	2	poison	2	;
+Angry	damage	5	;					

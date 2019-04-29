@@ -16,22 +16,22 @@ FloatText::~FloatText()
 
 void FloatText::update(float deltaTime)
 {
-	if (isRunning&&delay<1000)
+	if (isRunning&&delay<300)
 	{
 		delay += deltaTime * 1;
-		size += deltaTime * 0.1;
-		this->translate(glm::vec3(0.0f, 4.f, 0.0f));
-		this->setSize(size, -size*2);
+		size += deltaTime * 0.05;
+		this->translate(glm::vec3(5.0f, 8.f, 0.0f));
+		this->setSize(size*2, -size*5);
 	}
-	if (delay>=1000&&delay<1500)
+	if (delay>=300&&delay<750)
 	{
 		delay += deltaTime * 1;
 	}
-	if (delay >= 1500&&isRunning==true)
+	if (delay >= 750&&isRunning==true)
 	{
 		delay = 0;
 		this->loadText(" ");
-		size = 30;
+		//size = 40;
 		isRunning = false;
 	}
 }
@@ -39,4 +39,9 @@ void FloatText::update(float deltaTime)
 void FloatText::render(glm::mat4 globalModelTransform)
 {
 	TextObject::render(globalModelTransform);
+}
+
+void FloatText::changeSize(float n)
+{
+	size = n;
 }

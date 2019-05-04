@@ -6,6 +6,7 @@
 #include "Deck.h"
 #include "Hero.h"
 #include "Monster.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -37,6 +38,7 @@ enum class State
 	GAME_QUIT = 17,
 	GAME_CITY = 18,
 	GAME_PAUSE = 19,
+	GAME_MAP = 20,
 };
 
 class Game
@@ -54,6 +56,8 @@ class Game
 	vector<DrawableObject*> Menu;
 	vector<DrawableObject*> City;
 	vector<DrawableObject*> Pause;
+	vector<DrawableObject*> Map;
+	vector<DrawableObject*> BG;
 	Hero * myHero;
 	vector<SpriteObject*> effect;
 	vector<Monster*> enemies;
@@ -62,6 +66,7 @@ class Game
 	vector<DrawableObject*> heroHp;
 	vector<SpriteObject*> statusIcon;
 	
+	int currentMap = 0;
 
 	GLRenderer *renderer;
 	bool isMouseDown;

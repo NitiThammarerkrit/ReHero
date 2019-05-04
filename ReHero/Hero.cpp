@@ -51,7 +51,7 @@ void Hero::update(float deltaTime)
 				if (!heroMakeDamage.empty())
 				{
 					Game::getInstance()->doDamage(heroMakeDamage.front());
-					Game::getInstance()->effectOnPlayer->setAnimationLoop(2, 1, 7, 700);
+					Game::getInstance()->effectOnPlayer->setAnimationLoop(3, 1, 7, 700);
 					Game::getInstance()->effectOnPlayer->setActive(true);
 					if (heroMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 2);
 					heroMakeDamage.pop();

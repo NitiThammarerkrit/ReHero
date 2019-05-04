@@ -164,6 +164,7 @@
     <ClInclude Include="GLRendererColor.h" />
     <ClInclude Include="GLRendererTexture.h" />
     <ClInclude Include="Hero.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MeshVbo.h" />
     <ClInclude Include="MojiMeshVbo.h" />
     <ClInclude Include="Monster.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="GLRendererTexture.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MeshVbo.cpp" />
     <ClCompile Include="MojiMeshVbo.cpp" />
     <ClCompile Include="Monster.cpp" />

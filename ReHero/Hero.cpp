@@ -122,13 +122,16 @@ void Hero::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
-				Game::getInstance()->effectOnPlayer->setAnimationLoop(9, 1, 9, 700);
-				Game::getInstance()->effectOnPlayer->setActive(true);
-				Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
-				Game::getInstance()->gainArmor(heroMakeDamage.front());
-				heroMakeDamage.pop();
 				this->setAnimationLoop(3, 1, 5, 700);
-				oneTime = false;
+				Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
+				if (!heroMakeDamage.empty())
+				{
+					Game::getInstance()->effectOnPlayer->setAnimationLoop(9, 1, 9, 700);
+					Game::getInstance()->effectOnPlayer->setActive(true);
+					Game::getInstance()->gainArmor(heroMakeDamage.front());
+					heroMakeDamage.pop();
+				}
+				oneTime = false;		
 			}
 			delay += 1 * deltaTime;
 			if (delay > 710)

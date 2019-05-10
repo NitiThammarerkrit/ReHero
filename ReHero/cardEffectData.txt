@@ -31,7 +31,7 @@ Bleed	1	poison	3	;
 Panacea	2	heal	4	;		
 Fitness	3	defend	5	;		
 Manuver	2	draw	4	;		
-Parry	1	damage	1	defend	4	;
+CounterA	1	damage	1	defend	4	;
 Enlightment	0	draw	3	;		
 HiddenWeapon	1	draw	1	poison	1	;
 HiddenTeachnique	0	dppc	2	heal	-2	;

@@ -67,22 +67,22 @@ void Game::handleMouseUp(int x, int y)
 			{
 				enemies[0]->changeSprite("Sprite/gob.png", 5, 5);
 				//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
-				enemies[0]->setMaxHP(2);
-				enemies[0]->setHP(2);
+				enemies[0]->setMaxHP(20);
+				enemies[0]->setHP(20);
 			}
 			if (Type == mapPointType::POINT_STRONG_MONSTER)
 			{
 				enemies[0]->changeSprite("Sprite/skull.png", 4, 5);
 				//BGD->changeSprite("Sprite/BGD2.png", 1, 1);
-				enemies[0]->setMaxHP(4);
-				enemies[0]->setHP(4);
+				enemies[0]->setMaxHP(40);
+				enemies[0]->setHP(40);
 			}
 			if (Type == mapPointType::POINT_HEALING_WELL)
 			{
 				enemies[0]->changeSprite("Sprite/wasp.png", 4, 5);
 				//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
-				enemies[0]->setMaxHP(3);
-				enemies[0]->setHP(3);
+				enemies[0]->setMaxHP(30);
+				enemies[0]->setHP(30);
 
 			}
 			
@@ -980,13 +980,12 @@ void Game::init(int width, int height)
 	myHero->lose = defeated;
 	objects.push_back(defeated);
 	
-	
 	TransitionPic = new Transition("transition", 1, 1);
 	TransitionPic->setSize(3000.0f, 720.0f);
 	TransitionPic->translate(glm::vec3(-2180.0f, 0.0f, 0.0f));
 	transitionsss.push_back(TransitionPic); 
 
-	SpriteObject * Map1 = new SpriteObject("Sprite/BGD1.png", 1, 1);
+	SpriteObject * Map1 = new SpriteObject("Sprite/BGD2.png", 1, 1);
 	Map1->setSize(1280.0f, 720.0f);
 	Map1->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	SpriteObject * Map2 = new SpriteObject("Sprite/PauseBG.png", 1, 1);

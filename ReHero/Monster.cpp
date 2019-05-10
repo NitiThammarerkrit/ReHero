@@ -63,7 +63,7 @@ void Monster::update(float deltaTime)
 			delay += 1 * deltaTime;
 			if (delay > 710)
 			{
-				Game::getInstance()->effectOnEnemy->setActive(false);
+				Game::getInstance()->effectOnPlayer->setActive(false);
 				delay = 0;
 				oneTime = true;
 				effect.pop();

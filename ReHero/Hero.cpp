@@ -21,6 +21,7 @@ Hero::Hero(int HP, string fileName, int row, int column) : SpriteObject(fileName
 	delayDie = 0;
 	delay = 0;
 	oneTime = true;
+	oneTime2 = true;
 	poison = 0;
 }
 
@@ -47,7 +48,7 @@ void Hero::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
-				this->setAnimationLoop(1, 1, 7, 700);
+				this->setAnimationLoop(2, 1, 8, 700);
 				if (!heroMakeDamage.empty())
 				{
 					Game::getInstance()->doDamage(heroMakeDamage.front());
@@ -78,9 +79,17 @@ void Hero::update(float deltaTime)
 				 if (!heroMakeDamage.empty())
 				 {
 					 Game::getInstance()->heal(heroMakeDamage.front());
-					 Game::getInstance()->effectOnPlayer->setAnimationLoop(3, 1, 5, 600);
+					 if (heroMakeDamage.front() > 0)
+					 {
+						 Game::getInstance()->effectOnPlayer->setAnimationLoop(3, 1, 5, 600);
+						 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 1);
+					 }
+					 else if (heroMakeDamage.front() < 0)
+						 {
+							 Game::getInstance()->effectOnPlayer->setAnimationLoop(7, 1, 7, 600);
+							 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 2);
+						 }
 					 Game::getInstance()->effectOnPlayer->setActive(true);
-					 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front()*2) + 15.f), 1);
 					 heroMakeDamage.pop();
 				 }
 				
@@ -207,12 +216,12 @@ void Hero::update(float deltaTime)
 		//cout << endl << "damage is" << damage;
 		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
 		//cout << "HP = "<<(float)this->getHP()<<endl;
-		if(oneTime == true&& getAttack)
+		if(oneTime2 == true&& getAttack)
 		this->setAnimationLoop(3, 1, 5, 400);
 		else
-		if (oneTime == true && isHeal == true)
+		if (oneTime2 == true && isHeal == true)
 		this->setAnimationLoop(5, 1, 4, 400);
-		oneTime = false;
+		oneTime2 = false;
 		damage = 0;
 		delay += deltaTime;
 		if (delay > 410)
@@ -223,7 +232,7 @@ void Hero::update(float deltaTime)
 			getAttack = false;
 			if(isHeal==true)
 			isHeal = false;
-			oneTime = true;
+			oneTime2 = true;
 		}	
 	}
 	else

@@ -50,6 +50,7 @@ public:
 	int delay;
 	int delayDie;
 	bool oneTime;
+	bool oneTime2;
 	SpriteObject* HPBar;
 	SpriteObject* lose;
 

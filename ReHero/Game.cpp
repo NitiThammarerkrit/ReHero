@@ -718,13 +718,21 @@ void Game::init(int width, int height)
 	myHero->setTag("Hero");
 	objects.push_back(myHero);
 
-	effectOnPlayer = new SpriteObject("Sprite/effect.png", 5, 7);
+	effectOnPlayer = new SpriteObject("Sprite/effect.png", 11, 9);
 	effectOnPlayer->setSize(650.0f, 650.0f);
-	effectOnPlayer->translate(glm::vec3(300.0f, 200.0f, 0.0f));
-	effectOnPlayer->setAnimationLoop(5, 1, 7, 700);
+	effectOnPlayer->translate(glm::vec3(-400.0f, 200.0f, 0.0f));
+	effectOnPlayer->setAnimationLoop(1, 1, 7, 900);
 	effectOnPlayer->setActive(false);
 	effectOnPlayer->setTag("Effect");
 	objects.push_back(effectOnPlayer); 
+
+	effectOnEnemy= new SpriteObject("Sprite/effect.png", 11, 9);
+	effectOnEnemy->setSize(650.0f, 650.0f);
+	effectOnEnemy->translate(glm::vec3(400.0f, 200.0f, 0.0f));
+	effectOnEnemy->setAnimationLoop(1, 1, 7, 900);
+	effectOnEnemy->setActive(false);
+	effectOnEnemy->setTag("Effect");
+	objects.push_back(effectOnEnemy);
 
 	float colorR[5] = { 1.0f,0.0f,0.0f,1.0f,1.0f };
 	float colorG[5] = { 0.0f,1.0f,0.0f,1.0f,0.0f };

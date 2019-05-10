@@ -48,8 +48,10 @@ void Monster::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->effectOnPlayer->setAnimationLoop(10, 1, 7, 700);
+				Game::getInstance()->effectOnPlayer->setActive(true);
 				Game::getInstance()->state = State::ENEMY_ATTACK_ANIM;
-				this->setAnimationLoop(2, 1, 5, 600);
+				this->setAnimationLoop(2, 1, 5, 700);
 				if (!monsterMakeDamage.empty())
 				{
 					doDamage(enemyTarget, monsterMakeDamage.front());
@@ -59,8 +61,9 @@ void Monster::update(float deltaTime)
 				oneTime = false;
 			}
 			delay += 1 * deltaTime;
-			if (delay > 610)
+			if (delay > 710)
 			{
+				Game::getInstance()->effectOnEnemy->setActive(false);
 				delay = 0;
 				oneTime = true;
 				effect.pop();
@@ -72,10 +75,12 @@ void Monster::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::ENEMY_HEAL_ANIM;
-				this->setAnimationLoop(3, 1, 4, 200);
+				this->setAnimationLoop(3, 1, 4, 600);
 				if (!monsterMakeDamage.empty())
 				{
 					heal(friendTarget, monsterMakeDamage.front());
+					Game::getInstance()->effectOnEnemy->setAnimationLoop(3, 1, 5, 600);
+					Game::getInstance()->effectOnEnemy->setActive(true);
 					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((monsterMakeDamage.front()*2)+15.f), 2);
 					monsterMakeDamage.pop();
 				}
@@ -83,8 +88,9 @@ void Monster::update(float deltaTime)
 				oneTime = false;
 			}	
 			delay += 1 * deltaTime;
-			if (delay > 210)
+			if (delay > 610)
 			{
+				Game::getInstance()->effectOnEnemy->setActive(false);
 				delay = 0;
 				oneTime = true;
 				effect.pop();
@@ -95,8 +101,10 @@ void Monster::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->effectOnPlayer->setAnimationLoop(11, 1, 7, 600);
+				Game::getInstance()->effectOnPlayer->setActive(true);
 				Game::getInstance()->state = State::ENEMY_SPELL_ANIM;
-				this->setAnimationLoop(3, 1, 4, 300);
+				this->setAnimationLoop(3, 1, 4, 600);
 				if (!monsterMakeDamage.empty())
 				{
 					usePoison(enemyTarget, monsterMakeDamage.front());
@@ -105,8 +113,9 @@ void Monster::update(float deltaTime)
 			}
 			oneTime = false;
 			delay += 1 * deltaTime;
-			if (delay > 310)
+			if (delay > 610)
 			{
+				Game::getInstance()->effectOnPlayer->setActive(false);
 				delay = 0;
 				oneTime = true;
 				effect.pop();
@@ -118,13 +127,16 @@ void Monster::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->effectOnEnemy->setAnimationLoop(9, 1, 9, 700);
+				Game::getInstance()->effectOnEnemy->setActive(true);
 				Game::getInstance()->state = State::ENEMY_DEFENSE_ANIM;
-				this->setAnimationLoop(3, 1, 4, 300);
+				this->setAnimationLoop(3, 1, 4, 700);
 			}	
 			oneTime = false;
 			delay += 1 * deltaTime;
-			if (delay > 310)
+			if (delay > 710)
 			{
+				Game::getInstance()->effectOnEnemy->setActive(false);
 				gainArmor(monsterMakeDamage.front());
 				delay = 0;
 				oneTime = true;

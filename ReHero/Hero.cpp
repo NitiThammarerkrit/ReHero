@@ -47,12 +47,12 @@ void Hero::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::PLAYER_ATTACK_ANIM;
-				this->setAnimationLoop(2, 1, 8, 700);
+				this->setAnimationLoop(1, 1, 7, 700);
 				if (!heroMakeDamage.empty())
 				{
 					Game::getInstance()->doDamage(heroMakeDamage.front());
-					Game::getInstance()->effectOnPlayer->setAnimationLoop(3, 1, 7, 700);
-					Game::getInstance()->effectOnPlayer->setActive(true);
+					Game::getInstance()->effectOnEnemy->setAnimationLoop(10, 1, 7, 700);
+					Game::getInstance()->effectOnEnemy->setActive(true);
 					if (heroMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 2);
 					heroMakeDamage.pop();
 				}
@@ -63,7 +63,7 @@ void Hero::update(float deltaTime)
 			if (delay > 710)
 			{
 				effect.pop();
-				Game::getInstance()->effectOnPlayer->setActive(false);
+				Game::getInstance()->effectOnEnemy->setActive(false);
 				delay = 0;
 				oneTime = true;
 				if (effect.empty()) endAction();
@@ -74,10 +74,12 @@ void Hero::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::PLAYER_HEAL_ANIM;
-				 this->setAnimationLoop(5, 1, 4, 400);
+				 this->setAnimationLoop(5, 1, 4, 600);
 				 if (!heroMakeDamage.empty())
 				 {
 					 Game::getInstance()->heal(heroMakeDamage.front());
+					 Game::getInstance()->effectOnPlayer->setAnimationLoop(3, 1, 5, 600);
+					 Game::getInstance()->effectOnPlayer->setActive(true);
 					 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front()*2) + 15.f), 1);
 					 heroMakeDamage.pop();
 				 }
@@ -85,9 +87,10 @@ void Hero::update(float deltaTime)
 				 oneTime = false;
 			}
 			delay += 1 * deltaTime;
-			if (delay > 410)
+			if (delay > 610)
 			{
 				effect.pop();
+				Game::getInstance()->effectOnPlayer->setActive(false);
 				delay = 0;
 				oneTime = true;
 				if (effect.empty()) endAction();
@@ -97,18 +100,18 @@ void Hero::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
-				Game::getInstance()->effectOnPlayer->setAnimationLoop(2, 1, 7, 700);
-				Game::getInstance()->effectOnPlayer->setActive(true);
+				Game::getInstance()->effectOnEnemy->setAnimationLoop(11, 1, 7, 600);
+				Game::getInstance()->effectOnEnemy->setActive(true);
 				Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
 				Game::getInstance()->usePoison(heroMakeDamage.front());
 				heroMakeDamage.pop();
-				this->setAnimationLoop(5, 1, 4, 400);
+				this->setAnimationLoop(5, 1, 4, 600);
 				oneTime = false;
 			}
 			delay += 1 * deltaTime;
-			if (delay > 410)
+			if (delay > 610)
 			{
-				Game::getInstance()->effectOnPlayer->setActive(false);
+				Game::getInstance()->effectOnEnemy->setActive(false);
 				effect.pop();
 				delay = 0;
 				oneTime = true;
@@ -119,15 +122,18 @@ void Hero::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				Game::getInstance()->effectOnPlayer->setAnimationLoop(9, 1, 9, 700);
+				Game::getInstance()->effectOnPlayer->setActive(true);
 				Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
 				Game::getInstance()->gainArmor(heroMakeDamage.front());
 				heroMakeDamage.pop();
-				this->setAnimationLoop(3, 1, 5, 400);
+				this->setAnimationLoop(3, 1, 5, 700);
 				oneTime = false;
 			}
 			delay += 1 * deltaTime;
-			if (delay > 410)
+			if (delay > 710)
 			{
+				Game::getInstance()->effectOnPlayer->setActive(false);
 				effect.pop();
 				delay = 0;
 				oneTime = true;

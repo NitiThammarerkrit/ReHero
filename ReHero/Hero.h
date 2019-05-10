@@ -50,7 +50,8 @@ public:
 	int delay;
 	int delayDie;
 	bool oneTime;
-	DrawableObject* HPBar;
+	SpriteObject* HPBar;
+	SpriteObject* lose;
 
 	queue<string> effect;
 	queue<int> heroMakeDamage;

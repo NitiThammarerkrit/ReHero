@@ -7,6 +7,7 @@
 #include "Hero.h"
 #include "Monster.h"
 #include "Map.h"
+#include "Transition.h"
 
 using namespace std;
 
@@ -38,7 +39,8 @@ enum class State
 	GAME_QUIT = 17,
 	GAME_CITY = 18,
 	GAME_PAUSE = 19,
-	GAME_MAP = 20,
+	GAME_MAP = 22,
+	TRANSITION = 23,
 };
 
 class Game
@@ -52,12 +54,15 @@ class Game
 	static Game* instance;
 	int winWidth, winHeight;
 	float gameWidth, gameHeight;
+	
 	vector<DrawableObject*> objects;
 	vector<DrawableObject*> Menu;
 	vector<DrawableObject*> City;
 	vector<DrawableObject*> Pause;
 	vector<DrawableObject*> Map;
 	vector<DrawableObject*> BG;
+	vector<DrawableObject*> transitionsss;
+	
 	Hero * myHero;
 	vector<SpriteObject*> effect;
 	vector<Monster*> enemies;
@@ -95,8 +100,9 @@ public:
 	void resetHandPos();
 	void endTurn();
 	void monsterTurn();
-	void getHit();
+	//void getHit();
 	State state;
+	State nextState;
 	void restartGame();
 	void setMonster(int HP, string name, int row, int column,int speed);
 	SpriteObject * showMana;
@@ -104,8 +110,8 @@ public:
 	SpriteObject * randomManaText;
 	SpriteObject * effectOnPlayer;
 	SpriteObject * effectOnEnemy;
-	SpriteObject * BGD;
-
+	vector<SpriteObject*> BGD;
+	SpriteObject * TransitionPic;
 	DrawableObject * damageText;
 
 	vector<DrawableObject*> Text;
@@ -126,4 +132,5 @@ public:
 	void usePoison(int amount);
 	void gainArmor(int amount);
 	void drawCard(int amount);
+	void ChangeState(int i);
 };

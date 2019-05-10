@@ -177,6 +177,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextMeshVbo.h" />
     <ClInclude Include="TextObject.h" />
+    <ClInclude Include="Transition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
@@ -206,6 +207,7 @@
     </ClCompile>
     <ClCompile Include="TextMeshVbo.cpp" />
     <ClCompile Include="TextObject.cpp" />
+    <ClCompile Include="Transition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Try1.rc" />

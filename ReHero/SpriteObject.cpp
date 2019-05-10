@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "SpriteObject.h"
 #include "Game.h"
+#include "SpriteObject.h"
 #include "SquareMeshVbo.h"
 #include<SDL_image.h>				 
 
@@ -302,6 +302,7 @@ void SpriteObject::changeSprite(string fileName, int row, int column)
 	state = 0;
 	c = 0;
 }
+
 
 
 

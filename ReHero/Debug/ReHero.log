@@ -1,20 +1,14 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Try1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Game.cpp
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(50): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(87): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(107): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(126): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(145): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(169): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(188): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(207): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(237): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(323): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(711): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1070): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1079): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1096): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1226): warning C4018: '<': signed/unsigned mismatch
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1245): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\game.cpp(1246): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Hero.cpp
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(36): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(62): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(87): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(108): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(128): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(147): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(208): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(228): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(249): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
   ReHero.vcxproj -> C:\Users\LEVEL51pc\Desktop\Engine\ReHero\ReHero\Debug\ReHero.exe

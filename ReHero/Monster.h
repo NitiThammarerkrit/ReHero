@@ -56,7 +56,8 @@ public:
 	int state;
 	int c;
 	
-	DrawableObject* HPBar;
+	SpriteObject* HPBar;
+	SpriteObject* victory;
 
 	queue<string> effect;
 	queue<int> monsterMakeDamage;

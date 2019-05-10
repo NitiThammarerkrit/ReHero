@@ -52,6 +52,10 @@ void Game::handleMouseUp(int x, int y)
 				if (clickedMap == connectedMaps[i])
 				{
 					canGo = true;
+					TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+					TransitionPic->onetime = true;
+					TransitionPic->delay = 3000;
+					cout <<"tranPos" <<TransitionPic->delay << endl;
 					break;
 				}
 			}
@@ -62,28 +66,28 @@ void Game::handleMouseUp(int x, int y)
 			if (Type == mapPointType::POINT_WEAK_MONSTER)
 			{
 				enemies[0]->changeSprite("Sprite/gob.png", 5, 5);
-				BGD->changeSprite("Sprite/BGD1.png", 1, 1);
-				enemies[0]->setMaxHP(20);
-				enemies[0]->setHP(20);
+				//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
+				enemies[0]->setMaxHP(2);
+				enemies[0]->setHP(2);
 			}
 			if (Type == mapPointType::POINT_STRONG_MONSTER)
 			{
 				enemies[0]->changeSprite("Sprite/skull.png", 4, 5);
-				BGD->changeSprite("Sprite/BGD2.png", 1, 1);
-				enemies[0]->setMaxHP(40);
-				enemies[0]->setHP(40);
+				//BGD->changeSprite("Sprite/BGD2.png", 1, 1);
+				enemies[0]->setMaxHP(4);
+				enemies[0]->setHP(4);
 			}
 			if (Type == mapPointType::POINT_HEALING_WELL)
 			{
 				enemies[0]->changeSprite("Sprite/wasp.png", 4, 5);
-				BGD->changeSprite("Sprite/BGD1.png", 1, 1);
-				enemies[0]->setMaxHP(30);
-				enemies[0]->setHP(30);
+				//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
+				enemies[0]->setMaxHP(3);
+				enemies[0]->setHP(3);
 
 			}
 			
 			currentMap = clickedMap;
-			state = State::PLAYER_PLAY;
+			nextState = State::PLAYER_PLAY;
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -101,9 +105,13 @@ void Game::handleMouseUp(int x, int y)
 		}
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Start"&&state == State::GAME_MAINMENU)
 		{
-			restartGame();
-			state = State::GAME_CITY;//To City
-			BGD->changeSprite("Sprite/City.png", 1, 1);
+			nextState = State::GAME_CITY;//To City
+			//restartGame();
+			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			TransitionPic->onetime = true;
+			TransitionPic->delay = 3000;
+			
+			//BGD->changeSprite("Sprite/City.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if(clickable[i]->getTag()== "Menu")
@@ -121,8 +129,11 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building3"&& state == State::GAME_CITY)
 		{
-			state = State::PLAYER_PLAY;
-			BGD->changeSprite("Sprite/BGD1.png", 1, 1);
+			nextState = State::PLAYER_PLAY;
+			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			TransitionPic->onetime = true;
+			TransitionPic->delay =3000;
+			//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -140,8 +151,11 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building1"&& state == State::GAME_CITY)
 		{
-			state = State::GAME_MAP; //Map
-			BGD->changeSprite("Sprite/MapBG1.png", 1, 1);
+			nextState = State::GAME_MAP; //Map
+			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			TransitionPic->onetime = true;
+			TransitionPic->delay = 3000;
+			//BGD->changeSprite("Sprite/MapBG1.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -164,6 +178,9 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "ResumeButton")
 		{
+			//TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			//TransitionPic->onetime = true;
+			//TransitionPic->delay = 3000;
 			state = State::PLAYER_PLAY; //Resume Game
 			//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
@@ -183,6 +200,9 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "optionButton")
 		{
+			//TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			//TransitionPic->onetime = true;
+			//TransitionPic->delay = 3000;
 			state = State::GAME_PAUSE; //Pause Game
 			//BGD->changeSprite("Sprite/PauseBG.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
@@ -202,8 +222,11 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Exit" && state == State::GAME_PAUSE/*in Pause*/)
 		{
-			state = State::GAME_MAINMENU; /*To mainMenu*/
-			BGD->changeSprite("Sprite/MenuBG.png", 1, 1);
+			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			TransitionPic->onetime = true;
+			TransitionPic->delay = 3000;
+			nextState = State::GAME_MAINMENU; /*To mainMenu*/
+			//BGD->changeSprite("Sprite/MenuBG.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -226,14 +249,26 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "cardDrop" && state == State::ENEMY_DIE)
 		{
-			state = State::GAME_MAP; //Map
-			addNewCardToDeck(clickableObject->getName());
-			//setMonster(40, "wasp", 4, 5, 400);
+			//myHero->victory->setActive(true);
+			state = State::TRANSITION;
 			cardDropList[0]->active = false;
 			cardDropList[1]->active = false;
+			//TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			//TransitionPic->onetime = true;
+			//TransitionPic->delay = 3000;
+			 //Map
+			addNewCardToDeck(clickableObject->getName());
+			//setMonster(40, "wasp", 4, 5, 400);
 			enemies[0]->setHP(1);
+			HPBG[0]->setActive(false);
+			HPBG[1]->setActive(false);
+			statusIcon[0]->setActive(false);
+			statusIcon[1]->setActive(false);
+			statusIcon[2]->setActive(false);
+			statusIcon[3]->setActive(false);
+			
 			//restartGame();
-			BGD->changeSprite("Sprite/MapBG1.png", 1, 1);
+			//BGD->changeSprite("Sprite/MapBG1.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -417,6 +452,7 @@ void Game::init(int width, int height)
 	renderer = new GLRendererColor(width, height);
 	renderer->initGL("shaders/color/vertext.shd", "shaders/color/fragment.shd");
 	state = State::GAME_MAINMENU;
+	nextState = State::GAME_CITY;
 
 	gameWidth = 1280;
 	gameHeight = 720;
@@ -447,7 +483,7 @@ void Game::init(int width, int height)
 	//MenuBG->setAnimationLoop(1, 1, 3, 800);
 	//MenuBG->setTag("MenuBG");
 	//Menu.push_back(MenuBG);
-	BGD = MenuBG;
+	BGD.push_back(MenuBG);
 	BG.push_back(MenuBG);
 	
 	SpriteObject * gameName = new SpriteObject("Sprite/gameName.png", 1, 1);
@@ -542,16 +578,16 @@ void Game::init(int width, int height)
 	ExitButton->translate(glm::vec3(0.0f, -250.0f, 0.0f));
 	ExitButton->active = false;
 	clickable.push_back(ExitButton);
-	Pause.push_back(ExitButton);
+	Pause.push_back(ExitButton);  
 	/////////////////////////////////////////////////////////////////MainMenu/////////////////////////////////////////////////////////////
 	
 	////////////////////////////////////////////////////////////////City/////////////////////////////////////////////////////////////////
-	/*SpriteObject * CityBG = new SpriteObject("Sprite/City.png", 1, 1);
+	SpriteObject * CityBG = new SpriteObject("Sprite/City.png", 1, 1);
 	CityBG->setSize(1280.0f, 720.0f);
 	CityBG->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	CityBG->setAnimationLoop(1, 1, 3, 800);
 	CityBG->setTag("CityBG");
-	//City.push_back(CityBG);		*/
+	//City.push_back(CityBG);		
 
 	SpriteObject Building1_Normal("Sprite/Building1.png", 1, 1);
 	SpriteObject Building1_Glow("Sprite/Building1Glow.png", 1, 1);
@@ -612,13 +648,17 @@ void Game::init(int width, int height)
 	Building4->translate(glm::vec3(115.0f, -225.0f, 0.0f));
 	Building4->active = false;
 	clickable.push_back(Building4);
-	City.push_back(Building4);
+	City.push_back(Building4);	
 
 	////////////////////////////////////////////////////////////////City/////////////////////////////////////////////////////////////////
 	
 	/////////////////////////////////////////////////////////////////Map/////////////////////////////////////////////////////////////
 	SpriteObject mapPoint("Sprite/mapPoint.png", 1, 1);
-	SpriteObject mapPointe("Sprite/mapPointe.png", 1, 1);
+	SpriteObject mapPointe("Sprite/mapPoint_press.png", 1, 1);
+	//SpriteObject mapPointBoss("Sprite/mapPointB.png", 1, 1);
+	//SpriteObject mapPointBossP("Sprite/mapPointB_press.png", 1, 1);
+	SpriteObject mapPointStart("Sprite/mapPointS.png", 1, 1);
+	SpriteObject mapPointStartP("Sprite/mapPointS_press.png", 1, 1);
 	
 	ClickableObject ** MapForest = new ClickableObject*[15];
 	for (int i = 0; i < 15; i++)
@@ -628,28 +668,35 @@ void Game::init(int width, int height)
 		MapForest[i]->setEffect(mapPointe, 1, 1);
 		MapForest[i]->genUV();
 		MapForest[i]->setTagAndName("Map", to_string(i));
-		MapForest[i]->setSize(50.0f, 50.0f);
+		MapForest[i]->setSize(100.0f, 100.0f);
 		MapForest[i]->active = false;
 		clickable.push_back(MapForest[i]);
 		Map.push_back(MapForest[i]);
 	}
 	
-	MapForest[0]->translate(glm::vec3(-500.0f, 0.0f, 0.0f));
-	MapForest[1]->translate(glm::vec3(-300.0f, 150.0f, 0.0f));
-	MapForest[2]->translate(glm::vec3(-300.0f, 0.0f, 0.0f));
-	MapForest[3]->translate(glm::vec3(-300.0f, -150.0f, 0.0f));
-	MapForest[4]->translate(glm::vec3(-120.0f, 250.0f, 0.0f));
-	MapForest[5]->translate(glm::vec3(-100.0f, 0.0f, 0.0f));
-	MapForest[6]->translate(glm::vec3(-70.0f, -250.0f, 0.0f));
-	MapForest[7]->translate(glm::vec3(0.0f, 150.0f, 0.0f));
-	MapForest[8]->translate(glm::vec3(10.0f, -120.0f, 0.0f));
-	MapForest[9]->translate(glm::vec3(300.0f, -180.0f, 0.0f));
-	MapForest[10]->translate(glm::vec3(150.0f, 100.0f, 0.0f));
-	MapForest[11]->translate(glm::vec3(170.0f, -100.0f, 0.0f));
-	MapForest[12]->translate(glm::vec3(300.0f, 150.0f, 0.0f));
-	MapForest[13]->translate(glm::vec3(300.0f, 0.0f, 0.0f));
-	MapForest[14]->translate(glm::vec3(500.0f, 0.0f, 0.0f));
+	MapForest[0]->translate(glm::vec3(-500.0f, -20.0f, 0.0f));
+	MapForest[0]->setSpriteClickableObject(mapPointStart, 1, 1);
+	MapForest[0]->setEffect(mapPointStartP, 1, 1);
+	MapForest[0]->genUV();
+	MapForest[1]->translate(glm::vec3(-300.0f, 130.0f, 0.0f));
+	MapForest[2]->translate(glm::vec3(-310.0f, -10.0f, 0.0f));
+	MapForest[3]->translate(glm::vec3(-300.0f, -160.0f, 0.0f));
+	MapForest[4]->translate(glm::vec3(-120.0f, 230.0f, 0.0f));
+	MapForest[5]->translate(glm::vec3(-100.0f, -10.0f, 0.0f));
+	MapForest[6]->translate(glm::vec3(-70.0f, -260.0f, 0.0f));
+	MapForest[7]->translate(glm::vec3(0.0f, 140.0f, 0.0f));
+	MapForest[8]->translate(glm::vec3(0.0f, -130.0f, 0.0f));
+	MapForest[9]->translate(glm::vec3(310.0f, -190.0f, 0.0f));
+	MapForest[10]->translate(glm::vec3(150.0f, 90.0f, 0.0f));
+	MapForest[11]->translate(glm::vec3(170.0f, -110.0f, 0.0f));
+	MapForest[12]->translate(glm::vec3(300.0f, 130.0f, 0.0f));
+	MapForest[13]->translate(glm::vec3(300.0f, -20.0f, 0.0f));
+	MapForest[14]->translate(glm::vec3(500.0f, -20.0f, 0.0f));
 	MapForest[14]->setSize(150.0f, 150.0f);
+	//MapForest[14]->setSpriteClickableObject(mapPointBoss, 1, 1);
+	//MapForest[14]->setEffect(mapPointBossP, 1, 1);
+	MapForest[14]->genUV();	
+	
 
 	/////////////////////////////////////////////////////////////////Map/////////////////////////////////////////////////////////////
 
@@ -664,9 +711,9 @@ void Game::init(int width, int height)
 	//delete enemies[0];
 	//setMonster(20, "wasp", 1, 5,1000);
 
-	myHero = new Hero(20, "Sprite/Hero2.png", 4, 8);
-	myHero->setSize(350.0f, -350.0f);
-	myHero->translate(glm::vec3(-350.0f, 60.0f, 0.0f));
+	myHero = new Hero(20, "Sprite/Hero2.png", 6, 8);
+	myHero->setSize(450.0f, -300.0f);
+	myHero->translate(glm::vec3(-350.0f, 80.0f, 0.0f));
 	myHero->setAnimationLoop(1, 1, 7, 1500);
 	myHero->setTag("Hero");
 	objects.push_back(myHero);
@@ -677,7 +724,7 @@ void Game::init(int width, int height)
 	effectOnPlayer->setAnimationLoop(5, 1, 7, 700);
 	effectOnPlayer->setActive(false);
 	effectOnPlayer->setTag("Effect");
-	objects.push_back(effectOnPlayer);
+	objects.push_back(effectOnPlayer); 
 
 	float colorR[5] = { 1.0f,0.0f,0.0f,1.0f,1.0f };
 	float colorG[5] = { 0.0f,1.0f,0.0f,1.0f,0.0f };
@@ -746,9 +793,9 @@ void Game::init(int width, int height)
 	deck->shufflePlayerDeck();
 	deck->drawToHand(5);
 	deck->randomMana();
-	resetHandPos();
-	
 
+	resetHandPos();	   
+	
 	SpriteObject * healthBarMonster = new SpriteObject("Sprite/hp.png", 1, 1);
 	healthBarMonster->setSize(250.0f, 20.0f);
 	healthBarMonster->translate(glm::vec3(350.0f, 200.0f, 0.0f));
@@ -846,7 +893,7 @@ void Game::init(int width, int height)
 	endTurn->translate(glm::vec3(500.0f, -200.0f, 0.0f));
 	endTurn->active = false;
 	clickable.push_back(endTurn);
-	objects.push_back(endTurn);
+	objects.push_back(endTurn);	  
 	
 	ClickableObject * optionButton= new ClickableObject;
 	optionButton->setSpriteClickableObject(OptionButton, 1, 1);
@@ -857,7 +904,7 @@ void Game::init(int width, int height)
 	optionButton->translate(glm::vec3(600.0f, 320.0f, 0.0f));
 	optionButton->active = false;
 	clickable.push_back(optionButton);
-	objects.push_back(optionButton);
+	objects.push_back(optionButton);   
 
 	previewCard = new SpriteObject("Sprite/cardSprite2.png", cardSpriteRow, 10);
 	previewCard->setSize(300.0f, 420.0f);
@@ -868,6 +915,7 @@ void Game::init(int width, int height)
 
 	SpriteObject cardDrop("Sprite/cardSprite1.png", cardSpriteRow, 10);
 	SpriteObject cardDropeffect("Sprite/cardSprite2.png", cardSpriteRow, 10);
+	
 
 	ClickableObject * cardDrop1 = new ClickableObject;
 	cardDrop1->setSpriteClickableObject(cardDrop, cardSpriteRow, 10);
@@ -876,8 +924,8 @@ void Game::init(int width, int height)
 	cardDrop1->setRow(1);
 	cardDrop1->genUV();
 	cardDrop1->setTagAndName("cardDrop", "one");
-	cardDrop1->setSize(300.0f, 420.0f);
-	cardDrop1->translate(glm::vec3(-200.0f, 75.0f, 0.0f));
+	cardDrop1->setSize(280.0f, 400.0f);
+	cardDrop1->translate(glm::vec3(-200.0f, -50.0f, 0.0f));
 	cardDrop1->active = false;
 	clickable.push_back(cardDrop1);
 	objects.push_back(cardDrop1);
@@ -890,12 +938,13 @@ void Game::init(int width, int height)
 	cardDrop2->setRow(1);
 	cardDrop2->genUV();
 	cardDrop2->setTagAndName("cardDrop", "two");
-	cardDrop2->setSize(300.0f, 420.0f);
-	cardDrop2->translate(glm::vec3(200.0f, 75.0f, 0.0f));
+	cardDrop2->setSize(280.0f, 400.0f);
+	cardDrop2->translate(glm::vec3(200.0f, -50.0f, 0.0f));
 	cardDrop2->active = false;
 	clickable.push_back(cardDrop2);
 	objects.push_back(cardDrop2);
 	cardDropList.push_back(cardDrop2);
+
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -904,49 +953,99 @@ void Game::init(int width, int height)
 		tempTexts->setFontSize(400);
 		tempTexts->setTextColor(SDL_Color{ 0,0,255 });
 		tempTexts->loadText(" ");
-		tempText.push_back(tempTexts);
+		tempText.push_back(tempTexts);	
 	}
+
+	SpriteObject * Victory = new SpriteObject("Sprite/victory.png", 1, 1);
+	Victory->setSize(800.0f, 400.0f);
+	Victory->translate(glm::vec3(0.0f, 220.0f, 0.0f));
+	Victory->setTag("Victory");
+	Victory->setActive(false);
+	enemies[0]->victory = Victory;
+	objects.push_back(Victory);
+
+	SpriteObject * defeated = new SpriteObject("Sprite/defeated.png", 1, 1);
+	defeated->setSize(800.0f, 400.0f);
+	defeated->translate(glm::vec3(0.0f, 220.0f, 0.0f));
+	defeated->setTag("Victory");
+	defeated->setActive(false);
+	myHero->lose = defeated;
+	objects.push_back(defeated);
 	
+	
+	TransitionPic = new Transition("transition", 1, 1);
+	TransitionPic->setSize(3000.0f, 720.0f);
+	TransitionPic->translate(glm::vec3(-2180.0f, 0.0f, 0.0f));
+	transitionsss.push_back(TransitionPic); 
 
-
+	SpriteObject * Map1 = new SpriteObject("Sprite/BGD1.png", 1, 1);
+	Map1->setSize(1280.0f, 720.0f);
+	Map1->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	SpriteObject * Map2 = new SpriteObject("Sprite/PauseBG.png", 1, 1);
+	Map2->setSize(1280.0f, 720.0f);
+	Map2->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	SpriteObject * Map3 = new SpriteObject("Sprite/City.png", 1, 1);
+	Map3->setSize(1280.0f, 720.0f);
+	Map3->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	SpriteObject * Map4 = new SpriteObject("Sprite/MapBG1.png", 1, 1);
+	Map4->setSize(1280.0f, 720.0f);
+	Map4->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	
+	BGD.push_back(Map1);
+	BGD.push_back(Map2);
+	BGD.push_back(Map3);
+	BGD.push_back(Map4);
 }
 
 void Game::render()	 //Change game scene
 {
+	this->getRenderer()->render(this->transitionsss);
+	//cout << "tranpos" << TransitionPic->getTranformX() << endl;
 	if (state == State::GAME_MAINMENU)
 	{
 		this->getRenderer()->Clear();
+		BG[0] = BGD[0];
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->Menu);
+		this->getRenderer()->render(this->transitionsss);
 	}
 	else
 	if (state == State::GAME_PAUSE)
 	{
 		this->getRenderer()->Clear();
+		BG[0] = BGD[2];
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->Pause);
+		this->getRenderer()->render(this->transitionsss);
 	}
 	else
 	if (state == State::GAME_CITY)
 	{
 		this->getRenderer()->Clear();
+		BG[0] = BGD[3];
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->City);
+		this->getRenderer()->render(this->transitionsss);
 	}
 	else
 	if (state == State::GAME_MAP)
 	{
 		this->getRenderer()->Clear();
+		BG[0] = BGD[4];
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->Map);
+		this->getRenderer()->render(this->transitionsss);
 	}
 	else
 	{
 		this->getRenderer()->Clear();
+		BG[0] = BGD[1];
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->objects);
 		this->getRenderer()->render(this->tempText);
-		this->getRenderer()->render(*(deck->getHand()));	
+		if(state != State::ENEMY_DIE && state != State::TRANSITION)
+		this->getRenderer()->render(*(deck->getHand()));
+		this->getRenderer()->render(this->transitionsss);
 	}
 }
 
@@ -954,6 +1053,10 @@ void Game::render()	 //Change game scene
 
 void Game::update(float deltaTime)
 {
+	for (DrawableObject* tran : transitionsss)
+	{
+		tran->update(deltaTime);
+	}
 	for (DrawableObject* menu : Menu)
 	{
 		menu->update(deltaTime);
@@ -1174,15 +1277,16 @@ void Game::restartGame()
 	drop2 = rand() % 40;
 	cout << "Reset" << endl; 
 	//endTurn();
-	if (state != State::ENEMY_DIE)
+	/*if (state != State::ENEMY_DIE)
 	{
 		myHero->setMaxHP(20);
 		myHero->setHP(20);
 		myHero->takeDamage(0);
 		heroHp[0]->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
-	}
-	enemies[0]->setMaxHP(20);
-	enemies[0]->setHP(20);
+	}  */
+	//enemies[0]->setMaxHP(20);
+	//enemies[0]->setHP(20);
+	myHero->takeDamage(0);
 	enemies[0]->takeDamage(0);
 	monsterHp[0]->setPosition(glm::vec3(350.0f, 200.0f, 0.0f));
 	HPBG[0]->setActive(true);
@@ -1294,6 +1398,34 @@ void Game::drawCard(int amount) {
 	}
 	else cout << "Deck cannot be found" << endl;
 }
+
+void Game::ChangeState(int i)
+{
+	if (i == 1)
+	{
+		nextState = State::GAME_CITY;//To City
+		TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+		TransitionPic->onetime = true;
+		TransitionPic->delay = 3000;
+		//restartGame();
+
+		for (int i = 0; i < clickable.size(); i++)
+		{
+			if (clickable[i]->getTag() == "Menu")
+				clickable[i]->active = false;
+			if (clickable[i]->getTag() == "City")
+				clickable[i]->active = true;
+			if (clickable[i]->getTag() == "InFight")
+				clickable[i]->active = false;
+			if (clickable[i]->getTag() == "Pause")
+				clickable[i]->active = false;
+			if (clickable[i]->getTag() == "Map")
+				clickable[i]->active = false;
+		}
+	}
+
+}
+
 
 //----------------------------------------------------------------------------------
 

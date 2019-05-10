@@ -166,8 +166,18 @@ void Monster::update(float deltaTime)
 		if (delay > 410)
 		{
 			delay = 0;
+			victory->setActive(true);
 			Game::getInstance()->state = State::ENEMY_DIE;
 		}
+	}
+	if (Game::getInstance()->state == State::TRANSITION)
+	{
+		HPBar->setActive(false);
+	}
+	if (Game::getInstance()->state == State::GAME_MAP)
+	{
+		HPBar->setActive(true);
+		victory->setActive(false);
 	}
 }
 

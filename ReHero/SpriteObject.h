@@ -51,5 +51,8 @@ public:
 	int c; 
 	void changeSprite(string fileName, int row, int column);
 	unsigned int texture;
+	float delay;
+	bool onetime;
+
 };
 

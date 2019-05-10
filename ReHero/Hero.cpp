@@ -74,7 +74,7 @@ void Hero::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::PLAYER_HEAL_ANIM;
-				 this->setAnimationLoop(3, 1, 4, 400);
+				 this->setAnimationLoop(5, 1, 4, 400);
 				 if (!heroMakeDamage.empty())
 				 {
 					 Game::getInstance()->heal(heroMakeDamage.front());
@@ -102,11 +102,11 @@ void Hero::update(float deltaTime)
 				Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
 				Game::getInstance()->usePoison(heroMakeDamage.front());
 				heroMakeDamage.pop();
-				this->setAnimationLoop(2, 1, 8, 700);
+				this->setAnimationLoop(5, 1, 4, 400);
 				oneTime = false;
 			}
 			delay += 1 * deltaTime;
-			if (delay > 710)
+			if (delay > 410)
 			{
 				Game::getInstance()->effectOnPlayer->setActive(false);
 				effect.pop();
@@ -122,7 +122,7 @@ void Hero::update(float deltaTime)
 				Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
 				Game::getInstance()->gainArmor(heroMakeDamage.front());
 				heroMakeDamage.pop();
-				this->setAnimationLoop(3, 1, 4, 400);
+				this->setAnimationLoop(3, 1, 5, 400);
 				oneTime = false;
 			}
 			delay += 1 * deltaTime;
@@ -141,7 +141,7 @@ void Hero::update(float deltaTime)
 				//Game::getInstance()->state = State::PLAYER_DRAW;
 				Game::getInstance()->drawCard(heroMakeDamage.front());
 				heroMakeDamage.pop();
-				this->setAnimationLoop(3, 1, 4, 400);
+				this->setAnimationLoop(5, 1, 4, 400);
 				oneTime = false;
 			}
 			delay += 1 * deltaTime;
@@ -199,10 +199,10 @@ void Hero::update(float deltaTime)
 		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
 		//cout << "HP = "<<(float)this->getHP()<<endl;
 		if(oneTime == true&& getAttack)
-		this->setAnimationLoop(3, 1, 4, 400);
+		this->setAnimationLoop(3, 1, 5, 400);
 		else
 		if (oneTime == true && isHeal == true)
-		this->setAnimationLoop(2, 1, 8, 700);
+		this->setAnimationLoop(5, 1, 4, 400);
 		oneTime = false;
 		damage = 0;
 		delay += deltaTime;
@@ -220,14 +220,50 @@ void Hero::update(float deltaTime)
 	else
 	if (isAlive()==false)
 	{
-		if(delayDie==0)
-		this->setAnimationLoop(4, 1, 5, 600);
+		if (delayDie == 0)
+		{
+			this->setAnimationLoop(6, 1, 5, 600);
+			oneTime = false;
+		}
 		delayDie += 1 * deltaTime;
 		if (delayDie > 590)
 		{
-			this->setActive(false);
+			lose->setActive(true);
+			//this->setActive(false);
+			this->setAnimationLoop(6, 5, 1, 10000000);
+			Game::getInstance()->ChangeState(1);   
+			HP = 20;
+			HPBar->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
+			delayDie = 0;
 		}
 	} 
+	if (Game::getInstance()->state == State::TRANSITION)
+	{
+		if (oneTime == true)
+		{
+			this->setAnimationLoop(4, 1, 7, 600);
+			HPBar->setActive(false);
+			oneTime = false;
+		}
+		this->translate(glm::vec3(10.0f, 0.0f, 0.0f));
+		delay += 1 * deltaTime;
+		if (delay > 2500)
+		{
+			Game::getInstance()->TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			Game::getInstance()->TransitionPic->onetime = true;
+			Game::getInstance()->TransitionPic->delay = 3000;
+			Game::getInstance()->nextState = State::GAME_MAP;
+			//this->setPosition(glm::vec3(-350.0f, 80.0f, 0.0f));
+			oneTime = true;
+			delay = 0;
+		}
+	}
+	if (Game::getInstance()->state == State::GAME_MAP)
+	{
+		HPBar->setActive(true);
+		lose->setActive(false);
+		this->setPosition(glm::vec3(-350.0f, 80.0f, 0.0f));
+	}
 }
 
 void Hero::endAction() {

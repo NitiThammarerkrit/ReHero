@@ -62,7 +62,7 @@ void Game::handleMouseUp(int x, int y)
 			if (canGo == false) return;
 			
 			mapPointType Type = DungeonMap::getInstance()->getPointType(clickedMap);
-			restartGame();
+			//restartGame();
 			if (Type == mapPointType::POINT_WEAK_MONSTER)
 			{
 				enemies[0]->changeSprite("Sprite/gob.png", 5, 5);
@@ -964,6 +964,43 @@ void Game::init(int width, int height)
 		tempText.push_back(tempTexts);	
 	}
 
+	TextObject* ShieldTextH = new TextObject();
+	ShieldTextH->setFontName("Damaged.ttf");
+	ShieldTextH->setPosition(glm::vec3(-470.0f,200.0f,0.0f));
+	ShieldTextH->setFontSize(50);
+	ShieldTextH->setTextColor(SDL_Color{ 0,0,0 });	 //bgr
+	ShieldTextH->loadText(" ");
+	ShieldTextHe = ShieldTextH;
+	objects.push_back(ShieldTextH);
+
+	TextObject* ShieldTextM = new TextObject();
+	ShieldTextM->setFontName("Damaged.ttf");
+	ShieldTextM->setPosition(glm::vec3(230.0f, 200.0f, 0.0f));
+	ShieldTextM->setFontSize(50);
+	ShieldTextM->setTextColor(SDL_Color{ 0,0,0 });
+	ShieldTextM->loadText(" ");
+	ShieldTextMo = ShieldTextM;
+	objects.push_back(ShieldTextM);
+
+	TextObject* PoisionTextH = new TextObject();
+	PoisionTextH->setFontName("Damaged.ttf");
+	PoisionTextH->setPosition(glm::vec3(-200.0f, 200.0f, 0.0f));
+	PoisionTextH->setFontSize(50);
+	PoisionTextH->setTextColor(SDL_Color{ 0,0,0 });	 //bgr
+	PoisionTextH->loadText(" ");
+	PoisionTextHe = PoisionTextH;
+	objects.push_back(PoisionTextH);
+
+	TextObject* PoisionTextM = new TextObject();
+	PoisionTextM->setFontName("Damaged.ttf");
+	PoisionTextM->setPosition(glm::vec3(500.0f, 200.0f, 0.0f));
+	PoisionTextM->setFontSize(50);
+	PoisionTextM->setTextColor(SDL_Color{ 0,0,0 });
+	PoisionTextM->loadText(" ");
+	PoisionTextMo = PoisionTextM;
+	objects.push_back(PoisionTextM); 
+
+
 	SpriteObject * Victory = new SpriteObject("Sprite/victory.png", 1, 1);
 	Victory->setSize(800.0f, 400.0f);
 	Victory->translate(glm::vec3(0.0f, 220.0f, 0.0f));
@@ -1360,6 +1397,139 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)
 
 			break;
 		}
+	}
+
+}
+
+void Game::drawEffectText(string text, int type, int color, bool isActive)
+{
+	// type 0 = ShieldTextHero
+	// type 1 = PoisonTextHero
+	// type 2 = ShieldTextMonster
+	// type 3 = PoisonTextMonster
+	if (type == 0)
+	{
+		TextObject *Text = dynamic_cast<TextObject *>(ShieldTextHe);
+		Text->loadText(text);
+		if (color == 0)
+		{
+			Text->setTextColor(SDL_Color{ 255,0,0 });
+		}
+		else
+		if (color == 1)
+		{
+			Text->setTextColor(SDL_Color{ 0,255,0 });
+		}
+		else
+		{
+			Text->setTextColor(SDL_Color{ 0,0,255 });
+		}
+		if (isActive == true)
+		{
+			Text->setActive(true);
+		}
+		else
+			Text->setActive(false);
+	}
+
+	if (type == 1)
+	{
+		TextObject *Text = dynamic_cast<TextObject *>(PoisionTextHe);
+		Text->loadText(text);
+		if (color == 0)
+		{
+			Text->setTextColor(SDL_Color{ 255,0,0 });
+		}
+		else
+			if (color == 1)
+			{
+				Text->setTextColor(SDL_Color{ 0,255,0 });
+			}
+			else
+			{
+				Text->setTextColor(SDL_Color{ 0,0,255 });
+			}
+		if (isActive == true)
+		{
+			Text->setActive(true);
+		}
+		else
+			Text->setActive(false);
+	}
+
+	if (type == 1)
+	{
+		TextObject *Text = dynamic_cast<TextObject *>(PoisionTextHe);
+		Text->loadText(text);
+		if (color == 0)
+		{
+			Text->setTextColor(SDL_Color{ 255,0,0 });
+		}
+		else
+			if (color == 1)
+			{
+				Text->setTextColor(SDL_Color{ 0,255,0 });
+			}
+			else
+			{
+				Text->setTextColor(SDL_Color{ 0,0,255 });
+			}
+		if (isActive == true)
+		{
+			Text->setActive(true);
+		}
+		else
+			Text->setActive(false);
+	}
+
+	if (type == 2)
+	{
+		TextObject *Text = dynamic_cast<TextObject *>(ShieldTextMo);
+		Text->loadText(text);
+		if (color == 0)
+		{
+			Text->setTextColor(SDL_Color{ 255,0,0 });
+		}
+		else
+			if (color == 1)
+			{
+				Text->setTextColor(SDL_Color{ 0,255,0 });
+			}
+			else
+			{
+				Text->setTextColor(SDL_Color{ 0,0,255 });
+			}
+		if (isActive == true)
+		{
+			Text->setActive(true);
+		}
+		else
+			Text->setActive(false);
+	}
+
+	if (type == 3)
+	{
+		TextObject *Text = dynamic_cast<TextObject *>(PoisionTextMo);
+		Text->loadText(text);
+		if (color == 0)
+		{
+			Text->setTextColor(SDL_Color{ 255,0,0 });
+		}
+		else
+		if (color == 1)
+		{
+			Text->setTextColor(SDL_Color{ 0,255,0 });
+		}
+		else
+		{
+			Text->setTextColor(SDL_Color{ 0,0,255 });
+		}
+		if (isActive == true)
+		{
+			Text->setActive(true);
+		}
+		else
+			Text->setActive(false);
 	}
 
 }

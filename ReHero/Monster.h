@@ -57,6 +57,8 @@ public:
 	int c;
 	
 	SpriteObject* HPBar;
+	DrawableObject* ShieldStack;
+	DrawableObject* PoisonStack;
 	SpriteObject* victory;
 
 	queue<string> effect;

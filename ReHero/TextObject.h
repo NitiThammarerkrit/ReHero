@@ -13,8 +13,10 @@ private:
 	SDL_Color textColor;
 	string fontName;
 	int countUpdateFrame = 0;
+	bool active;
 public:
 	unsigned int texture = -1;
+	virtual void setActive(bool active);
 	TextObject();
 	~TextObject();
 	void setTextColor(SDL_Color color);

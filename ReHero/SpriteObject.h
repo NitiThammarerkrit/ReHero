@@ -53,6 +53,10 @@ public:
 	unsigned int texture;
 	float delay;
 	bool onetime;
+	float GetXPos()
+	{
+		return pos.x;
+	}
 
 };
 

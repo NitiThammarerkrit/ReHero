@@ -8,11 +8,13 @@ void SoundEffect::play(int loop)
 	{
 		std::cout << "Mix_PlayChannel Error " << std::string(Mix_GetError());
 	}
+	//Mix_Volume(-1, 0-128)
 }
 
 void Music::play(int loop)
 {
 	Mix_PlayMusic(m_music, loop);
+	//Mix_VolumeMusic(0-128)
 }
 
 void Music::pause()

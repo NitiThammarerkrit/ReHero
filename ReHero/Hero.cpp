@@ -31,6 +31,19 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {	  
+	if (defArmor > 0)
+	{
+		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 3, true);
+	}
+	else
+		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 3, false);
+	if (poison > 0)
+	{
+		Game::getInstance()->drawEffectText(to_string(poison), 1, 3, true);
+	}
+	else
+		Game::getInstance()->drawEffectText(to_string(poison), 1, 3, false);
+
 	//cout << endl << cd << endl;
 	//float y = deltaTime * 1.0f;
 	//Game::getInstance()->damageText->translate(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -79,6 +92,11 @@ void Hero::update(float deltaTime)
 				 if (!heroMakeDamage.empty())
 				 {
 					 Game::getInstance()->heal(heroMakeDamage.front());
+					 HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
+					 HPBar->setPosition(glm::vec3((float)-350.0f - 
+						 ((float)this->getMaxHP() - (float)this->getHP()) 
+						 / ((float)this->getMaxHP() / (float)(250.0f / 2.0f))
+						 , 200.0f, 0.0f));
 					 if (heroMakeDamage.front() > 0)
 					 {
 						 Game::getInstance()->effectOnPlayer->setAnimationLoop(3, 1, 5, 600);
@@ -212,10 +230,15 @@ void Hero::update(float deltaTime)
 	if (getAttack&&isAlive() || isHeal == true &&isAlive()) //get attacked
 	{ 		 
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
-		//cout << "\nMonster HP:" << this->getHP();
-		//cout << endl << "damage is" << damage;
-		HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
-		//cout << "HP = "<<(float)this->getHP()<<endl;
+		HPBar->setPosition(glm::vec3((float)-350.0f -
+			((float)this->getMaxHP() - (float)this->getHP())
+			/ ((float)this->getMaxHP() / (float)(250.0f / 2.0f))
+			, 200.0f, 0.0f));
+		//HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
+		////cout << "\nMonster HP:" << this->getHP();
+		////cout << endl << "damage is" << damage;
+		//HPBar->translate(glm::vec3((-damage / 2.0f / (float)this->getMaxHP()) * 250.0f, 0.0f, 0.0f));
+		////cout << "HP = "<<(float)this->getHP()<<endl;
 		if(oneTime2 == true&& getAttack)
 		this->setAnimationLoop(3, 1, 5, 400);
 		else
@@ -367,7 +390,7 @@ void Hero::gainArmor(int amount) {
 void Hero::takePoison(int amount) {
 	getAttack = true;
 	poison += amount;
-
+	//Game::getInstance()->drawText(to_string(poison), glm::vec3(-350.0f, 0.f, 0.f), abs((poison * 2) + 15.f), 3);
 }
 
 void Hero::curePoison() {

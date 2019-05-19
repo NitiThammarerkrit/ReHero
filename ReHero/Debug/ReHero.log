@@ -2,27 +2,29 @@
   Monster.cpp
 c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(11): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(38): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(58): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(63): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(84): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(90): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(115): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(136): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(162): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(177): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(340): warning C4018: '<': signed/unsigned mismatch
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(71): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(76): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(98): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(108): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(133): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(154): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(185): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(200): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(310): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\monster.cpp(365): warning C4018: '<': signed/unsigned mismatch
   Hero.cpp
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(37): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(57): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(63): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(85): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(90): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(98): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(120): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(145): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(165): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(226): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(246): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(267): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(50): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(76): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(103): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(108): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(116): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(138): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(163): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(183): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(249): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(269): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(290): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\level51pc\desktop\engine\rehero\rehero\hero.cpp(393): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
   ReHero.vcxproj -> C:\Users\LEVEL51pc\Desktop\Engine\ReHero\ReHero\Debug\ReHero.exe

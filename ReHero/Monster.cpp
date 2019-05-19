@@ -42,6 +42,19 @@ void Monster::update(float deltaTime)
 		this->genUV();
 		timeCount = 0;
 	}
+	if (defArmor > 0)
+	{
+		Game::getInstance()->drawEffectText(to_string(defArmor), 2, 3, true);
+	}
+	else
+		Game::getInstance()->drawEffectText(to_string(defArmor), 2, 3, false);
+	if (poison > 0)
+	{
+		Game::getInstance()->drawEffectText(to_string(poison), 3, 3, true);
+	}
+	else
+		Game::getInstance()->drawEffectText(to_string(poison), 3, 3, false);
+
 	if (!effect.empty()&&isAlive())
 	{
 		if (effect.front() == "damage")
@@ -75,6 +88,7 @@ void Monster::update(float deltaTime)
 			if (oneTime == true)
 			{
 				Game::getInstance()->state = State::ENEMY_HEAL_ANIM;
+
 				this->setAnimationLoop(3, 1, 4, 600);
 				if (!monsterMakeDamage.empty())
 				{
@@ -84,7 +98,11 @@ void Monster::update(float deltaTime)
 					Game::getInstance()->drawText(to_string(abs(monsterMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((monsterMakeDamage.front()*2)+15.f), 2);
 					monsterMakeDamage.pop();
 				}
-				
+				HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
+				HPBar->setPosition(glm::vec3((float)350.0f -
+					((float)this->getMaxHP() - (float)this->getHP())
+					/ ((float)this->getMaxHP() / (float)(250.0f / 2.0f))
+					, 200.0f, 0.0f));
 				oneTime = false;
 			}	
 			delay += 1 * deltaTime;
@@ -150,9 +168,14 @@ void Monster::update(float deltaTime)
 	if ((getAttack||isHeal)&&isAlive())
 	{
 		HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
-		//cout << "\nMonster HP:" << this->getHP();
-		//cout << endl << "damage is" << damage;
-		HPBar->translate(glm::vec3(-damage / 2.0f / (float)this->getMaxHP()*250.0f, 0.0f, 0.0f));
+		HPBar->setPosition(glm::vec3((float)350.0f -
+			((float)this->getMaxHP() - (float)this->getHP())
+			/ ((float)this->getMaxHP() / (float)(250.0f / 2.0f))
+			, 200.0f, 0.0f));
+		//HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
+		////cout << "\nMonster HP:" << this->getHP();
+		////cout << endl << "damage is" << damage;
+		//HPBar->translate(glm::vec3(-damage / 2.0f / (float)this->getMaxHP()*250.0f, 0.0f, 0.0f));
 		if (oneTime == true && getAttack == true)
 		this->setAnimationLoop(4, 1, 1, 200);
 		if (oneTime == true && isHeal == true)
@@ -284,6 +307,8 @@ void Monster::gainArmor(int amount) {
 void Monster::takePoison(int amount) {
 	getAttack = true;
 	poison += amount;
+	//Game::getInstance()->drawText(to_string(poison), glm::vec3(350.0f, 0.f, 0.f), abs((poison * 2) + 15.f), 2);
+
 }
 
 void Monster::startTurn() {

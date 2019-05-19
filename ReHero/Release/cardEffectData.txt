@@ -26,7 +26,7 @@ All-out	3	damage	5	;
 FirstAid	0	heal	2	;		
 Jump	1	draw	2	;		
 Trip	0	heal	-2	draw	3	;
-Triumph	1	damage	3	;		
+Triumph	3	damage	3	;		
 Bleed	1	poison	3	;		
 Panacea	2	heal	4	;		
 Fitness	3	defend	5	;		

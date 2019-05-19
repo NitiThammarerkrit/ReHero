@@ -20,6 +20,10 @@ TextObject::~TextObject()
 void TextObject::render(glm::mat4 globalModelTransform)
 {
 	
+	if (active == false)
+	{
+		return;
+	}
 	GLuint modelMatixId = Game::getInstance()->getRenderer()->getModelMatrixAttrId();
 	GLuint modeId = Game::getInstance()->getRenderer()->getModeUniformId();
 
@@ -96,4 +100,9 @@ void TextObject::setFontSize(int size)
 int TextObject::getFontSize()
 {
 	return fontSize;
+}
+
+void TextObject::setActive(bool active)
+{
+	this->active = active;
 }

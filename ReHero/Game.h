@@ -116,6 +116,7 @@ public:
 
 	vector<DrawableObject*> Text;
 	void drawText(string text, glm::vec3 pos, int fontSize, int color);
+	void drawEffectText(string text, int type, int color, bool isActive);
 	
 	vector<DrawableObject*> tempText;
 
@@ -133,4 +134,10 @@ public:
 	void gainArmor(int amount);
 	void drawCard(int amount);
 	void ChangeState(int i);
+
+	DrawableObject * ShieldTextHe;
+	DrawableObject * ShieldTextMo;
+	DrawableObject * PoisionTextHe;
+	DrawableObject * PoisionTextMo;
+
 };

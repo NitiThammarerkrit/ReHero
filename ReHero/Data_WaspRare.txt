@@ -1,0 +1,9 @@
+3			
+Scratch(atk)	damage	7	;
+Poison	poison	3	;
+Guard	defend	4	;
+			
+			
+			
+			
+			

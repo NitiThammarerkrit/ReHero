@@ -61,29 +61,39 @@ void Game::handleMouseUp(int x, int y)
 			}
 			if (canGo == false) return;
 			
+			
+			
+			//check point type
+			int mon_id = 0;
 			mapPointType Type = DungeonMap::getInstance()->getPointType(clickedMap);
-			//restartGame();
 			if (Type == mapPointType::POINT_WEAK_MONSTER)
 			{
-				enemies[0]->changeSprite("Sprite/gob.png", 5, 5);
-				//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
-				enemies[0]->setMaxHP(20);
-				enemies[0]->setHP(20);
+				mon_id = 3 + rand() % 3;
 			}
 			if (Type == mapPointType::POINT_STRONG_MONSTER)
 			{
-				enemies[0]->changeSprite("Sprite/skull.png", 4, 5);
-				//BGD->changeSprite("Sprite/BGD2.png", 1, 1);
-				enemies[0]->setMaxHP(40);
-				enemies[0]->setHP(40);
+				mon_id = 6 + rand() % 3;
 			}
 			if (Type == mapPointType::POINT_HEALING_WELL)
 			{
-				enemies[0]->changeSprite("Sprite/wasp.png", 4, 5);
-				//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
-				enemies[0]->setMaxHP(30);
-				enemies[0]->setHP(30);
+				mon_id = 9 + rand() % 3;
+			}
 
+			//change monster
+			switch (mon_id)
+			{
+				case 0: enemies[0]->changeMonster("Goblin", 10); break;
+				case 1: enemies[0]->changeMonster("GoblinElite", 14); break;
+				case 2: enemies[0]->changeMonster("GoblinRare", 18); break;
+				case 3: enemies[0]->changeMonster("Wasp", 10); break;
+				case 4: enemies[0]->changeMonster("WaspElite", 14); break;
+				case 5: enemies[0]->changeMonster("WaspRare", 18); break;
+				case 6: enemies[0]->changeMonster("Skeleton", 14); break;
+				case 7: enemies[0]->changeMonster("SkeletonElite", 20); break;
+				case 8: enemies[0]->changeMonster("SkeletonRare", 28); break;
+				case 9: enemies[0]->changeMonster("Centipede", 14); break;
+				case 10: enemies[0]->changeMonster("CentipedeElite", 20); break;
+				case 11: enemies[0]->changeMonster("CentipedeRare", 24); break;
 			}
 			
 			currentMap = clickedMap;
@@ -511,11 +521,11 @@ void Game::init(int width, int height)
 	PlayButton->genUV();
 	PlayButton->setTagAndName("Menu","Start");
 	PlayButton->setSize(250.0f, 100.0f);
-	PlayButton->translate(glm::vec3(-300.0f, 150.0f, 0.0f));
+	PlayButton->translate(glm::vec3(-300.0f, 100.0f, 0.0f));
 	clickable.push_back(PlayButton);
 	Menu.push_back(PlayButton);
 
-	ClickableObject * LibaryButton = new ClickableObject;
+	/*ClickableObject * LibaryButton = new ClickableObject;
 	LibaryButton->setSpriteClickableObject(Libary, 1, 1);
 	LibaryButton->setEffect(Libary_Glow, 1, 1);
 	LibaryButton->setColumn(1);
@@ -525,7 +535,7 @@ void Game::init(int width, int height)
 	LibaryButton->setSize(250.0f, 100.0f);
 	LibaryButton->translate(glm::vec3(-300.0f, 50.0f, 0.0f));
 	clickable.push_back(LibaryButton);
-	Menu.push_back(LibaryButton);
+	Menu.push_back(LibaryButton);*/
 
 	ClickableObject * SettingButton = new ClickableObject;
 	SettingButton->setSpriteClickableObject(Setting, 1, 1);
@@ -535,7 +545,7 @@ void Game::init(int width, int height)
 	SettingButton->genUV();
 	SettingButton->setTagAndName("Menu","Setting");
 	SettingButton->setSize(250.0f, 100.0f);
-	SettingButton->translate(glm::vec3(-300.0f, -50.0f, 0.0f));
+	SettingButton->translate(glm::vec3(-300.0f, 0.0f, 0.0f));
 	clickable.push_back(SettingButton);
 	Menu.push_back(SettingButton);
 
@@ -547,7 +557,7 @@ void Game::init(int width, int height)
 	QuitButton->genUV();
 	QuitButton->setTagAndName("Menu", "Quit");
 	QuitButton->setSize(250.0f, 100.0f);
-	QuitButton->translate(glm::vec3(-300.0f, -150.0f, 0.0f));
+	QuitButton->translate(glm::vec3(-300.0f, -100.0f, 0.0f));
 	clickable.push_back(QuitButton);
 	Menu.push_back(QuitButton);
 
@@ -674,24 +684,24 @@ void Game::init(int width, int height)
 		Map.push_back(MapForest[i]);
 	}
 	
-	MapForest[0]->translate(glm::vec3(-500.0f, -20.0f, 0.0f));
+	MapForest[0]->translate(glm::vec3(-494.0f, -18.0f, 0.0f));
 	MapForest[0]->setSpriteClickableObject(mapPointStart, 1, 1);
 	MapForest[0]->setEffect(mapPointStartP, 1, 1);
 	MapForest[0]->genUV();
-	MapForest[1]->translate(glm::vec3(-300.0f, 130.0f, 0.0f));
-	MapForest[2]->translate(glm::vec3(-310.0f, -10.0f, 0.0f));
+	MapForest[1]->translate(glm::vec3(-300.0f, 140.0f, 0.0f));
+	MapForest[2]->translate(glm::vec3(-300.0f, -10.0f, 0.0f));
 	MapForest[3]->translate(glm::vec3(-300.0f, -160.0f, 0.0f));
 	MapForest[4]->translate(glm::vec3(-120.0f, 230.0f, 0.0f));
-	MapForest[5]->translate(glm::vec3(-100.0f, -10.0f, 0.0f));
-	MapForest[6]->translate(glm::vec3(-70.0f, -260.0f, 0.0f));
-	MapForest[7]->translate(glm::vec3(0.0f, 140.0f, 0.0f));
-	MapForest[8]->translate(glm::vec3(0.0f, -130.0f, 0.0f));
-	MapForest[9]->translate(glm::vec3(310.0f, -190.0f, 0.0f));
-	MapForest[10]->translate(glm::vec3(150.0f, 90.0f, 0.0f));
-	MapForest[11]->translate(glm::vec3(170.0f, -110.0f, 0.0f));
-	MapForest[12]->translate(glm::vec3(300.0f, 130.0f, 0.0f));
-	MapForest[13]->translate(glm::vec3(300.0f, -20.0f, 0.0f));
-	MapForest[14]->translate(glm::vec3(500.0f, -20.0f, 0.0f));
+	MapForest[5]->translate(glm::vec3(-93.0f, -12.0f, 0.0f));
+	MapForest[6]->translate(glm::vec3(-68.0f, -260.0f, 0.0f));
+	MapForest[7]->translate(glm::vec3(-2.0f, 140.0f, 0.0f));
+	MapForest[8]->translate(glm::vec3(3.0f, -132.0f, 0.0f));
+	MapForest[9]->translate(glm::vec3(307.0f, -190.0f, 0.0f));
+	MapForest[10]->translate(glm::vec3(149.0f, 91.0f, 0.0f));
+	MapForest[11]->translate(glm::vec3(165.0f, -110.0f, 0.0f));
+	MapForest[12]->translate(glm::vec3(305.0f, 135.0f, 0.0f));
+	MapForest[13]->translate(glm::vec3(297.0f, -19.0f, 0.0f));
+	MapForest[14]->translate(glm::vec3(497.0f, -17.0f, 0.0f));
 	MapForest[14]->setSize(150.0f, 150.0f);
 	//MapForest[14]->setSpriteClickableObject(mapPointBoss, 1, 1);
 	//MapForest[14]->setEffect(mapPointBossP, 1, 1);
@@ -707,7 +717,7 @@ void Game::init(int width, int height)
 	BG->setTag("BG");
 	objects.push_back(BG); */
 
-	setMonster(20,"skull", 4, 5,400);
+	setMonster(10,"Goblin", 4, 5,400);
 	//delete enemies[0];
 	//setMonster(20, "wasp", 1, 5,1000);
 
@@ -1120,7 +1130,7 @@ void Game::update(float deltaTime)
 		obj->update(deltaTime);
 	}
 	for (SpriteObject* obj : statusIcon) {
-		if (state == State::PLAYER_DIE || state == State::ENEMY_DIE)
+		if (state == State::PLAYER_DIE || state == State::ENEMY_DIE || state == State::TRANSITION)
 		{
 			obj->setActive(false);
 			continue;
@@ -1385,9 +1395,17 @@ void Game::drawText(string text, glm::vec3 pos, int fontSize, int color)
 			{
 				Text->setTextColor(SDL_Color{ 0,255,0 });
 			}	
-			else
+			else if (color == 2)
 			{
 				Text->setTextColor(SDL_Color{ 0,0,255 });
+			}
+			else if (color == 3)
+			{
+				Text->setTextColor(SDL_Color{ 255,255,255 });
+			}
+			else 
+			{
+				Text->setTextColor(SDL_Color{ 0,0,0 });
 			}
 			Text->setPosition(pos);
 			Text->setFontSize(300.0f);
@@ -1416,14 +1434,22 @@ void Game::drawEffectText(string text, int type, int color, bool isActive)
 			Text->setTextColor(SDL_Color{ 255,0,0 });
 		}
 		else
-		if (color == 1)
-		{
-			Text->setTextColor(SDL_Color{ 0,255,0 });
-		}
-		else
-		{
-			Text->setTextColor(SDL_Color{ 0,0,255 });
-		}
+			if (color == 1)
+			{
+				Text->setTextColor(SDL_Color{ 0,255,0 });
+			}
+			else if (color == 2)
+			{
+				Text->setTextColor(SDL_Color{ 0,0,255 });
+			}
+			else if (color == 3)
+			{
+				Text->setTextColor(SDL_Color{ 255,255,255 });
+			}
+			else
+			{
+				Text->setTextColor(SDL_Color{ 0,0,0 });
+			}
 		if (isActive == true)
 		{
 			Text->setActive(true);

@@ -1,0 +1,4 @@
+3					
+Hit	damage	4	6	7	;
+Heal	heal	3	4	4	;
+Guard	defend	2	3	4	;

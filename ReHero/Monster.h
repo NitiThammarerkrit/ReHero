@@ -55,6 +55,8 @@ public:
 	bool isAlive();
 	int state;
 	int c;
+
+	void changeMonster(string name, int HP);
 	
 	SpriteObject* HPBar;
 	DrawableObject* ShieldStack;

@@ -31,13 +31,13 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {	  
-	if (defArmor > 0)
+	if (defArmor > 0 && Game::getInstance()->state != State::PLAYER_DIE && Game::getInstance()->state != State::ENEMY_DIE && Game::getInstance()->state != State::TRANSITION)
 	{
-		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 3, true);
+		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 4, true);
 	}
 	else
-		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 3, false);
-	if (poison > 0)
+		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 4, false);
+	if (poison > 0 && Game::getInstance()->state != State::PLAYER_DIE && Game::getInstance()->state != State::ENEMY_DIE && Game::getInstance()->state != State::TRANSITION)
 	{
 		Game::getInstance()->drawEffectText(to_string(poison), 1, 3, true);
 	}
@@ -103,10 +103,10 @@ void Hero::update(float deltaTime)
 						 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 1);
 					 }
 					 else if (heroMakeDamage.front() < 0)
-						 {
-							 Game::getInstance()->effectOnPlayer->setAnimationLoop(7, 1, 7, 600);
-							 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 2);
-						 }
+					 {
+					 	 Game::getInstance()->effectOnPlayer->setAnimationLoop(7, 1, 7, 600);
+					 	 Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 2);
+					 }
 					 Game::getInstance()->effectOnPlayer->setActive(true);
 					 heroMakeDamage.pop();
 				 }
@@ -131,6 +131,7 @@ void Hero::update(float deltaTime)
 				Game::getInstance()->effectOnEnemy->setActive(true);
 				Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
 				Game::getInstance()->usePoison(heroMakeDamage.front());
+				Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 3);
 				heroMakeDamage.pop();
 				this->setAnimationLoop(5, 1, 4, 600);
 				oneTime = false;
@@ -156,6 +157,7 @@ void Hero::update(float deltaTime)
 					Game::getInstance()->effectOnPlayer->setAnimationLoop(9, 1, 9, 700);
 					Game::getInstance()->effectOnPlayer->setActive(true);
 					Game::getInstance()->gainArmor(heroMakeDamage.front());
+					Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 3);
 					heroMakeDamage.pop();
 				}
 				oneTime = false;		
@@ -176,6 +178,7 @@ void Hero::update(float deltaTime)
 			{
 				//Game::getInstance()->state = State::PLAYER_DRAW;
 				Game::getInstance()->drawCard(heroMakeDamage.front());
+				Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(-350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 3);
 				heroMakeDamage.pop();
 				this->setAnimationLoop(5, 1, 4, 400);
 				oneTime = false;
@@ -308,6 +311,8 @@ void Hero::update(float deltaTime)
 }
 
 void Hero::endAction() {
+	effect = {};
+	heroMakeDamage = {};
 	this->setAnimationLoop(1, 1, 7, 1500);
 	Game::getInstance()->state = State::PLAYER_PLAY;
 }
@@ -441,9 +446,8 @@ void Hero::startTurn() {
 	{
 		cout << "Hero take " << poison << " damage from Poison." << endl;
 		this->takeDamage(poison);
+		Game::getInstance()->drawText(to_string(abs(poison)), glm::vec3(-350.0f, 0.f, 0.f), abs((poison * 2) + 15.f), 2);
 		poison -= 1;
-		/*this->damage = POISON_DMG;
-		getAttack = true;	 */
 	}
 	if (isAlive()==false)
 	{

@@ -1,0 +1,9 @@
+4				
+Hit	damage	6	;	
+Heal	heal	4	;	
+Guard	defend	3	;	
+Rage	damage	7	;	
+				
+				
+				
+				

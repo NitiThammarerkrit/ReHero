@@ -1,13 +1,12 @@
 #pragma once
 
-#include <vector>
-#include "DrawableObject.h"
 #include "GLRendererColor.h"
 #include "Deck.h"
-#include "Hero.h"
 #include "Monster.h"
 #include "Map.h"
 #include "Transition.h"
+
+
 
 using namespace std;
 
@@ -41,6 +40,7 @@ enum class State
 	GAME_PAUSE = 19,
 	GAME_MAP = 22,
 	TRANSITION = 23,
+	Ending = 24,
 };
 
 class Game
@@ -61,6 +61,7 @@ class Game
 	vector<DrawableObject*> Pause;
 	vector<DrawableObject*> Map;
 	vector<DrawableObject*> BG;
+	vector<DrawableObject*> Lose;
 	vector<DrawableObject*> transitionsss;
 	
 	Hero * myHero;
@@ -71,7 +72,7 @@ class Game
 	vector<DrawableObject*> heroHp;
 	vector<SpriteObject*> statusIcon;
 	
-	int currentMap = 0;
+
 
 	GLRenderer *renderer;
 	bool isMouseDown;
@@ -100,6 +101,7 @@ public:
 	void resetHandPos();
 	void endTurn();
 	void monsterTurn();
+	void Settings();
 	//void getHit();
 	State state;
 	State nextState;
@@ -139,5 +141,6 @@ public:
 	DrawableObject * ShieldTextMo;
 	DrawableObject * PoisionTextHe;
 	DrawableObject * PoisionTextMo;
+	int currentMap = 0;
 
 };

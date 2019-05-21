@@ -2,6 +2,17 @@
 #include "Audio.h"
 #include <iostream>
 
+AudioEngine* AudioEngine::instance = nullptr;
+
+
+AudioEngine * AudioEngine::getInstance()
+{
+	if (instance == nullptr) {
+		instance = new AudioEngine();
+	}
+	return instance;
+}
+
 void SoundEffect::play(int loop)
 {
 	if (Mix_PlayChannel(-1, m_chunk, loop) == -1)

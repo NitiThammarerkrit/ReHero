@@ -24,6 +24,12 @@ class Monster : public SpriteObject
 	vector<string> skillData;
 	vector<string> itemDrop;
 
+	int maxRow;
+	int maxColumn;
+	int idleLoop;
+	int attackLoop;
+	int dieLoop;
+
 public:
 	Monster(int HP, string name, int row, int column);
 	~Monster();
@@ -31,6 +37,7 @@ public:
 	virtual void update(float deltaTime);
 	void loadSkillData(string fileName);
 
+	int isDead;
 	int getHP();
 	int getMaxHP();
 	int getArmor();
@@ -46,7 +53,7 @@ public:
 	void CheckState(); */
 	void startTurn(); //resolve every special condition & remove armor from last turn
 
-	//monster skills
+					  //monster skills
 	void randomUseSkill(Hero * enemyTarget, Monster * friendTarget);
 	void doDamage(Hero * target, int damage);
 	void heal(Monster * target, int amount);
@@ -57,7 +64,9 @@ public:
 	int c;
 
 	void changeMonster(string name, int HP);
-	
+
+	void changeSpriteLoopValue();
+
 	SpriteObject* HPBar;
 	DrawableObject* ShieldStack;
 	DrawableObject* PoisonStack;

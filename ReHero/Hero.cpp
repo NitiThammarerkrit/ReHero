@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Hero.h"
 #include "Game.h"
+#include "Audio.h"
 #include "SquareMeshVbo.h"
 
 #define POISON_DMG 2
@@ -31,6 +32,7 @@ Hero::~Hero() {
 
 void Hero::update(float deltaTime)
 {	  
+
 	if (defArmor > 0 && Game::getInstance()->state != State::PLAYER_DIE && Game::getInstance()->state != State::ENEMY_DIE && Game::getInstance()->state != State::TRANSITION)
 	{
 		Game::getInstance()->drawEffectText(to_string(defArmor), 0, 4, true);
@@ -67,6 +69,9 @@ void Hero::update(float deltaTime)
 					Game::getInstance()->doDamage(heroMakeDamage.front());
 					Game::getInstance()->effectOnEnemy->setAnimationLoop(10, 1, 7, 700);
 					Game::getInstance()->effectOnEnemy->setActive(true);
+					SoundEffect AttackSound = AudioEngine::getInstance()->loadSoundEffect("Sound/Attack.flac");
+					AttackSound.play();
+					//Game::getInstance()->Attack.play();
 					if (heroMakeDamage.front() > 0) Game::getInstance()->drawText(to_string(abs(heroMakeDamage.front())), glm::vec3(350.0f, 0.f, 0.f), abs((heroMakeDamage.front() * 2) + 15.f), 2);
 					heroMakeDamage.pop();
 				}
@@ -91,6 +96,8 @@ void Hero::update(float deltaTime)
 				 this->setAnimationLoop(5, 1, 4, 600);
 				 if (!heroMakeDamage.empty())
 				 {
+					 SoundEffect HealSound = AudioEngine::getInstance()->loadSoundEffect("Sound/heal_effect.wav");
+					 HealSound.play();
 					 Game::getInstance()->heal(heroMakeDamage.front());
 					 HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 					 HPBar->setPosition(glm::vec3((float)-350.0f - 
@@ -127,6 +134,8 @@ void Hero::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				SoundEffect poisonSound = AudioEngine::getInstance()->loadSoundEffect("Sound/poison_card.flac");
+				poisonSound.play();
 				Game::getInstance()->effectOnEnemy->setAnimationLoop(11, 1, 7, 600);
 				Game::getInstance()->effectOnEnemy->setActive(true);
 				Game::getInstance()->state = State::PLAYER_SPELL_ANIM;
@@ -149,11 +158,13 @@ void Hero::update(float deltaTime)
 		else if (effect.front() == "defend")
 		{
 			if (oneTime == true)
-			{
+			{	
 				this->setAnimationLoop(3, 1, 5, 700);
 				Game::getInstance()->state = State::PLAYER_DEFENSE_ANIM;
 				if (!heroMakeDamage.empty())
-				{
+				{	
+					SoundEffect ShieldSound = AudioEngine::getInstance()->loadSoundEffect("Sound/Shield_card.wav");
+					ShieldSound.play();
 					Game::getInstance()->effectOnPlayer->setAnimationLoop(9, 1, 9, 700);
 					Game::getInstance()->effectOnPlayer->setActive(true);
 					Game::getInstance()->gainArmor(heroMakeDamage.front());
@@ -237,6 +248,8 @@ void Hero::update(float deltaTime)
 			((float)this->getMaxHP() - (float)this->getHP())
 			/ ((float)this->getMaxHP() / (float)(250.0f / 2.0f))
 			, 200.0f, 0.0f));
+		/*SoundEffect HurtSound = AudioEngine::getInstance()->loadSoundEffect("Sound/hurt.wav");
+		HurtSound.play();	*/
 		//HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		////cout << "\nMonster HP:" << this->getHP();
 		////cout << endl << "damage is" << damage;
@@ -264,20 +277,20 @@ void Hero::update(float deltaTime)
 	else
 	if (isAlive()==false)
 	{
-		if (delayDie == 0)
+		Game::getInstance()->state = State::PLAYER_DIE;
+		if (oneTime)
 		{
 			this->setAnimationLoop(6, 1, 5, 600);
+			SoundEffect loseSound = AudioEngine::getInstance()->loadSoundEffect("Sound/lose.wav");
+			loseSound.play();
 			oneTime = false;
 		}
 		delayDie += 1 * deltaTime;
-		if (delayDie > 590)
+		if (delayDie > 500)
 		{
 			lose->setActive(true);
 			//this->setActive(false);
-			this->setAnimationLoop(6, 5, 1, 10000000);
-			Game::getInstance()->ChangeState(1);   
-			HP = 20;
-			HPBar->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
+			this->setAnimationLoop(6, 5, 5, 10000000);
 			delayDie = 0;
 		}
 	} 
@@ -296,7 +309,14 @@ void Hero::update(float deltaTime)
 			Game::getInstance()->TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
 			Game::getInstance()->TransitionPic->onetime = true;
 			Game::getInstance()->TransitionPic->delay = 3000;
-			Game::getInstance()->nextState = State::GAME_MAP;
+			if (Game::getInstance()->currentMap == 14)
+			{
+				Game::getInstance()->nextState = State::Ending;
+				Game::getInstance()->restartGame();
+				HP = 20;
+				HPBar->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
+			}
+			else Game::getInstance()->nextState = State::GAME_MAP;
 			//this->setPosition(glm::vec3(-350.0f, 80.0f, 0.0f));
 			oneTime = true;
 			delay = 0;

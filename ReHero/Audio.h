@@ -1,6 +1,7 @@
 #pragma once
 
 // Credit : https://www.youtube.com/watch?v=vKwDGQXL29U
+
 #include <SDL_mixer.h>
 #include <string>
 #include <map>
@@ -28,6 +29,9 @@ class AudioEngine {
 	public:
 		AudioEngine();
 		~AudioEngine();
+
+		static AudioEngine* instance;
+		static AudioEngine* getInstance();
 
 		void init();
 		void destroy();

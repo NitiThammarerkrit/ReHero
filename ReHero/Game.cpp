@@ -1,11 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"            
 #include "SquareMeshVbo.h"
-#include "Card.h"
-#include "Deck.h"
-#include "SpriteObject.h"
 #include "ClickableObject.h"
-#include "Audio.h"
 #include <cmath>
 #include <fstream>
 #include <sstream>
@@ -13,6 +9,8 @@
 #include <iostream>	
 #include "TextMeshVbo.h"
 #include "FloatText.h"
+#include "Audio.h"
+
 
 using namespace std;
 
@@ -68,15 +66,19 @@ void Game::handleMouseUp(int x, int y)
 			mapPointType Type = DungeonMap::getInstance()->getPointType(clickedMap);
 			if (Type == mapPointType::POINT_WEAK_MONSTER)
 			{
-				mon_id = 3 + rand() % 3;
+				mon_id = 0 + rand() % 3;
 			}
 			if (Type == mapPointType::POINT_STRONG_MONSTER)
 			{
-				mon_id = 6 + rand() % 3;
+				mon_id = 3 + rand() % 3;
 			}
 			if (Type == mapPointType::POINT_HEALING_WELL)
 			{
-				mon_id = 9 + rand() % 3;
+				mon_id = 6 + rand() % 6;
+			}
+			if (Type == mapPointType::POINT_BOSS_MONSTER)
+			{
+				mon_id = 12 + rand() % 2;
 			}
 
 			//change monster
@@ -94,6 +96,9 @@ void Game::handleMouseUp(int x, int y)
 				case 9: enemies[0]->changeMonster("Centipede", 14); break;
 				case 10: enemies[0]->changeMonster("CentipedeElite", 20); break;
 				case 11: enemies[0]->changeMonster("CentipedeRare", 24); break;
+				case 12: enemies[0]->changeMonster("BossDemon", 100); break;
+				case 13: enemies[0]->changeMonster("BossSpider", 100); break;
+
 			}
 			
 			currentMap = clickedMap;
@@ -139,11 +144,13 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building3"&& state == State::GAME_CITY)
 		{
-			nextState = State::PLAYER_PLAY;
 			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
 			TransitionPic->onetime = true;
-			TransitionPic->delay =3000;
-			//BGD->changeSprite("Sprite/BGD1.png", 1, 1);
+			TransitionPic->delay = 3000;
+			currentMap = 14;
+			enemies[0]->changeMonster("BossSpider", 100);
+			nextState = State::PLAYER_PLAY;
+			enemies[0]->victory->setActive(false);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
@@ -165,6 +172,7 @@ void Game::handleMouseUp(int x, int y)
 			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
 			TransitionPic->onetime = true;
 			TransitionPic->delay = 3000;
+			currentMap = 0;
 			//BGD->changeSprite("Sprite/MapBG1.png", 1, 1);
 			for (int i = 0; i < clickable.size(); i++)
 			{
@@ -259,7 +267,12 @@ void Game::handleMouseUp(int x, int y)
 		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getTag() == "cardDrop" && state == State::ENEMY_DIE)
 		{
+			if (enemies[0]->isDead == 2)
+			{
+				enemies[0]->isDead = 0;
+			}
 			//myHero->victory->setActive(true);
+			
 			state = State::TRANSITION;
 			cardDropList[0]->active = false;
 			cardDropList[1]->active = false;
@@ -291,9 +304,34 @@ void Game::handleMouseUp(int x, int y)
 					clickable[i]->active = false;
 				if (clickable[i]->getTag() == "Map")
 					clickable[i]->active = true;
-			}
-			
+			}	
 		}
+		else
+			if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Return" && state == State::PLAYER_DIE|| state == State::Ending)
+			{	 
+				restartGame();
+				currentMap = 0;
+				Game::getInstance()->ChangeState(1);
+				myHero->setHP(20);
+				myHero->HPBar->setPosition(glm::vec3(-350.0f, 200.0f, 0.0f));
+				for (int i = 0; i < clickable.size(); i++)
+				{
+					if (clickable[i]->getTag() == "Lose")
+						clickable[i]->active = false;
+				}
+				if (enemies[0]->isDead == 2)
+				{
+					enemies[0]->isDead = 0;
+				}
+				enemies[0]->setHP(1);
+				HPBG[0]->setActive(false);
+				HPBG[1]->setActive(false);
+				statusIcon[0]->setActive(false);
+				statusIcon[1]->setActive(false);
+				statusIcon[2]->setActive(false);
+				statusIcon[3]->setActive(false);
+
+			}
 
 		clickableObject->onClick(false);
 	}
@@ -480,10 +518,34 @@ void Game::init(int width, int height)
 	text->loadData();
 	renderer->addMesh(TextMeshVbo::MESH_NAME, text);
 
-	AudioEngine audio;
+
+	Music music = AudioEngine::getInstance()->loadMusic("Sound_fighting_monster.wav");
+	music.play(-1);	
+
+	/*AudioEngine audio;
 	audio.init();
 	Music music = audio.loadMusic("Sound_fighting_monster.wav");
 	music.play(-1);
+
+	Atmosphere = audio.loadSoundEffect("Sound/Atmosphere.mp3");
+	Attack = audio.loadSoundEffect("Sound/Attack.flac");
+	Brust_effect = audio.loadSoundEffect("Sound/Brust_effect.wav");
+	chaos_effect = audio.loadSoundEffect("Sound/chaos_effect.wav");
+	died = audio.loadSoundEffect("Sound/died.wav");
+	fire = audio.loadSoundEffect("Sound/fire.wav");
+	heal_effect = audio.loadSoundEffect("Sound/heal_effect.wav");
+	hurt = audio.loadSoundEffect("Sound/hurt.wav");
+	lose = audio.loadSoundEffect("Sound/lose.wav");
+	poison_card = audio.loadSoundEffect("Sound/poison_card.flac");
+	Shield_card = audio.loadSoundEffect("Sound/Shield_card.wav");
+	slash = audio.loadSoundEffect("Sound/slash.wav");
+	slash2 = audio.loadSoundEffect("Sound/slash2.wav");
+	slash3 = audio.loadSoundEffect("Sound/slash3.wav");
+	Sound_fighting_monster = audio.loadSoundEffect("Sound/Sound_fighting_monster.wav");
+	SoundUI = audio.loadSoundEffect("Sound/SoundUI.mp3");
+	SounndInGame = audio.loadSoundEffect("Sound/SounndInGame.wav");
+	sword_hit = audio.loadSoundEffect("Sound/sword_hit.wav");
+	Win = audio.loadSoundEffect("Sound/Win.wav"); */
 
 	level = 1;
 	/////////////////////////////////////////////////////////////////MainMenu/////////////////////////////////////////////////////////////
@@ -601,12 +663,8 @@ void Game::init(int width, int height)
 
 	SpriteObject Building1_Normal("Sprite/Building1.png", 1, 1);
 	SpriteObject Building1_Glow("Sprite/Building1Glow.png", 1, 1);
-	SpriteObject Building2_Normal("Sprite/Building2.png", 1, 1);
-	SpriteObject Building2_Glow("Sprite/Building2Glow.png", 1, 1);
 	SpriteObject Building3_Normal("Sprite/Building3.png", 1, 1);
 	SpriteObject Building3_Glow("Sprite/Building3Glow.png", 1, 1);
-	SpriteObject Building4_Normal("Sprite/Building4.png", 1, 1);
-	SpriteObject Building4_Glow("Sprite/Building4Glow.png", 1, 1);
 
 	ClickableObject * Building1 = new ClickableObject;
 	Building1->setSpriteClickableObject(Building1_Normal, 1, 1);
@@ -615,24 +673,11 @@ void Game::init(int width, int height)
 	Building1->setRow(1);
 	Building1->genUV();
 	Building1->setTagAndName("City", "Building1");
-	Building1->setSize(480.0f, 430.0f);
-	Building1->translate(glm::vec3(-393.0f, 140.0f, 0.0f));
+	Building1->setSize(960.0f, 720.0f);
+	Building1->translate(glm::vec3(-160.0f, 0.0f, 0.0f));
 	Building1->active = false;
 	clickable.push_back(Building1);
 	City.push_back(Building1);
-
-	ClickableObject * Building2 = new ClickableObject;
-	Building2->setSpriteClickableObject(Building2_Normal, 1, 1);
-	Building2->setEffect(Building2_Glow, 1, 1);
-	Building2->setColumn(1);
-	Building2->setRow(1);
-	Building2->genUV();
-	Building2->setTagAndName("City", "Building2");
-	Building2->setSize(200.0f, 250.0f);
-	Building2->translate(glm::vec3(30.0f, 140.0f, 0.0f));
-	Building2->active = false;
-	clickable.push_back(Building2);
-	City.push_back(Building2);
 
 	ClickableObject * Building3 = new ClickableObject;
 	Building3->setSpriteClickableObject(Building3_Normal, 1, 1);
@@ -641,24 +686,11 @@ void Game::init(int width, int height)
 	Building3->setRow(1);
 	Building3->genUV();
 	Building3->setTagAndName("City", "Building3");
-	Building3->setSize(300.0f, 300.0f);
-	Building3->translate(glm::vec3(491, 163, 0.0f));
+	Building3->setSize(720.0f, 720.0f);
+	Building3->translate(glm::vec3(280, 0.0f, 0.0f));
 	Building3->active = false;
 	clickable.push_back(Building3);
 	City.push_back(Building3);
-
-	ClickableObject * Building4 = new ClickableObject;
-	Building4->setSpriteClickableObject(Building4_Normal, 1, 1);
-	Building4->setEffect(Building4_Glow, 1, 1);
-	Building4->setColumn(1);
-	Building4->setRow(1);
-	Building4->genUV();
-	Building4->setTagAndName("City", "Building4");
-	Building4->setSize(320.0f, 260.0f);
-	Building4->translate(glm::vec3(115.0f, -225.0f, 0.0f));
-	Building4->active = false;
-	clickable.push_back(Building4);
-	City.push_back(Building4);	
 
 	////////////////////////////////////////////////////////////////City/////////////////////////////////////////////////////////////////
 	
@@ -709,6 +741,19 @@ void Game::init(int width, int height)
 	
 
 	/////////////////////////////////////////////////////////////////Map/////////////////////////////////////////////////////////////
+
+	ClickableObject * LoseButton = new ClickableObject;
+	LoseButton->setSpriteClickableObject(Play, 1, 1);
+	LoseButton->setEffect(Play_Glow, 1, 1);
+	LoseButton->setColumn(1);
+	LoseButton->setRow(1);
+	LoseButton->genUV();
+	LoseButton->setTagAndName("Lose", "Return");
+	LoseButton->setSize(250.0f, 100.0f);
+	LoseButton->translate(glm::vec3(0.0f, -200.0f, 0.0f));
+	LoseButton->active = false;
+	clickable.push_back(LoseButton);
+	Lose.push_back(LoseButton);
 
 	/*SpriteObject * BG = new SpriteObject("Sprite/BGD1.png", 1, 1);
 	BG->setSize(1280.0f, 720.0f);
@@ -1044,11 +1089,15 @@ void Game::init(int width, int height)
 	SpriteObject * Map4 = new SpriteObject("Sprite/MapBG1.png", 1, 1);
 	Map4->setSize(1280.0f, 720.0f);
 	Map4->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	SpriteObject * Map5 = new SpriteObject("Sprite/Ending.png", 1, 1);
+	Map5->setSize(1280.0f, 720.0f);
+	Map5->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	
 	BGD.push_back(Map1);
 	BGD.push_back(Map2);
 	BGD.push_back(Map3);
 	BGD.push_back(Map4);
+	BGD.push_back(Map5);
 }
 
 void Game::render()	 //Change game scene
@@ -1089,6 +1138,34 @@ void Game::render()	 //Change game scene
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->Map);
 		this->getRenderer()->render(this->transitionsss);
+	}
+	else
+	if (state == State::PLAYER_DIE)
+	{
+		this->getRenderer()->Clear();
+		this->getRenderer()->render(this->BG);
+		this->getRenderer()->render(this->Lose);
+		this->getRenderer()->render(this->objects);
+		this->getRenderer()->render(this->transitionsss);
+		for (int i = 0; i < clickable.size(); i++)
+		{
+			if (clickable[i]->getTag() == "Lose")
+				clickable[i]->active = true;
+		}	
+	}
+	else
+	if (state == State::Ending)
+	{
+		this->getRenderer()->Clear();
+		BG[0] = BGD[5];
+		this->getRenderer()->render(this->BG);
+		this->getRenderer()->render(this->Lose);
+		this->getRenderer()->render(this->transitionsss);
+		for (int i = 0; i < clickable.size(); i++)
+		{
+			if (clickable[i]->getTag() == "Lose")
+				clickable[i]->active = true;
+		}
 	}
 	else
 	{
@@ -1165,6 +1242,7 @@ void Game::update(float deltaTime)
 	if (state == State::ENEMY_DIE)
 	{
 		//cout << endl << "enemy die" << endl;
+		
 		monsterHp[0]->setSize(0, 20);
 		enemies[0]->setActive(false);
 		HPBG[1]->setActive(false);
@@ -1282,6 +1360,87 @@ void Game::monsterTurn()
 			HPBG[0]->setActive(false);
 		}
 	
+}
+
+void Game::Settings()
+{
+	/*objects.clear();
+	mainMenu.clear();
+	GameObject * BG = new GameObject();
+	BG->loadTexture("UI/Config.png");
+	BG->setSize(725, -550);
+	objects.push_back(BG);
+
+	SDL_Color textColor = { 255,255,255 };
+	Buttons * decreaseBGM = new Buttons();
+	CreateMenuChoice(decreaseBGM, glm::vec3(100, 65, 1), glm::vec3(25, -50, 1), 101, "UI/LeftBottom.png", true);
+	decreaseBGM->loadUnhoveredTexture("UI/LeftBottom.png");
+	decreaseBGM->loadHoveredTexture("UI/LeftBottom_WithMouse.png");
+	mainMenu.push_back(decreaseBGM);
+
+	Buttons * increaseBGM = new Buttons();
+	CreateMenuChoice(increaseBGM, glm::vec3(200, 65, 1), glm::vec3(25, -50, 1), 102, "UI/RightBottom.png", true);
+	increaseBGM->loadUnhoveredTexture("UI/RightBottom.png");
+	increaseBGM->loadHoveredTexture("UI/RightBottom_WithMouse.png");
+	mainMenu.push_back(increaseBGM);
+	Buttons * decreaseSFX = new Buttons();
+	CreateMenuChoice(decreaseSFX, glm::vec3(100, -20, 1), glm::vec3(25, -50, 1), 103, "UI/LeftBottom.png", true);
+	decreaseSFX->loadUnhoveredTexture("UI/LeftBottom.png");
+	decreaseSFX->loadHoveredTexture("UI/LeftBottom_WithMouse.png");
+	mainMenu.push_back(decreaseSFX);
+
+	Buttons * increaseSFX = new Buttons();
+	CreateMenuChoice(increaseSFX, glm::vec3(200, -20, 1), glm::vec3(25, -50, 1), 104, "UI/RightBottom.png", true);
+	increaseSFX->loadUnhoveredTexture("UI/RightBottom.png");
+	increaseSFX->loadHoveredTexture("UI/RightBottom_WithMouse.png");
+	mainMenu.push_back(increaseSFX);
+
+	Buttons * decreaseTS = new Buttons();
+	CreateMenuChoice(decreaseTS, glm::vec3(100, -105, 1), glm::vec3(25, -50, 1), 105, "UI/LeftBottom.png", true);
+	decreaseTS->loadUnhoveredTexture("UI/LeftBottom.png");
+	decreaseTS->loadHoveredTexture("UI/LeftBottom_WithMouse.png");
+	mainMenu.push_back(decreaseTS);
+	FrozeblizzToday at 5:21 PM
+	Buttons * increaseTS = new Buttons();
+	CreateMenuChoice(increaseTS, glm::vec3(200, -105, 1), glm::vec3(25, -50, 1), 106, "UI/RightBottom.png", true);
+	increaseTS->loadUnhoveredTexture("UI/RightBottom.png");
+	increaseTS->loadHoveredTexture("UI/RightBottom_WithMouse.png");
+	mainMenu.push_back(increaseTS);
+
+	BGMvalue = new TextObject(true);
+	BGMvalue->setFontName("Font/Anonymous_Pro.ttf");
+	BGMvalue->setFontSize(20);
+	BGMvalue->setTextColor(textColor);
+	BGMvalue->loadText(to_string(BGMnum));
+	BGMvalue->translate(glm::vec3(150, 65, 0));
+	objects.push_back(BGMvalue);
+
+	SFXvalue = new TextObject(true);
+	SFXvalue->setFontName("Font/Anonymous_Pro.ttf");
+	SFXvalue->setFontSize(20);
+	SFXvalue->setTextColor(textColor);
+	SFXvalue->loadText(to_string(SFXnum));
+	SFXvalue->translate(glm::vec3(150, -20, 0));
+	objects.push_back(SFXvalue);
+	TSvalue = new TextObject(true);
+	TSvalue->setFontName("Font/Anonymous_Pro.ttf");
+	TSvalue->setFontSize(20);
+	TSvalue->setTextColor(textColor);
+	TSvalue->loadText(textSpeedValue[textSpeedCheck]);
+	TSvalue->translate(glm::vec3(150, -105, 0));
+	objects.push_back(TSvalue);
+
+	Buttons * backToMain = new Buttons();
+	CreateMenuChoice(backToMain, glm::vec3(200, -200, 1), glm::vec3(200, -50, 1), 200, "UI/back bottom.png", true);
+	backToMain->loadUnhoveredTexture("UI/back bottom.png");
+	backToMain->loadHoveredTexture("UI/back bottom_WithMouse.png");
+	mainMenu.push_back(backToMain);
+
+	Buttons * apply = new Buttons();
+	CreateMenuChoice(apply, glm::vec3(-200, -200, 1), glm::vec3(200, -50, 1), 201, "UI/save bottom.png", true);
+	apply->loadUnhoveredTexture("UI/save bottom.png");
+	apply->loadHoveredTexture("UI/save bottom_WithMouse.png");
+	mainMenu.push_back(apply);	 */
 }
 
 void Game::addNewCardToDeck(string cardName)

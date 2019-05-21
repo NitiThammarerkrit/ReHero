@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Monster.h"
 #include "Game.h"
+#include "Audio.h"
 
 #define POISON_DMG 2
 
@@ -23,8 +24,10 @@ Monster::Monster(int HP, string name, int row, int column) : SpriteObject("Sprit
 	c = 0;
 	delay = 0;
 	oneTime = true;
-
+	isDead = 0;
 	loadSkillData("Data_" + name + ".txt");
+	
+	changeSpriteLoopValue();
 
 	//randomUseSkill(nullptr, nullptr);
 }
@@ -35,8 +38,9 @@ Monster::~Monster() {
 
 void Monster::changeMonster(string name, int HP) {
 	this->name = name;
-	this->changeSprite("Sprite/" + this->name + ".png", 4, 5);
-	cout << "--------LOAD Data_" + this->name + ".txt" << endl;
+	changeSpriteLoopValue();
+	this->changeSprite("Sprite/" + this->name + ".png", 4, maxColumn);
+	//cout << "--------LOAD Data_" + this->name + ".txt" << endl;
 	this->loadSkillData("Data_" + this->name + ".txt");
 	this->setMaxHP(HP);
 	this->setHP(HP);
@@ -53,8 +57,63 @@ void Monster::changeMonster(string name, int HP) {
 	oneTime = true;
 }
 
+void Monster::changeSpriteLoopValue() {
+	if (this->name == "Goblin" || this->name == "GoblinElite" || this->name == "GoblinRare")
+	{
+		maxRow = 4;
+		maxColumn = 9;
+		idleLoop = 4;
+		attackLoop = 9;
+		dieLoop = 2;
+	}
+	else if (this->name == "Wasp" || this->name == "WaspElite" || this->name == "WaspRare")
+	{
+		maxRow = 4;
+		maxColumn = 5;
+		idleLoop = 5;
+		attackLoop = 4;
+		dieLoop = 2;
+	}
+	else if (this->name == "Centipede" || this->name == "CentipedeElite" || this->name == "CentipedeRare")
+	{
+		maxRow = 4;
+		maxColumn = 5;
+		idleLoop = 5;
+		attackLoop = 3;
+		dieLoop = 2;
+	}
+	else if (this->name == "Skeleton" || this->name == "SkeletonElite" || this->name == "SkeletonRare")
+	{
+		maxRow = 4;
+		maxColumn = 5;
+		idleLoop = 5;
+		attackLoop = 5;
+		dieLoop = 5;
+	}
+	else if (this->name == "BossDemon")
+	{
+		maxRow = 4;
+		maxColumn = 8;
+		idleLoop = 6;
+		attackLoop = 8;
+		dieLoop = 3;
+	}
+	else if (this->name == "BossSpider")
+	{
+		maxRow = 4;
+		maxColumn = 14;
+		idleLoop = 6;
+		attackLoop = 14;
+		dieLoop = 2;
+	}
+}
+
 void Monster::update(float deltaTime)
 {
+	if (HP <= 0&&Game::getInstance()->state == State::ENEMY_DIE&&isDead==0)
+	{
+		isDead = 1;
+	}
 	timeCount += deltaTime;
 	if (timeCount > animationTime / loopMax)
 	{
@@ -81,10 +140,12 @@ void Monster::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				SoundEffect AttackSound = AudioEngine::getInstance()->loadSoundEffect("Sound/Attack.flac");
+				AttackSound.play();
 				Game::getInstance()->effectOnPlayer->setAnimationLoop(10, 1, 7, 700);
 				Game::getInstance()->effectOnPlayer->setActive(true);
 				Game::getInstance()->state = State::ENEMY_ATTACK_ANIM;
-				this->setAnimationLoop(2, 1, 5, 700);
+				this->setAnimationLoop(2, 1, attackLoop, 700);
 				if (!monsterMakeDamage.empty())
 				{
 					doDamage(enemyTarget, monsterMakeDamage.front());
@@ -109,9 +170,11 @@ void Monster::update(float deltaTime)
 			{
 				Game::getInstance()->state = State::ENEMY_HEAL_ANIM;
 
-				this->setAnimationLoop(3, 1, 4, 600);
+				this->setAnimationLoop(2, 1, attackLoop, 600);
 				if (!monsterMakeDamage.empty())
 				{
+					SoundEffect HealSound = AudioEngine::getInstance()->loadSoundEffect("Sound/heal_effect.wav");
+					HealSound.play();
 					heal(friendTarget, monsterMakeDamage.front());
 					Game::getInstance()->effectOnEnemy->setAnimationLoop(3, 1, 5, 600);
 					Game::getInstance()->effectOnEnemy->setActive(true);
@@ -139,10 +202,12 @@ void Monster::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
+				SoundEffect poisonSound = AudioEngine::getInstance()->loadSoundEffect("Sound/poison_card.flac");
+				poisonSound.play();
 				Game::getInstance()->effectOnPlayer->setAnimationLoop(11, 1, 7, 600);
 				Game::getInstance()->effectOnPlayer->setActive(true);
 				Game::getInstance()->state = State::ENEMY_SPELL_ANIM;
-				this->setAnimationLoop(3, 1, 4, 600);
+				this->setAnimationLoop(2, 1, attackLoop, 600);
 				if (!monsterMakeDamage.empty())
 				{
 					usePoison(enemyTarget, monsterMakeDamage.front());
@@ -166,10 +231,12 @@ void Monster::update(float deltaTime)
 		{
 			if (oneTime == true)
 			{
-				this->setAnimationLoop(3, 1, 4, 700);
+				this->setAnimationLoop(2, 1, attackLoop, 700);
 				Game::getInstance()->state = State::ENEMY_DEFENSE_ANIM;
 				if (!monsterMakeDamage.empty())
 				{
+					SoundEffect ShieldSound = AudioEngine::getInstance()->loadSoundEffect("Sound/Shield_card.wav");
+					ShieldSound.play();
 					Game::getInstance()->effectOnEnemy->setAnimationLoop(9, 1, 9, 700);
 					Game::getInstance()->effectOnEnemy->setActive(true);
 					
@@ -199,21 +266,23 @@ void Monster::update(float deltaTime)
 			((float)this->getMaxHP() - (float)this->getHP())
 			/ ((float)this->getMaxHP() / (float)(250.0f / 2.0f))
 			, 200.0f, 0.0f));
+		/*SoundEffect HurtSound = AudioEngine::getInstance()->loadSoundEffect("Sound/hurt.wav");
+		HurtSound.play();	*/
 		//HPBar->setSize(((float)this->getHP() / (float)this->getMaxHP()) * 250.0f, 20);
 		////cout << "\nMonster HP:" << this->getHP();
 		////cout << endl << "damage is" << damage;
 		//HPBar->translate(glm::vec3(-damage / 2.0f / (float)this->getMaxHP()*250.0f, 0.0f, 0.0f));
 		if (oneTime == true && getAttack == true)
-		this->setAnimationLoop(4, 1, 1, 200);
+			this->setAnimationLoop(3, 1, 1, 200);
 		if (oneTime == true && isHeal == true)
-		this->setAnimationLoop(3, 1, 4, 200);
+			this->setAnimationLoop(2, attackLoop, 1, 200);
 		oneTime = false;
 		damage = 0;
 		delay += deltaTime;
 		if (delay > 410)
 		{
 			delay = 0;
-			this->setAnimationLoop(1, 1, 5, 400);
+			this->setAnimationLoop(1, 1, idleLoop, 400);
 			if(getAttack)
 			getAttack = false;
 			if (isHeal)
@@ -223,7 +292,17 @@ void Monster::update(float deltaTime)
 	}	
 	if (isAlive() == false)
 	{
-		setAnimationLoop(5, 1, 2, 400);
+		if (isDead == 1)
+		{
+			cout << "YEAH!!";
+			setAnimationLoop(4, 1, dieLoop, 400);
+			SoundEffect died = AudioEngine::getInstance()->loadSoundEffect("Sound/died.wav");
+			died.play();
+			SoundEffect Win = AudioEngine::getInstance()->loadSoundEffect("Sound/Win.wav");
+			Win.play();
+			isDead = 2;
+		}
+		
 		delay += deltaTime;
 		if (delay > 410)
 		{
@@ -246,7 +325,7 @@ void Monster::update(float deltaTime)
 void Monster::endMyTurn() {
 	effect = {};
 	monsterMakeDamage = {};
-	this->setAnimationLoop(1, 1, 5, 400);
+	this->setAnimationLoop(1, 1, idleLoop, 400);
 	Game::getInstance()->state = State::PLAYER_RANDOM_MANA;
 }
 

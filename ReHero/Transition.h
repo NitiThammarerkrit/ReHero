@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteObject.h"
 
+
 using namespace std;
 
 class Transition :public SpriteObject

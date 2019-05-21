@@ -130,3 +130,15 @@ Music AudioEngine::loadMusic(const std::string & filePath)
 
 	return music;
 }
+
+void AudioEngine::setMusicVolume(int N)
+{
+	Mix_VolumeMusic(N);
+
+}
+
+void AudioEngine::setSFXVolume(int N)
+{
+	Mix_Volume(-1, N);
+
+}

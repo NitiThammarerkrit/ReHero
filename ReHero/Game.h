@@ -41,6 +41,7 @@ enum class State
 	GAME_MAP = 22,
 	TRANSITION = 23,
 	Ending = 24,
+	GAME_SETTINGS = 25,
 };
 
 class Game
@@ -62,6 +63,7 @@ class Game
 	vector<DrawableObject*> Map;
 	vector<DrawableObject*> BG;
 	vector<DrawableObject*> Lose;
+	vector<DrawableObject*> SettingsR;
 	vector<DrawableObject*> transitionsss;
 	
 	Hero * myHero;
@@ -101,7 +103,6 @@ public:
 	void resetHandPos();
 	void endTurn();
 	void monsterTurn();
-	void Settings();
 	//void getHit();
 	State state;
 	State nextState;
@@ -129,6 +130,8 @@ public:
 	SpriteObject * cardsprite2;
 	int id = 1;
 	int cardSpriteRow = 4;
+	int BGMnum = 5;
+	int SFXnum = 5;
 
 	void doDamage(int damage);
 	void heal(int amount);
@@ -140,7 +143,9 @@ public:
 	DrawableObject * ShieldTextHe;
 	DrawableObject * ShieldTextMo;
 	DrawableObject * PoisionTextHe;
-	DrawableObject * PoisionTextMo;
+	DrawableObject * PoisionTextMo; 
+	DrawableObject * BGMvalue; 
+	DrawableObject * SFXvalue; 
 	int currentMap = 0;
 
 };

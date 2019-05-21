@@ -39,6 +39,10 @@ class AudioEngine {
 		SoundEffect loadSoundEffect(const std::string& filePath);
 		Music loadMusic(const std::string& filePath);
 
+		void setMusicVolume(int N);
+		void setSFXVolume(int N);
+
+
 	private:
 		bool isInit;
 

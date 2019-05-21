@@ -118,6 +118,7 @@ void Game::handleMouseUp(int x, int y)
 			}
 			
 		}
+		else
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Start"&&state == State::GAME_MAINMENU)
 		{
 			nextState = State::GAME_CITY;//To City
@@ -139,9 +140,136 @@ void Game::handleMouseUp(int x, int y)
 				clickable[i]->active = false;
 				if (clickable[i]->getTag() == "Map")
 					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Settings")
+					clickable[i]->active = false;
 			}
 		}
 		else
+		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Setting"&&state == State::GAME_MAINMENU)
+		{
+			nextState = State::GAME_SETTINGS;//To setting
+			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			TransitionPic->onetime = true;
+			TransitionPic->delay = 3000;
+
+			//BGD->changeSprite("Sprite/City.png", 1, 1);
+			for (int i = 0; i < clickable.size(); i++)
+			{
+				if (clickable[i]->getTag() == "Menu")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "City")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "InFight")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Pause")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Map")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Settings")
+					clickable[i]->active = true;
+			}
+		}
+		else
+		if (clickableObject->isClick(realX, realY) &&state == State::GAME_SETTINGS)
+		{
+			/*nextState = State::GAME_SETTINGS;//To setting
+			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+			TransitionPic->onetime = true;
+			TransitionPic->delay = 3000;	 */
+			if (clickableObject->getName() == "decreaseBGM")
+			{
+				if (BGMnum > 0)
+					BGMnum--;
+				AudioEngine::getInstance()->setMusicVolume(BGMnum * 10);
+				TextObject *Text = dynamic_cast<TextObject *>(BGMvalue);
+				Text->loadText(to_string(BGMnum));
+			}
+			if (clickableObject->getName() == "increaseBGM")
+			{
+				if (BGMnum < 10)
+					BGMnum++;
+				AudioEngine::getInstance()->setMusicVolume(BGMnum * 10);
+				TextObject *Text = dynamic_cast<TextObject *>(BGMvalue);
+				Text->loadText(to_string(BGMnum));
+			}
+			if (clickableObject->getName() == "decreaseSFX")
+			{
+				if (SFXnum > 0)
+					SFXnum--;
+				AudioEngine::getInstance()->setSFXVolume(SFXnum * 10);
+				TextObject *Text = dynamic_cast<TextObject *>(SFXvalue);
+				Text->loadText(to_string(SFXnum));
+			}
+			if (clickableObject->getName() == "increaseSFX")
+			{
+				if (SFXnum < 10)
+					SFXnum++;
+				AudioEngine::getInstance()->setSFXVolume(SFXnum * 10);
+				TextObject *Text = dynamic_cast<TextObject *>(SFXvalue);
+				Text->loadText(to_string(SFXnum));
+			}
+			if (clickableObject->getName() == "back")
+			{
+				TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+				TransitionPic->onetime = true;
+				TransitionPic->delay = 3000;
+				nextState = State::GAME_MAINMENU; 
+
+				for (int i = 0; i < clickable.size(); i++)
+				{
+					if (clickable[i]->getTag() == "Menu")
+						clickable[i]->active = true;
+					if (clickable[i]->getTag() == "City")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "InFight")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "Pause")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "Map")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "Settings")
+						clickable[i]->active = false;
+				}
+			}
+			if (clickableObject->getName() == "apply")
+			{
+				TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
+				TransitionPic->onetime = true;
+				TransitionPic->delay = 3000;
+				nextState = State::GAME_MAINMENU;
+
+				for (int i = 0; i < clickable.size(); i++)
+				{
+					if (clickable[i]->getTag() == "Menu")
+						clickable[i]->active = true;
+					if (clickable[i]->getTag() == "City")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "InFight")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "Pause")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "Map")
+						clickable[i]->active = false;
+					if (clickable[i]->getTag() == "Settings")
+						clickable[i]->active = false;
+				}
+				/*XMLDocument doc;
+				XMLNode * pRoot = doc.NewElement("Settings");
+				doc.InsertFirstChild(pRoot);
+				XMLElement *BGM = doc.NewElement("BGM");
+				BGM->SetText(BGMnum);
+				pRoot->InsertEndChild(BGM);
+				XMLElement *SFX = doc.NewElement("SFX");
+				SFX->SetText(SFXnum);
+				pRoot->InsertEndChild(SFX);
+				XMLElement *TextSpeed = doc.NewElement("TextSpeed");
+				TextSpeed->SetText(textSpeedCheck);
+				pRoot->InsertEndChild(TextSpeed);
+				doc.SaveFile("Settings.ini");*/
+			}
+			//BGD->changeSprite("Sprite/City.png", 1, 1);
+		}
+		else  
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building3"&& state == State::GAME_CITY)
 		{
 			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
@@ -162,6 +290,8 @@ void Game::handleMouseUp(int x, int y)
 				if (clickable[i]->getTag() == "Pause")
 					clickable[i]->active = false;
 				if (clickable[i]->getTag() == "Map")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Settings")
 					clickable[i]->active = false;
 			}
 		}
@@ -186,6 +316,8 @@ void Game::handleMouseUp(int x, int y)
 					clickable[i]->active = false;
 				if (clickable[i]->getTag() == "Map")
 					clickable[i]->active = true;
+				if (clickable[i]->getTag() == "Settings")
+					clickable[i]->active = false;
 			}
 		}
 		else
@@ -213,6 +345,8 @@ void Game::handleMouseUp(int x, int y)
 					clickable[i]->active = false;
 				if (clickable[i]->getTag() == "Map")
 					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Settings")
+					clickable[i]->active = false;
 			}
 		}
 		else
@@ -235,6 +369,8 @@ void Game::handleMouseUp(int x, int y)
 					clickable[i]->active = true;
 				if (clickable[i]->getTag() == "Map")
 					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Settings")
+					clickable[i]->active = false;
 			}
 		}
 		else
@@ -256,6 +392,8 @@ void Game::handleMouseUp(int x, int y)
 				if (clickable[i]->getTag() == "Pause")
 					clickable[i]->active = false;
 				if (clickable[i]->getTag() == "Map")
+					clickable[i]->active = false;
+				if (clickable[i]->getTag() == "Settings")
 					clickable[i]->active = false;
 			}
 		}
@@ -653,6 +791,105 @@ void Game::init(int width, int height)
 	Pause.push_back(ExitButton);  
 	/////////////////////////////////////////////////////////////////MainMenu/////////////////////////////////////////////////////////////
 	
+	////////////////////////////////////////////////////////////////Settings/////////////////////////////////////////////////////////////////
+	SpriteObject buttonPLUS("Sprite/plusB.png", 1, 1);
+	SpriteObject buttonPLUSPRESS("Sprite/plusB_press.png", 1, 1);
+	SpriteObject buttonM("Sprite/minus.png", 1, 1);
+	SpriteObject buttonMP("Sprite/minus_press.png", 1, 1);
+	SpriteObject buttonB("Sprite/back.png", 1, 1);
+	SpriteObject buttonBG("Sprite/backG.png", 1, 1);
+	SpriteObject buttonO("Sprite/ok.png", 1, 1);
+	SpriteObject buttonOG("Sprite/okG.png", 1, 1);	  
+
+	SDL_Color textColor = { 255,255,255 };
+
+	ClickableObject * decreaseBGM = new ClickableObject;
+	decreaseBGM->setSpriteClickableObject(buttonM, 1, 1);
+	decreaseBGM->setEffect(buttonMP, 1, 2);
+	decreaseBGM->genUV();
+	decreaseBGM->setTagAndName("Settings", "decreaseBGM");
+	decreaseBGM->setSize(50, 50);
+	decreaseBGM->translate(glm::vec3(200, 110, 1));
+	decreaseBGM->active = false;
+	clickable.push_back(decreaseBGM);
+	SettingsR.push_back(decreaseBGM);
+
+	ClickableObject * increaseBGM = new ClickableObject;
+	increaseBGM->setSpriteClickableObject(buttonPLUS, 1, 1);
+	increaseBGM->setEffect(buttonPLUSPRESS, 1, 2);
+	increaseBGM->genUV();
+	increaseBGM->setTagAndName("Settings", "increaseBGM");
+	increaseBGM->setSize(50, 50);
+	increaseBGM->translate(glm::vec3(500, 110, 1));
+	increaseBGM->active = false;
+	clickable.push_back(increaseBGM);
+	SettingsR.push_back(increaseBGM);	
+
+	ClickableObject * decreaseSFX = new ClickableObject;
+	decreaseSFX->setSpriteClickableObject(buttonM, 1, 1);
+	decreaseSFX->setEffect(buttonMP, 1, 2);
+	decreaseSFX->genUV();
+	decreaseSFX->setTagAndName("Settings", "decreaseSFX");
+	decreaseSFX->setSize(50, 50);
+	decreaseSFX->translate(glm::vec3(200, 0, 1));
+	decreaseSFX->active = false;
+	clickable.push_back(decreaseSFX);
+	SettingsR.push_back(decreaseSFX);
+
+	ClickableObject * increaseSFX = new ClickableObject;
+	increaseSFX->setSpriteClickableObject(buttonPLUS, 1, 1);
+	increaseSFX->setEffect(buttonPLUSPRESS, 1, 2);
+	increaseSFX->genUV();
+	increaseSFX->setTagAndName("Settings", "increaseSFX");
+	increaseSFX->setSize(50, 50);
+	increaseSFX->translate(glm::vec3(500, 0, 1));
+	increaseSFX->active = false;
+	clickable.push_back(increaseSFX);
+	SettingsR.push_back(increaseSFX);	 
+
+	TextObject* BGMvalueS = new TextObject;
+	BGMvalueS->setFontName("Damaged(old2).ttf");
+	BGMvalueS->setFontSize(60);
+	BGMvalueS->setTextColor(textColor);
+	BGMvalueS->loadText(to_string(BGMnum));
+	BGMvalueS->translate(glm::vec3(350, 110, 0));
+	BGMvalueS->setActive(true);
+	BGMvalue = BGMvalueS;
+	SettingsR.push_back(BGMvalueS);
+
+	TextObject* SFXvalueS = new TextObject;
+	SFXvalueS->setFontName("Damaged(old2).ttf");
+	SFXvalueS->setFontSize(60);
+	SFXvalueS->setTextColor(textColor);
+	SFXvalueS->loadText(to_string(SFXnum));
+	SFXvalueS->translate(glm::vec3(350, 0, 0));
+	SFXvalueS->setActive(true);
+	SFXvalue = SFXvalueS;
+	SettingsR.push_back(SFXvalueS);
+
+	ClickableObject * backToMain = new ClickableObject;
+	backToMain->setSpriteClickableObject(buttonB, 1, 1);
+	backToMain->setEffect(buttonB, 1, 2);
+	backToMain->genUV();
+	backToMain->setTagAndName("Settings", "back");
+	backToMain->setSize(250.0f, 100.0f);
+	backToMain->translate(glm::vec3(-200, -200, 0));
+	backToMain->active = false;
+	clickable.push_back(backToMain);
+	SettingsR.push_back(backToMain);
+
+	ClickableObject * apply = new ClickableObject;
+	apply->setSpriteClickableObject(buttonO, 1, 1);
+	apply->setEffect(buttonO, 1, 2);
+	apply->genUV();
+	apply->setTagAndName("Settings", "apply");
+	apply->setSize(250.0f, 100.0f);
+	apply->translate(glm::vec3(200, -200, 0));
+	apply->active = false;
+	clickable.push_back(apply);
+	SettingsR.push_back(apply);					  
+	////////////////////////////////////////////////////////////////Settings/////////////////////////////////////////////////////////////////
+
 	////////////////////////////////////////////////////////////////City/////////////////////////////////////////////////////////////////
 	SpriteObject * CityBG = new SpriteObject("Sprite/City.png", 1, 1);
 	CityBG->setSize(1280.0f, 720.0f);
@@ -743,8 +980,8 @@ void Game::init(int width, int height)
 	/////////////////////////////////////////////////////////////////Map/////////////////////////////////////////////////////////////
 
 	ClickableObject * LoseButton = new ClickableObject;
-	LoseButton->setSpriteClickableObject(Play, 1, 1);
-	LoseButton->setEffect(Play_Glow, 1, 1);
+	LoseButton->setSpriteClickableObject(buttonB, 1, 1);
+	LoseButton->setEffect(buttonBG, 1, 1);
 	LoseButton->setColumn(1);
 	LoseButton->setRow(1);
 	LoseButton->genUV();
@@ -1092,12 +1329,15 @@ void Game::init(int width, int height)
 	SpriteObject * Map5 = new SpriteObject("Sprite/Ending.png", 1, 1);
 	Map5->setSize(1280.0f, 720.0f);
 	Map5->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+	SpriteObject * Map6 = new SpriteObject("Sprite/settingBG.png", 1, 1);
+	Map6->setSize(1280.0f, 720.0f);
+	Map6->translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	
 	BGD.push_back(Map1);
 	BGD.push_back(Map2);
 	BGD.push_back(Map3);
 	BGD.push_back(Map4);
-	BGD.push_back(Map5);
+	BGD.push_back(Map6);
 }
 
 void Game::render()	 //Change game scene
@@ -1128,6 +1368,15 @@ void Game::render()	 //Change game scene
 		BG[0] = BGD[3];
 		this->getRenderer()->render(this->BG);
 		this->getRenderer()->render(this->City);
+		this->getRenderer()->render(this->transitionsss);
+	}
+	else
+	if (state == State::GAME_SETTINGS)
+	{
+		this->getRenderer()->Clear();
+		BG[0] = BGD[5];
+		this->getRenderer()->render(this->BG);
+		this->getRenderer()->render(this->SettingsR);
 		this->getRenderer()->render(this->transitionsss);
 	}
 	else
@@ -1362,86 +1611,6 @@ void Game::monsterTurn()
 	
 }
 
-void Game::Settings()
-{
-	/*objects.clear();
-	mainMenu.clear();
-	GameObject * BG = new GameObject();
-	BG->loadTexture("UI/Config.png");
-	BG->setSize(725, -550);
-	objects.push_back(BG);
-
-	SDL_Color textColor = { 255,255,255 };
-	Buttons * decreaseBGM = new Buttons();
-	CreateMenuChoice(decreaseBGM, glm::vec3(100, 65, 1), glm::vec3(25, -50, 1), 101, "UI/LeftBottom.png", true);
-	decreaseBGM->loadUnhoveredTexture("UI/LeftBottom.png");
-	decreaseBGM->loadHoveredTexture("UI/LeftBottom_WithMouse.png");
-	mainMenu.push_back(decreaseBGM);
-
-	Buttons * increaseBGM = new Buttons();
-	CreateMenuChoice(increaseBGM, glm::vec3(200, 65, 1), glm::vec3(25, -50, 1), 102, "UI/RightBottom.png", true);
-	increaseBGM->loadUnhoveredTexture("UI/RightBottom.png");
-	increaseBGM->loadHoveredTexture("UI/RightBottom_WithMouse.png");
-	mainMenu.push_back(increaseBGM);
-	Buttons * decreaseSFX = new Buttons();
-	CreateMenuChoice(decreaseSFX, glm::vec3(100, -20, 1), glm::vec3(25, -50, 1), 103, "UI/LeftBottom.png", true);
-	decreaseSFX->loadUnhoveredTexture("UI/LeftBottom.png");
-	decreaseSFX->loadHoveredTexture("UI/LeftBottom_WithMouse.png");
-	mainMenu.push_back(decreaseSFX);
-
-	Buttons * increaseSFX = new Buttons();
-	CreateMenuChoice(increaseSFX, glm::vec3(200, -20, 1), glm::vec3(25, -50, 1), 104, "UI/RightBottom.png", true);
-	increaseSFX->loadUnhoveredTexture("UI/RightBottom.png");
-	increaseSFX->loadHoveredTexture("UI/RightBottom_WithMouse.png");
-	mainMenu.push_back(increaseSFX);
-
-	Buttons * decreaseTS = new Buttons();
-	CreateMenuChoice(decreaseTS, glm::vec3(100, -105, 1), glm::vec3(25, -50, 1), 105, "UI/LeftBottom.png", true);
-	decreaseTS->loadUnhoveredTexture("UI/LeftBottom.png");
-	decreaseTS->loadHoveredTexture("UI/LeftBottom_WithMouse.png");
-	mainMenu.push_back(decreaseTS);
-	FrozeblizzToday at 5:21 PM
-	Buttons * increaseTS = new Buttons();
-	CreateMenuChoice(increaseTS, glm::vec3(200, -105, 1), glm::vec3(25, -50, 1), 106, "UI/RightBottom.png", true);
-	increaseTS->loadUnhoveredTexture("UI/RightBottom.png");
-	increaseTS->loadHoveredTexture("UI/RightBottom_WithMouse.png");
-	mainMenu.push_back(increaseTS);
-
-	BGMvalue = new TextObject(true);
-	BGMvalue->setFontName("Font/Anonymous_Pro.ttf");
-	BGMvalue->setFontSize(20);
-	BGMvalue->setTextColor(textColor);
-	BGMvalue->loadText(to_string(BGMnum));
-	BGMvalue->translate(glm::vec3(150, 65, 0));
-	objects.push_back(BGMvalue);
-
-	SFXvalue = new TextObject(true);
-	SFXvalue->setFontName("Font/Anonymous_Pro.ttf");
-	SFXvalue->setFontSize(20);
-	SFXvalue->setTextColor(textColor);
-	SFXvalue->loadText(to_string(SFXnum));
-	SFXvalue->translate(glm::vec3(150, -20, 0));
-	objects.push_back(SFXvalue);
-	TSvalue = new TextObject(true);
-	TSvalue->setFontName("Font/Anonymous_Pro.ttf");
-	TSvalue->setFontSize(20);
-	TSvalue->setTextColor(textColor);
-	TSvalue->loadText(textSpeedValue[textSpeedCheck]);
-	TSvalue->translate(glm::vec3(150, -105, 0));
-	objects.push_back(TSvalue);
-
-	Buttons * backToMain = new Buttons();
-	CreateMenuChoice(backToMain, glm::vec3(200, -200, 1), glm::vec3(200, -50, 1), 200, "UI/back bottom.png", true);
-	backToMain->loadUnhoveredTexture("UI/back bottom.png");
-	backToMain->loadHoveredTexture("UI/back bottom_WithMouse.png");
-	mainMenu.push_back(backToMain);
-
-	Buttons * apply = new Buttons();
-	CreateMenuChoice(apply, glm::vec3(-200, -200, 1), glm::vec3(200, -50, 1), 201, "UI/save bottom.png", true);
-	apply->loadUnhoveredTexture("UI/save bottom.png");
-	apply->loadHoveredTexture("UI/save bottom_WithMouse.png");
-	mainMenu.push_back(apply);	 */
-}
 
 void Game::addNewCardToDeck(string cardName)
 {

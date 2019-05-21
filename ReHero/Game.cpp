@@ -70,15 +70,15 @@ void Game::handleMouseUp(int x, int y)
 			}
 			if (Type == mapPointType::POINT_STRONG_MONSTER)
 			{
-				mon_id = 3 + rand() % 3;
+				mon_id = 6 + rand() % 6;
 			}
 			if (Type == mapPointType::POINT_HEALING_WELL)
 			{
-				mon_id = 6 + rand() % 6;
+				mon_id = 3 + rand() % 3;
 			}
 			if (Type == mapPointType::POINT_BOSS_MONSTER)
 			{
-				mon_id = 12 + rand() % 2;
+				mon_id = 13;
 			}
 
 			//change monster
@@ -100,6 +100,9 @@ void Game::handleMouseUp(int x, int y)
 				case 13: enemies[0]->changeMonster("BossSpider", 100); break;
 
 			}
+
+			myHero->effect.push("heal");
+			myHero->heroMakeDamage.push(0);
 			
 			currentMap = clickedMap;
 			nextState = State::PLAYER_PLAY;
@@ -272,13 +275,14 @@ void Game::handleMouseUp(int x, int y)
 		else  
 		if (clickableObject->isClick(realX, realY) && clickableObject->getName() == "Building3"&& state == State::GAME_CITY)
 		{
+			nextState = State::PLAYER_PLAY;
 			TransitionPic->setPosition(glm::vec3(-2180.0f, 0.0f, 0.0f));
 			TransitionPic->onetime = true;
 			TransitionPic->delay = 3000;
 			currentMap = 14;
-			enemies[0]->changeMonster("BossSpider", 100);
-			nextState = State::PLAYER_PLAY;
+			enemies[0]->changeMonster("BossDemon", 100);
 			enemies[0]->victory->setActive(false);
+			myHero->lose->setActive(false);
 			for (int i = 0; i < clickable.size(); i++)
 			{
 				if (clickable[i]->getTag() == "Menu")
